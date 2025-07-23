@@ -1,11 +1,21 @@
 import './App.css'
-import { Button } from '@mui/material'
+import { ThemeProvider } from '@emotion/react';
+import customeTheme from './Theme/customeTheme';
 import Navbar from './customer/components/Navbar/Navbar'
+import Home from './customer/pages/Home/Home';
+
+
 
 function App() {
   return (
       <div className="">
-        <Navbar />
+        <ThemeProvider theme={customeTheme}>
+          <div>
+            <Navbar/>
+            <Home/>
+          </div>
+        </ThemeProvider>
+
     </div>
   )
 }
