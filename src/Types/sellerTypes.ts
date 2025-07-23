@@ -3,8 +3,8 @@
 export interface PickupAddress {
     name: string;
     mobile: string;
-    pincode: string;
-    address: string;
+    postalCode: string;
+    street: string;
     locality: string;
     city: string;
     state: string;
@@ -20,19 +20,26 @@ export interface BusinessDetails {
     businessName: string;
 }
 
+export interface Account {
+    id?: number;
+    email: string;
+    username: string;
+    password: string;
+    otp: string;
+}
+
 export interface Seller {
     id?: number;
     mobile: string;
-    otp: string;
-    gstin: string;
+    taxCode: string;
     pickupAddress: PickupAddress;
     bankDetails: BankDetails;
     sellerName: string;
-    email: string;
     businessDetails: BusinessDetails;
     password: string;
     accountStatus?: string;
 }
+
 
 export interface SellerReport {
     id: number;
