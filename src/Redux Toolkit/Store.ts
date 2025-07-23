@@ -1,13 +1,21 @@
-import { configureStore , combineReducers } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { useDispatch, useSelector, type TypedUseSelectorHook } from "react-redux";
-
+import sellerSlice from "./Seller/sellerSlice";
+import sellerAuthenticationSlice from "./Seller/sellerAuthenticationSlice";
+import AuthSlice from "./Customer/AuthSlice";
+import CustomerSlice from "./Customer/Customer/CustomerSlice";
 const rootReducer = combineReducers({
-    
+    // customer
+    auth: AuthSlice,
+    homePage: CustomerSlice,
+    //seller
+    sellers: sellerSlice,
+    sellerAuth: sellerAuthenticationSlice
 });
 
 const store = configureStore({
-  reducer: rootReducer,
-  // No need to define middleware unless you're adding custom ones
+    reducer: rootReducer,
+    // No need to define middleware unless you're adding custom ones
 });
 
 export type AppDispatch = typeof store.dispatch;

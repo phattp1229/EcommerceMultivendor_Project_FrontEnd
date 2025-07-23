@@ -1,31 +1,32 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {  Button, CircularProgress, TextField } from '@mui/material'
-import { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import OTPInput from '../../components/OtpFild/OTPInput'
-import { useFormik } from 'formik';
-import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
-import { useNavigate } from 'react-router-dom';
-import { sendLoginSignupOtp, signin } from '../../../Redux Toolkit/Customer/AuthSlice';
 
-const LoginForm = () => {
+import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
+import { sendLoginOtp, verifyLoginOtp } from '../../../Redux Toolkit/Seller/sellerAuthenticationSlice';
+import { useNavigate } from 'react-router-dom';
+import { useFormik } from 'formik';
+
+const SellerLoginForm = () => {
 
     const navigate = useNavigate();
     const [otp, setOtp] = useState("");
     const [isOtpSent, setIsOtpSent] = useState(false)
     const [timer, setTimer] = useState<number>(30); // Timer state
     const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
-    const dispatch = useAppDispatch();
-    const { auth } = useAppSelector(store => store)
+    const dispatch=useAppDispatch();
+    const {sellerAuth}=useAppSelector(store=>store)
 
     const formik = useFormik({
         initialValues: {
             email: '',
             otp: ''
         },
-
+        
         onSubmit: (values: any) => {
             // Handle form submission
-            dispatch(signin({ email: values.email, otp, navigate }))
+            dispatch(verifyLoginOtp({email:values.email, otp, navigate}))
             console.log('Form data:', values);
         }
     });
@@ -38,25 +39,23 @@ const LoginForm = () => {
 
     const handleResendOTP = () => {
         // Implement OTP resend logic
-        dispatch(sendLoginSignupOtp({ email: "signing_"+formik.values.email }))
+        dispatch(sendLoginOtp(formik.values.email))
         console.log('Resend OTP');
         setTimer(30);
         setIsTimerActive(true);
     };
 
-    const handleSentOtp = () => {
+    const handleSentOtp=()=>{
         setIsOtpSent(true);
         handleResendOTP();
     }
 
-    const handleLogin = () => {
+    const handleLogin=()=>{
         formik.handleSubmit()
     }
 
-  
-
     useEffect(() => {
-        let interval: any;
+        let interval:any;
 
         if (isTimerActive) {
             interval = setInterval(() => {
@@ -77,10 +76,9 @@ const LoginForm = () => {
     }, [isTimerActive]);
 
 
-
     return (
         <div>
-            <h1 className='text-center font-bold text-xl text-primary-color pb-8'>Login</h1>
+            <h1 className='text-center font-bold text-xl text-primary-color pb-5'>Login As Seller</h1>
             <form className="space-y-5">
 
                 <TextField
@@ -94,9 +92,9 @@ const LoginForm = () => {
                     helperText={formik.touched.email ? formik.errors.email as string : undefined}
                 />
 
-                {auth.otpSent && <div className="space-y-2">
+                {sellerAuth.otpSent && <div className="space-y-2">
                     <p className="font-medium text-sm">
-                        * Enter OTP sent to your mobile number
+                        * Enter OTP sent to your email
                     </p>
                     <OTPInput
                         length={6}
@@ -104,45 +102,45 @@ const LoginForm = () => {
                         error={false}
                     />
                     <p className="text-xs space-x-2">
-                        {isTimerActive ? (
-                            <span>Resend OTP in {timer} seconds</span>
-                        ) : (
-                            <>
-                                Didn't receive OTP?{" "}
-                                <span
-                                    onClick={handleResendOTP}
-                                    className="text-teal-600 cursor-pointer hover:text-teal-800 font-semibold"
-                                >
-                                    Resend OTP
-                                </span>
-                            </>
-                        )}
-                    </p>
+                            {isTimerActive ? (
+                                <span>Resend OTP in {timer} seconds</span>
+                            ) : (
+                                <>
+                                    Didn’t receive OTP?{" "}
+                                    <span 
+                                        onClick={handleResendOTP} 
+                                        className="text-teal-600 cursor-pointer hover:text-teal-800 font-semibold"
+                                    >
+                                        Resend OTP
+                                    </span>
+                                </>
+                            )}
+                        </p>
                     {formik.touched.otp && formik.errors.otp && <p>{formik.errors.otp as string}</p>}
                 </div>}
 
-                {auth.otpSent && <div>
-                    <Button disabled={auth.loading} onClick={handleLogin}
-                        fullWidth variant='contained' sx={{ py: "11px" }}>{
-                            auth.loading ? <CircularProgress  />: "Login"}</Button>
+                {sellerAuth.otpSent &&<div>
+                    <Button onClick={handleLogin} 
+                    fullWidth variant='contained' sx={{ py: "11px" }}>Login</Button>
                 </div>}
 
-                {!auth.otpSent && <Button
-                disabled={auth.loading}
-                    fullWidth
-                    variant='contained'
-                    onClick={handleSentOtp}
-                    sx={{ py: "11px" }}>{
-                        auth.loading ? <CircularProgress  />: "sent otp"}</Button>
+                {!sellerAuth.otpSent && <Button
+                disabled={sellerAuth.loading} 
+                fullWidth 
+                variant='contained' 
+                onClick={handleSentOtp}
+                sx={{ py: "11px" }}>{
+                    sellerAuth.loading ? <CircularProgress  />: "sent otp"}</Button>
                 }
 
 
 
             </form>
 
-         
+
+            
         </div>
     )
 }
 
-export default LoginForm
+export default SellerLoginForm

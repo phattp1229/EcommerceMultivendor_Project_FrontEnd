@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { api } from "../../Config/Api";
-import type { Seller, SellerReport } from "../../Types/sellerTypes";
+import type { Seller, SellerReport } from "../../types/sellerTypes";
 import type { RootState } from "../Store";
 
 // Define the initial state type

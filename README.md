@@ -33,3 +33,14 @@ src/
 ├── App.tsx
 └── main.tsx
 ```
+
+| Thư mục         | Vai trò chính                                                               |
+| --------------- | --------------------------------------------------------------------------- |
+| `Config`        | Chứa cấu hình API, route, constants (ví dụ `api.ts`, `env.ts`, `routes.ts`) |
+| `Redux Toolkit` | Chứa store, slices, thunks, selectors                                       |
+| `Theme`         | Chứa custom theme cho MUI hoặc Tailwind                                     |
+| `Types`         | Chứa các interface, type (VD: `User`, `Product`, `Seller`, `Report`, etc.)  |
+| `assets`        | Ảnh, icon, font, logo,...                                                   |
+| `admin`         | Code giao diện & logic cho người quản trị                                   |
+| `customer`      | Code cho phía khách hàng                                                    |
+| `seller`        | Code cho người bán                                                          |
