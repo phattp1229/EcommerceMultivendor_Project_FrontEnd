@@ -10,14 +10,23 @@ const Home = () => {
 
   return (
     <>
-        {!homePage.loading && (
         <div className='space-y-5 lg:space-y-10 relative'>
-          {homePage.homePageData?.electricCategories && <ElectronicCategory />}
+          <ElectronicCategory />
           <CategoryGrid />
-          <Deals />
+         
+
+          <div className="pt-20">
+            <h1 className='text-lg lg:text-4xl font-bold text-primary-color 
+            pb-5 lg:pb-20 text-center'> TODAY'S DEAL</h1>
+           <Deals />
+        </div>
+
+          <div className="pt-20">
+            <h1 className='text-lg lg:text-4xl font-bold text-primary-color 
+            pb-5 lg:pb-20 text-center'> SHOP BY CATEGORY</h1>
+          </div>
           <ShopByCategory />
         </div>
-      )}
     </>
   )
 }

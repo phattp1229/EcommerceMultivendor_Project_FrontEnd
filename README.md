@@ -1,6 +1,6 @@
 # 🛍️ Ecommerce Multi Vendor Project
 
-Một dự án website thương mại điện tử được xây dựng với **React 19**, **TypeScript** và **Vite**.
+Website Multi Vendor Ecommerce **React 19**, **TypeScript** và **Vite**.
 
 ![React](https://img.shields.io/badge/React-19-blue?logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
@@ -32,6 +32,7 @@ src/
 ├── assets/          # Ảnh, icon, font
 ├── App.tsx
 └── main.tsx
+└── Store.ts        #Cấu hình và khởi tạo Redux Store để quản lý toàn bộ state toàn cục (global state) trong ứng dụng React.
 ```
 
 | Thư mục         | Vai trò chính                                                               |
