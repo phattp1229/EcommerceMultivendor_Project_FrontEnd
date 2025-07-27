@@ -6,15 +6,19 @@
     import SearchIcon from "@mui/icons-material/Search";
     import MenuIcon from "@mui/icons-material/Menu";
     import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-    import { FavoriteBorder } from "@mui/icons-material";
+    import { Category, FavoriteBorder } from "@mui/icons-material";
+import { mainCategory } from "../../../data/category/mainCategory";
+import CategorySheet from "./CategorySheet";
 
     const Navbar = () => {
+        const [showSheet, setShowSheet] = useState(false);
+        const [selectedCategory, setSelectedCategory] = useState("men");
         const theme = useTheme();
         const isLarge = useMediaQuery(theme.breakpoints.up("lg"));
         const user = true; // Giả định có đăng nhập
         return (
             <div>
-                <Box>
+                <Box className='sticky top-0 left-0 right-0 z-50 bg-white' sx={{zIndex: 2}}>
                     <div className="flex items-center justify-between px-5 lg:px-20 h-[70px] border-b">
                         <div className="flex items-center gap-9">
                             <div className="flex items-center gap-2">
@@ -26,10 +30,17 @@
                                 </h1>
                             </div>
                              <ul className="flex items-center font-medium text-gray-800">
-                            {["Men","Women","Home & Furniture","Electronics"].map((item) => 
-                            <li className="mainCategory hover:text-[#00927C]
+                            {mainCategory.map((item) => 
+                            <li onMouseLeave={() => {
+                                setShowSheet(false);
+                            }}
+                            onMouseEnter={() => {
+                                setShowSheet(true);
+                                setSelectedCategory(item.categoryId); 
+                            }}
+                            className="mainCategory hover:text-[#00927C]
                             hover:border-b-2 h-[70px] px-4 border-primary-color flex items-center ">
-                                {item}
+                                {item.name}
                             </li> )}
                         </ul>
                         </div>
@@ -62,6 +73,12 @@
                             </Button>}
                         </div>
                     </div>
+                    {showSheet && <div 
+                    onMouseLeave={() => setShowSheet(false)}
+                    onMouseEnter={() => setShowSheet(true)}              
+                    className='categorySheet absolute top-[4.41rem] left-20 right-20 border '>
+                        <CategorySheet selectedCategory={selectedCategory}/>
+                    </div>}
                 </Box>
             </div>
         )
