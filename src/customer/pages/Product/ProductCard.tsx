@@ -54,9 +54,9 @@ const images = [
                     <p>Blue Skirt</p>
                 </div>
                 <div className='price flex items-center gap-3'>
-                    <span className='font-sans text-gray-800'>rs 400</span>
-                    <span className='thin-line-trhough text-gray-400'>res 999</span>
-                    <span className="text-primary-color font-semibold">60%</span>
+                    <span className='font-sans text-gray-800'>450.000 đ</span>
+                    <span className='thin-line-through text-gray-400'>500.000 đ</span>
+                    <span className="text-primary-color font-semibold">-10%</span>
                 </div>
             </div>
         </div>
