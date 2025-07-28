@@ -75,7 +75,7 @@ const Product = () => {
           </div>
           <Divider />
           <section className="grid sm:grid-cols-2   md:grid-cols-3 lg:grid-cols-4 gap-y-5 px-5 justify-center">
-                {[1, 1, 1, 1, 1, 1, 1, 1].map((item, index) => (<ProductCard key={index} />))}
+                {[1, 1, 1, 1, 1, 1, 1, 1].map((item) => <ProductCard />)}
             </section>
         </div>
             
