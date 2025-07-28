@@ -1,4 +1,4 @@
-import ProductCard from "./ProductCard";
+import ProductCard from "./ProductCard/ProductCard";
 import FilterSection from "./FilterSection";
 import React, { useEffect, useState } from "react";
 import {Box,Divider,FormControl,IconButton,InputLabel,MenuItem,Pagination,Select,useMediaQuery,useTheme,type SelectChangeEvent,} 
@@ -33,6 +33,21 @@ const Product = () => {
     setPage(value)
     console.log("page nummmberr ", value);
   };
+//   useEffect(() => {
+//     const [minPrice, maxPrice] = searchParams.get("price")?.split("-") || [];
+//     const newFilters = {
+//       brand: searchParams.get("brand") || "",
+//       color: searchParams.get("color") || "",
+//       minPrice: minPrice ? Number(minPrice) : undefined,
+//       maxPrice: maxPrice ? Number(maxPrice) : undefined,
+//       pageNumber:page-1,
+//       minDiscount: searchParams.get("discount")
+//         ? Number(searchParams.get("discount"))
+//         : undefined,
+//     };
+
+//     dispatch(getAllProducts({ category: categoryId, sort, ...newFilters }));
+//   }, [searchParams, categoryId, sort,page]);
 
   return (
     <div className="-z-10 mt-10">
@@ -77,8 +92,14 @@ const Product = () => {
           <section className="grid sm:grid-cols-2   md:grid-cols-3 lg:grid-cols-4 gap-y-5 px-5 justify-center">
                 {[1, 1, 1, 1, 1, 1, 1, 1].map((item) => <ProductCard />)}
             </section>
+            <div className="flex justify-center pt-10">
+            <Pagination page={page} onChange={(e, value) => handlePageChange(value)}
+                variant="outlined"
+                color="primary"
+                count={10}
+                shape="rounded"/>
+            </div>
         </div>
-            
       </div>
       </div>
   )
