@@ -14,10 +14,17 @@ export default tseslint.config([
       tseslint.configs.recommended,
       reactHooks.configs['recommended-latest'],
       reactRefresh.configs.vite,
+      
     ],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+    '@typescript-eslint/ban-ts-comment': 'off', // cho phép dùng // @ts-ignore
+    'react/jsx-no-undef': 'off', // tắt lỗi không nhận component
+    'react/react-in-jsx-scope': 'off', // tắt yêu cầu import React
   },
+  },
+  
 ])

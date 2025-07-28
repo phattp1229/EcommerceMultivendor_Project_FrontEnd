@@ -2,24 +2,10 @@
 const SimilarProductCard = () => {
   return (
     <div>
-                <div className='group px-4 relative'>
-            <div className='card'
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}>
-                {images.map((item,index) => <img className="card-media oject-top" src={item} alt="" 
-                style={{transform: `translateX(${(index - currentImage) * 100}% `}}/>)}
-
-                {isHovered && <div className='indicator flex flex-col items-center space-y-2'>
-                <div className="flex gap-3">
-
-                    <Button variant="contained" color="secondary" >      
-                        <FavoriteIcon sx={{ color: teal[500] }} />
-                    </Button>                   
-                    <Button variant="contained" color="secondary" >
-                        <ModeCommentIcon />
-                    </Button>
-                    </div>    
-                </div>}
+        <div className='group px-4 relative'>
+            <div className='card'>
+                <img className="card-media oject-top" 
+                src={"https://product.hstatic.net/1000360022/product/ao-so-mi-oxford-nam-tay-dai-blank-color-embroider-form-slim__2__bc173162154a485cb817e55f7a8471e1_1024x1024.jpg"} alt=""/>
             </div>
 
             <div className='details pt-3 space-y-1 group-hover-effect rounded-md'> 

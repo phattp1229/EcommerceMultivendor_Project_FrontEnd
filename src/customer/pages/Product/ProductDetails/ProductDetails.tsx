@@ -12,6 +12,8 @@ import { useAppDispatch, useAppSelector } from '../../../../Redux Toolkit/Store'
 import { useNavigate, useParams } from 'react-router-dom';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import SimilarProduct from '../SimilarProduct/SimilarProduct';
+import ProductReviewCard from '../../Review/ProductReviewCard';
 
 
 const ProductDetails = () => {
@@ -140,7 +142,18 @@ const ProductDetails = () => {
                             chú trọng đến từng chi tiết dù là nhỏ nhất. Sản phẩm sở hữu những đặc tính vượt trội 
                             mà chắc chắn bạn sẽ yêu thích </p>
                     </div>
+                    <div className='mt-7'>
+                        <ProductReviewCard />
+                        <Divider />
+                    </div>
                 </section>
+            </div>
+
+            <div className='mt-20'>
+                <h1 className="text-lg font-bold">Similar Product</h1>
+                <div className='pt-5'>
+                    <SimilarProduct/>
+                </div>
             </div>
         </div>
   )
