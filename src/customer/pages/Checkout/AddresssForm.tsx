@@ -10,12 +10,12 @@ import { useAppDispatch } from '../../../Redux Toolkit/Store';
 const ContactSchema = Yup.object().shape({
   name: Yup.string().required('Required'),
   mobile: Yup.string()
-    .matches(/^[6-9]\d{9}$/, 'Invalid mobile number')
+  .matches(/^0\d{9}$/, 'Invalid mobile number')
+  .required('Required'),
+  postalCode: Yup.string()
+    .matches(/^\d{5}$/, 'Invalid postalCode')
     .required('Required'),
-  pinCode: Yup.string()
-    .matches(/^\d{6}$/, 'Invalid pincode')
-    .required('Required'),
-  address: Yup.string().required('Required'),
+  street: Yup.string().required('Required'),
   locality: Yup.string().required('Required'),
   city: Yup.string().required('Required'),
   state: Yup.string().required('Required'),
@@ -85,8 +85,8 @@ const AddressForm:React.FC<AddressFormProp> = ({handleClose,paymentGateway}) => 
           <Grid size={6}>
             <TextField
               fullWidth
-              name="pinCode"
-              label="Pin Code"
+              name="postalCode"
+              label="Postal Code"
               value={formik.values.postalCode}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -97,7 +97,7 @@ const AddressForm:React.FC<AddressFormProp> = ({handleClose,paymentGateway}) => 
           <Grid size={12}>
             <TextField
               fullWidth
-              name="address"
+              name="street"
               label="Address (House No, Building, Street)"
               value={formik.values.street}
               onChange={formik.handleChange}

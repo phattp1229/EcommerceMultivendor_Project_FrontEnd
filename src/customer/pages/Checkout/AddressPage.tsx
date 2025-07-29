@@ -21,13 +21,13 @@ const style = {
 
 const paymentGatwayList = [
     {
-        value: "RAZORPAY",
-        image: "https://razorpay.com/newsroom-content/uploads/2020/12/output-onlinepngtools-1-1.png",
-        label: "Razarpay"
+        value: "PAYPAL",
+        image: "https://cdn.pixabay.com/photo/2015/05/26/09/37/paypal-784404_1280.png",
+        label: "PayPal"
     },
     {
         value: "STRIPE",
-        image: "/stripe_logo.png",
+        image: "https://vikwp.com/images/plugins/stripe.png",
         label: "Stripe"
     }
 ]
@@ -90,16 +90,16 @@ const AddressPage = () => {
                             onChange={handlePaymentChange}
                             value={paymentGateway}
                         >
-                            {paymentGatwayList.map((item) => <FormControlLabel className={`border w-[45%] flex justify-center rounded-md pr-2 ${paymentGateway === item.value ? "border-primary-color" : ""}`} value={item.value} control={<Radio />} label={<div>
-
+                            {paymentGatwayList.map((item) => 
+                            <FormControlLabel className={`border w-[45%] flex justify-center rounded-md pr-2 
+                            ${paymentGateway === item.value ? "border-primary-color" : ""}`} value={item.value} 
+                            control={<Radio />} label={<div>
                                 <img
                                     className={`${item.value == "stripe" ? "w-14" : ""} object-cover`}
                                     src={item.image}
                                     alt={item.label}
                                 />
                             </div>} />)}
-
-
                         </RadioGroup>
 
                     </section>
