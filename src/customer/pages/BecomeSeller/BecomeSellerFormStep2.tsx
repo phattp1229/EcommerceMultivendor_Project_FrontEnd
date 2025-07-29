@@ -9,7 +9,7 @@ const BecomeSellerFormStep2: React.FC<BecomeSellerFormStep2Props> = ({ formik })
   return (
     <div>
       <Grid container spacing={3}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <TextField
             fullWidth
             name="pickupAddress.name"
@@ -21,7 +21,7 @@ const BecomeSellerFormStep2: React.FC<BecomeSellerFormStep2Props> = ({ formik })
             helperText={formik.touched.name && formik.errors.name}
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid size={6}>
           <TextField
             fullWidth
             name="pickupAddress.mobile"
@@ -33,7 +33,7 @@ const BecomeSellerFormStep2: React.FC<BecomeSellerFormStep2Props> = ({ formik })
             helperText={formik.touched.mobile && formik.errors.mobile}
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid size={6}>
           <TextField
             fullWidth
             name="pickupAddress.pincode"
@@ -45,7 +45,7 @@ const BecomeSellerFormStep2: React.FC<BecomeSellerFormStep2Props> = ({ formik })
             helperText={formik.touched.pickupAddress?.pincode && formik.errors.pickupAddress?.pincode}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <TextField
             fullWidth
             name="pickupAddress.address"
@@ -57,7 +57,7 @@ const BecomeSellerFormStep2: React.FC<BecomeSellerFormStep2Props> = ({ formik })
             helperText={formik.touched.pickupAddress?.address && formik.errors.pickupAddress?.address}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <TextField
             fullWidth
             name="pickupAddress.locality"
@@ -69,7 +69,7 @@ const BecomeSellerFormStep2: React.FC<BecomeSellerFormStep2Props> = ({ formik })
             helperText={formik.touched.pickupAddress?.locality && formik.errors.pickupAddress?.locality}
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid size={6}>
           <TextField
             fullWidth
             name="pickupAddress.city"
@@ -81,7 +81,7 @@ const BecomeSellerFormStep2: React.FC<BecomeSellerFormStep2Props> = ({ formik })
             helperText={formik.touched.pickupAddress?.city && formik.errors.pickupAddress?.city}
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid size={6}>
           <TextField
             fullWidth
             name="pickupAddress.state"

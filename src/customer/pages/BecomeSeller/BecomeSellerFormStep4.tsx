@@ -42,6 +42,16 @@ const BecomeSellerFormStep4 = ({ formik }: BecomeSellerFormStep2Props) => {
       />
       <TextField
         fullWidth
+        name="username"
+        label="Username"
+        value={formik.values.username}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.usernamel && Boolean(formik.errors.username)}
+        helperText={formik.touched.username && formik.errors.username}
+      />
+      <TextField
+        fullWidth
         name="password"
         label="Password"
         value={formik.values.password}
@@ -50,11 +60,6 @@ const BecomeSellerFormStep4 = ({ formik }: BecomeSellerFormStep2Props) => {
         error={formik.touched?.password && Boolean(formik.errors?.password)}
         helperText={formik.touched?.password && formik.errors?.password}
       />
-
-
-
-
-
     </div>
   )
 }

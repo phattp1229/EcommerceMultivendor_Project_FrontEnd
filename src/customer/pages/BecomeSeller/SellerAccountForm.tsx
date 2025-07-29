@@ -32,25 +32,29 @@ const SellerAccountForm = () => {
  
   const formik = useFormik({
     initialValues: {
+      account: {
+      username: "",
+      email: "",
+      password: ""
+    },
       mobile: "",
       otp: "",
-      gstin: "",
+      taxCode: "",
       pickupAddress: {
         name: "",
         mobile: "",
-        pincode: "",
-        address: "",
+        postalCode: "",
+        street: "",
         locality: "",
         city: "",
         state: "",
       },
       bankDetails: {
         accountNumber: "",
-        ifscCode: "",
+        bankName: "",
         accountHolderName: "",
       },
       sellerName: "",
-      email: "",
       businessDetails: {
         businessName: "",
         businessEmail:"",
@@ -58,8 +62,7 @@ const SellerAccountForm = () => {
         logo:"",
         banner:"",
         businessAddress:""
-      },
-      password: ""
+      }
     },
     // validationSchema: FormSchema,
     onSubmit: (values) => {

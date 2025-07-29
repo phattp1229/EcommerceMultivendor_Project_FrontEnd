@@ -1,9 +1,6 @@
 import { Alert, Button, Snackbar } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import BecomeSellerFormStep1 from "./BecomeSellerFormStep1";
-import BecomeSellerFormStep3 from "./BecomeSellerFormStep3";
-import BecomeSellerFormStep2 from "./BecomeSellerFormStep2";
-import BecomeSellerFormStep4 from "./BecomeSellerFormStep4";
+
 import { useAppDispatch, useAppSelector } from "../../../Redux Toolkit/Store";
 import SellerLoginForm from "./SellerLoginForm";
 import { useLocation } from "react-router-dom";
@@ -37,7 +34,7 @@ const BecomeSeller = () => {
         {!isLoginPage ?<SellerAccountForm /> :<SellerLoginForm />}
 
         <div className='mt-10 space-y-2'>
-          <h1 className='text-center text-sm font-medium'>{isLoginPage && "Don't"} have account ? </h1>
+          <h1 className='text-center text-sm font-medium'>{isLoginPage && "Don't"} have an account ? </h1>
           <Button onClick={handleShowPage} fullWidth sx={{ py: "11px" }} 
                   variant='outlined'>{isLoginPage ? "Register" : "Login"}</Button>
         </div>
@@ -50,7 +47,7 @@ const BecomeSeller = () => {
             <p className="text-lg text-teal-500"> Boost Your Sales Today</p>
           </div>
 
-          <img className="" src={"/seller.jpg"} alt="" />
+          <img className="" src={"https://sevabandhu.com/Asset/site/sell.png"} alt="" />
           {/* <div>
                 <p className=" logo absolute p-6 rounded-t-full text-white text-center top-0 left-16 right-11 bg-teal-500">Zosh Bazaar</p>
             </div> */}
