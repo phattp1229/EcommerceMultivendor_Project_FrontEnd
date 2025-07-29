@@ -29,30 +29,36 @@ export const sendLoginOtp = createAsyncThunk('otp/sendLoginOtp', async (email: s
         console.log("otp sent - ", email, data)
         return { email };
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     catch (error: any) {
         console.log("error", error)
         return rejectWithValue(error.response?.data?.message || 'Failed to send OTP');
     }
 });
 
-export const verifyLoginOtp = createAsyncThunk('otp/verifyLoginOtp',
+export const verifyLoginOtp = createAsyncThunk(
+    'otp/verifyLoginOtp',
     async (
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        data: { email: string; otp: string, navigate: any }, { rejectWithValue }) => {
+        data: { username: string; password: string; navigate: any },
+        { rejectWithValue }
+    ) => {
         try {
-            const response = await api.post('/sellers/verify/login-top', data);
-            console.log("login seller success - ", response.data)
-            localStorage.setItem("jwt", response.data.jwt)
-            data.navigate("/seller")
+            const response = await api.post('/sellers/login', {
+                username: data.username,
+                password: data.password
+            });
+
+            console.log("login seller success - ", response.data);
+            localStorage.setItem("jwt", response.data.jwt);
+            data.navigate("/seller");
             return response.data;
+        } catch (error: any) {
+            console.log("error", error.response?.data);
+            return rejectWithValue(error.response?.data?.message || 'Failed to login');
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        catch (error: any) {
-            console.log("error", error.response?.data)
-            return rejectWithValue(error.response?.data?.message || 'Failed to verify OTP');
-        }
-    });
+    }
+);
+
 
 export const createSeller = createAsyncThunk<Seller, Seller>(
     'sellers/createSeller',
@@ -62,7 +68,7 @@ export const createSeller = createAsyncThunk<Seller, Seller>(
             console.log('create seller', response.data);
             return response.data;
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
         catch (error: any) {
             if (axios.isAxiosError(error) && error.response) {
                 console.error('Create seller error response data:', error.response.data);

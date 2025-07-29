@@ -20,7 +20,7 @@ const steps = [
 
 
 const SellerAccountForm = () => {
-    const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(0);
   const dispatch = useAppDispatch();
   const {sellerAuth}=useAppSelector(store=>store)
 
@@ -128,7 +128,7 @@ const SellerAccountForm = () => {
                         variant="contained"
                     >
                         {activeStep === steps.length - 1 ? sellerAuth.loading ? <CircularProgress size="small"
-                        sx={{ width: "27px", height: "27px" }} /> : "create account" : "Continue"}
+                        sx={{ width: "27px", height: "27px" }} /> : "Create Account" : "Continue"}
                     </Button>
                 </div>
             </div> </div>
