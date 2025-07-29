@@ -6,7 +6,7 @@ const SellerDashboard = () => {
     <div>
       <div className="lg:flex lg:h-[90vh]">
 
-        <section className="hidden lg:block ">
+        <section className="hidden lg:block h-full">
           <SellerDrawerList toggleDrawer={toggleDrawer}/>
         </section>
 
