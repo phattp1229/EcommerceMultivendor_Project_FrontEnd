@@ -63,11 +63,11 @@ const Profile = () => {
 
                     <Routes>
                         <Route path='/' element={<UserDetails />} />
-                        <Route path='account/orders' element={<Order />} />
-                        <Route path='account/orders/:orderId/:orderItemId' element={<OrderDetails />} />
-                        <Route path='account/profile' element={<UserDetails />} />
-                        <Route path='account/saved-card' element={<SavedCards />} />
-                        <Route path='account/addresses' element={<Addresses />} />
+                        <Route path='orders' element={<Order />} />
+                        <Route path='orders/:orderId/:orderItemId' element={<OrderDetails />} />
+                        <Route path='profile' element={<UserDetails />} />
+                        <Route path='saved-card' element={<SavedCards />} />
+                        <Route path='addresses' element={<Addresses />} />
                     </Routes>
 
                 </div>  

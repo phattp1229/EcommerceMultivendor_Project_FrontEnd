@@ -52,7 +52,7 @@ const Navbar = () => {
                                 <SearchIcon className="text-gray-700" sx={{ fontSize: 29 }}/>
                             </IconButton>
                             {user ? (
-                                <Button className="flex items-center gap-2">
+                                <Button onClick={()=>navigate("/account/orders")} className="flex items-center gap-2">
                                 <Avatar
                                     sx={{ width: 29, height: 29 }}
                                     src="https://cdn.pixabay.com/photo/2015/04/15/09/28/head-723540_640.jpg"
@@ -71,7 +71,8 @@ const Navbar = () => {
                                     <AddShoppingCartIcon className="text-gray-700" sx={{ fontSize: 29 }}/>
                                 </Badge>
                             </IconButton>
-                            {isLarge && <Button startIcon={<StorefrontIcon />} variant='outlined'>
+                            {isLarge && <Button onClick={() => navigate("/become-seller")} 
+                            startIcon={<StorefrontIcon />} variant='outlined'>
                                 Become Seller
                             </Button>}
                         </div>

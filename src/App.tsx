@@ -11,6 +11,7 @@ import { Add } from '@mui/icons-material';
 import AddressPage from './customer/pages/Checkout/AddressPage';
 import Profile from './customer/pages/Account/Profile';
 import { Route, Routes } from 'react-router-dom';
+import BecomeSeller from './customer/pages/BecomeSeller/BecomeSeller';
 
 
 
@@ -35,7 +36,8 @@ function App() {
               <Route path="/product-details/:categoryId/:name/:productId" element={<ProductDetails />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout/address" element={<AddressPage />} />
-              <Route path="/account/profile" element={<Profile />} />
+              <Route path="/become-seller" element={<BecomeSeller />} />
+              <Route path="/account/*" element={<Profile />} />
             </Routes>
           </div>
         </ThemeProvider>
