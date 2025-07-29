@@ -3,6 +3,13 @@ import { useAppDispatch } from '../../../Redux Toolkit/Store';
 import { verifyLoginOtp } from '../../../Redux Toolkit/Seller/sellerAuthenticationSlice';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+//validate
+const validationSchema = Yup.object({
+  username: Yup.string().required('Username cannot be blank'),
+  password: Yup.string().required('Password cannot be blank'),
+});
 
 const SellerLoginForm = () => {
   const navigate = useNavigate();
@@ -13,6 +20,7 @@ const SellerLoginForm = () => {
       username: '',
       password: ''
     },
+     validationSchema: validationSchema,
     onSubmit: (values) => {
       dispatch(verifyLoginOtp({
         username: values.username, 
@@ -32,15 +40,21 @@ const SellerLoginForm = () => {
           label="Username"
           value={formik.values.username}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.username && Boolean(formik.errors.username)}
+          helperText={formik.touched.username && formik.errors.username}
         />
         <TextField
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-        />
+        fullWidth
+        name="password"
+        label="Password"
+        type="password"
+        value={formik.values.password}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.password && Boolean(formik.errors.password)}
+        helperText={formik.touched.password && formik.errors.password}
+            />
         <Button
           type="submit"
           fullWidth

@@ -12,6 +12,7 @@ import AddressPage from './customer/pages/Checkout/AddressPage';
 import Profile from './customer/pages/Account/Profile';
 import { Route, Routes } from 'react-router-dom';
 import BecomeSeller from './customer/pages/BecomeSeller/BecomeSeller';
+import SellerDashboard from './seller/pages/SellerDashboard/SellerDashboard';
 
 
 
@@ -22,13 +23,6 @@ function App() {
         <ThemeProvider theme={customeTheme}>
           <div>
             <Navbar/>
-            {/* <Home/> */}
-            {/* <Product/> */}
-            {/* <ProductDetails/> */}
-            {/* <Reviews/> */}
-            {/* <Cart/> */}
-            {/* <AddressPage/> */}
-            {/* <Profile/> */}
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/products/:category" element={<Product />} />
@@ -38,6 +32,7 @@ function App() {
               <Route path="/checkout/address" element={<AddressPage />} />
               <Route path="/become-seller" element={<BecomeSeller />} />
               <Route path="/account/*" element={<Profile />} />
+              <Route path="/seller/*" element={<SellerDashboard />} />
             </Routes>
           </div>
         </ThemeProvider>
