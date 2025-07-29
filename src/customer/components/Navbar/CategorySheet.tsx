@@ -9,7 +9,7 @@ import { furnitureLevelTwo } from '../../../data/category/level two/furnitureLev
 import { furnitureLevelThree } from '../../../data/category/level three/furnitureLevelThree'
 import { electronicsLevelThree } from '../../../data/category/level three/electronicsLevelThree'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 const categoryTwo: { [key: string]: any[] } = {
 
     men: menLevelTwo,
@@ -20,7 +20,7 @@ const categoryTwo: { [key: string]: any[] } = {
 
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 const categoryThree: { [key: string]: any[] } = {
     men: menLevelThree,
     women: womenLevelThree,
@@ -29,16 +29,16 @@ const categoryThree: { [key: string]: any[] } = {
 
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+//@ts-ignore
 const CategorySheet = ({selectedCategory,setShowSheet}:any) => {
 
 const navigate=useNavigate()
 
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
     const childCategory = (category: any, parentCategoryId: any) => {
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
         return category.filter((child: any) => {
             // console.log("Category", parentCategoryId, child)
             return child.parentCategoryId == parentCategoryId
@@ -51,7 +51,7 @@ const navigate=useNavigate()
             <div className=' flex text-sm flex-wrap'>
                 
                 {categoryTwo["men"]?.
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                 
                 map((item: any,index) => 
                 <div  key={item.name} className={`p-8 lg:w-[20%] ${index%2==0?"bg-slate-50":"bg-white"}`}>
 
@@ -60,9 +60,9 @@ const navigate=useNavigate()
                     <ul className='space-y-3'>
                         {childCategory(categoryThree["men"], item.categoryId).
                         
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                 
                         map((item: any) => <div key={item.name}>
-                            <li className='hover:text-[#00927c] cursor-pointer'>{item.name}</li>
+                            <li onClick={() => navigate("/products/"+item.categoryId)}className='hover:text-[#00927c] cursor-pointer'>{item.name}</li>
                         </div>)}
                     </ul>
 

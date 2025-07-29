@@ -27,7 +27,8 @@ const Navbar = () => {
                             {!isLarge &&   <IconButton>
                                     <MenuIcon/>
                                 </IconButton>}
-                                <h1 onClick={()=> navigate}className="logo cursor-pointer text-lg md:text-2xl  text-[#00927c]">
+                                <h1 onClick={() => navigate("/")}
+                                className="logo cursor-pointer text-lg md:text-2xl  text-[#00927c]">
                                     Zonix Mall
                                 </h1>
                             </div>
