@@ -10,6 +10,7 @@ import Cart from './customer/pages/Cart/Cart';
 import { Add } from '@mui/icons-material';
 import AddressPage from './customer/pages/Checkout/AddressPage';
 import Profile from './customer/pages/Account/Profile';
+import { Route, Routes } from 'react-router-dom';
 
 
 
@@ -26,7 +27,16 @@ function App() {
             {/* <Reviews/> */}
             {/* <Cart/> */}
             {/* <AddressPage/> */}
-            <Profile/>
+            {/* <Profile/> */}
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/products/:category" element={<Product />} />
+              <Route path="/reviews/:productId" element={<Reviews />} />
+              <Route path="/product-details/:categoryId/:name/:productId" element={<ProductDetails />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/checkout/address" element={<AddressPage />} />
+              <Route path="/account/profile" element={<Profile />} />
+            </Routes>
           </div>
         </ThemeProvider>
 

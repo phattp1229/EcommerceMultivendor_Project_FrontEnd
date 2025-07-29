@@ -48,7 +48,7 @@ const OrderDetails = () => {
         <h1 className='font-bold pb-3'>Delivery Address</h1>
         <div className='text-sm space-y-2'>
           <div className='flex gap-5 font-medium'>
-            <p> {"12ab Phường 25 Bình Thạnh TPHCM"}</p>
+            <p> {"Tan Phat"}</p>
             <Divider flexItem orientation='vertical' />
             <p>{"0379205270"}</p>
           </div>
@@ -90,7 +90,7 @@ const OrderDetails = () => {
           disabled={"Cancel" !== "Cancel"}
             onClick={handleCancelOrder}
             color='error' sx={{ py: "0.7rem" }} className='' variant='outlined' fullWidth>
-            {"Cancel Order"}
+            {"order canceled"}
           </Button>
         </div>
       </div>
