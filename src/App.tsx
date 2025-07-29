@@ -7,6 +7,8 @@ import Product from './customer/pages/Product/Product';
 import ProductDetails from './customer/pages/Product/ProductDetails/ProductDetails';
 import Reviews from './customer/pages/Review/Reviews';
 import Cart from './customer/pages/Cart/Cart';
+import { Add } from '@mui/icons-material';
+import AddressPage from './customer/pages/Checkout/AddressPage';
 
 
 
@@ -21,7 +23,8 @@ function App() {
             {/* <Product/> */}
             {/* <ProductDetails/> */}
             {/* <Reviews/> */}
-            <Cart/>
+            {/* <Cart/> */}
+            <AddressPage/>
           </div>
         </ThemeProvider>
 

@@ -20,6 +20,7 @@ const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [couponCode, setCouponCode] = useState("");
+
   const [snackbarOpen, setOpenSnackbar] = useState(false);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (e: any) => {
@@ -51,6 +52,7 @@ const Cart = () => {
                     <span>Apply Coupons</span>
                   </div>
                 </div>
+            {/* eslint-disable-next-line no-constant-condition */}    
             {true ? (
                     <div className="flex justify-between items-center">
                     <TextField id="outlined-basic"

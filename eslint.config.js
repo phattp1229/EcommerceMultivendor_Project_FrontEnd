@@ -24,7 +24,8 @@ export default tseslint.config([
     '@typescript-eslint/ban-ts-comment': 'off', // cho phép dùng // @ts-ignore
     'react/jsx-no-undef': 'off', // tắt lỗi không nhận component
     'react/react-in-jsx-scope': 'off', // tắt yêu cầu import React
-  },
+     "@typescript-eslint/no-explicit-any": "off"
+    }
   },
   
 ])

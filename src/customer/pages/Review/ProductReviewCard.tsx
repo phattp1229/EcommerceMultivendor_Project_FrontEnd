@@ -11,8 +11,8 @@ const ProductReviewCard = () => {
 
   return (
     <div className="flex justify-between">
-      <Grid container spacing={2} gap={3}>
-        <Grid item xs={1} >
+      <Grid container spacing={2} gap-3>
+        <Grid size={1} >
           <Box>
             <Avatar
               className="text-white"
@@ -22,7 +22,7 @@ const ProductReviewCard = () => {
             </Avatar>
           </Box>
         </Grid>
-        <Grid item xs={9}>
+        <Grid size={9}>
           <div className="space-y-2">
             <div className="">
               <p className="font-semibold text-lg">Phat</p>

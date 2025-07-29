@@ -1,6 +1,6 @@
 import { Avatar, Box, Grid, LinearProgress, Rating } from '@mui/material'
 import React from 'react'
-import type { Review } from '../../../types/reviewTypes';
+
 
 
 
@@ -26,10 +26,10 @@ const RatingCard = ({totalReview}:any) => {
                     alignItems="center"
                     gap={2}
                 >
-                    <Grid xs={2}>
+                    <Grid size={2}>
                         <p className="p-0">Excellent</p>
                     </Grid>
-                    <Grid xs={7}>
+                    <Grid size={7}>
                         <LinearProgress
                             className=""
                             sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7 }}
@@ -38,7 +38,7 @@ const RatingCard = ({totalReview}:any) => {
                             color="success"
                         />
                     </Grid>
-                    <Grid xs={2}>
+                    <Grid size={2}>
                         <p className="opacity-50 p-2">19259</p>
                     </Grid>
                 </Grid>
@@ -50,10 +50,10 @@ const RatingCard = ({totalReview}:any) => {
                     alignItems="center"
                     gap={2}
                 >
-                    <Grid xs={2}>
+                    <Grid size={2}>
                         <p className="p-0">Very Good</p>
                     </Grid>
-                    <Grid xs={7}>
+                    <Grid size={7}>
                         <LinearProgress
                             className=""
                             sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7 }}
@@ -62,7 +62,7 @@ const RatingCard = ({totalReview}:any) => {
                             color="success"
                         />
                     </Grid>
-                    <Grid xs={2}>
+                    <Grid size={2}>
                         <p className="opacity-50 p-2">19259</p>
                     </Grid>
                 </Grid>
@@ -74,10 +74,10 @@ const RatingCard = ({totalReview}:any) => {
                     alignItems="center"
                     gap={2}
                 >
-                    <Grid xs={2}>
+                    <Grid size={2}>
                         <p className="p-0">Good</p>
                     </Grid>
-                    <Grid xs={7}>
+                    <Grid size={7}>
                         <LinearProgress
                             className="bg-[#885c0a]"
                             sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7 }}
@@ -86,7 +86,7 @@ const RatingCard = ({totalReview}:any) => {
 
                         />
                     </Grid>
-                    <Grid xs={2}>
+                    <Grid size={2}>
                         <p className="opacity-50 p-2">19259</p>
                     </Grid>
                 </Grid>
@@ -98,10 +98,10 @@ const RatingCard = ({totalReview}:any) => {
                     alignItems="center"
                     gap={2}
                 >
-                    <Grid xs={2}>
+                    <Grid size={2}>
                         <p className="p-0">Avarage</p>
                     </Grid>
-                    <Grid xs={7}>
+                    <Grid size={7}>
                         <LinearProgress
                             className=""
                             sx={{
@@ -117,7 +117,7 @@ const RatingCard = ({totalReview}:any) => {
                             color="success"
                         />
                     </Grid>
-                    <Grid xs={2}>
+                    <Grid size={2}>
                         <p className="opacity-50 p-2">19259</p>
                     </Grid>
                 </Grid>
@@ -129,10 +129,10 @@ const RatingCard = ({totalReview}:any) => {
                     alignItems="center"
                     gap={2}
                 >
-                    <Grid xs={2}>
+                    <Grid size={2}>
                         <p className="p-0">Poor</p>
                     </Grid>
-                    <Grid xs={7}>
+                    <Grid size={7}>
                         <LinearProgress
                             className=""
                             sx={{ bgcolor: "#d0d0d0", borderRadius: 4, height: 7 }}
@@ -141,7 +141,7 @@ const RatingCard = ({totalReview}:any) => {
                             color="error"
                         />
                     </Grid>
-                    <Grid xs={2}>
+                    <Grid size={2}>
                         <p className="opacity-50 p-2">19259</p>
                     </Grid>
                 </Grid>
