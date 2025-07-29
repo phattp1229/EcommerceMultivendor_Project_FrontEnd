@@ -9,6 +9,7 @@ import Reviews from './customer/pages/Review/Reviews';
 import Cart from './customer/pages/Cart/Cart';
 import { Add } from '@mui/icons-material';
 import AddressPage from './customer/pages/Checkout/AddressPage';
+import Profile from './customer/pages/Account/Profile';
 
 
 
@@ -24,7 +25,8 @@ function App() {
             {/* <ProductDetails/> */}
             {/* <Reviews/> */}
             {/* <Cart/> */}
-            <AddressPage/>
+            {/* <AddressPage/> */}
+            <Profile/>
           </div>
         </ThemeProvider>
 
