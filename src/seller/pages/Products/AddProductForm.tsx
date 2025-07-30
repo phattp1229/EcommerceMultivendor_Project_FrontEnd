@@ -92,7 +92,6 @@ const ProductForm = () => {
     const file = event.target.files[0];
     setUploadingImage(true);
     const image = await uploadToCloudinary(file);
-    // const image = URL.createObjectURL(file);
     formik.setFieldValue("images", [...formik.values.images, image]);
     setUploadingImage(false);
   };
@@ -171,7 +170,7 @@ const ProductForm = () => {
               ))}
             </div>
           </Grid>
-          <Grid size={{ xs: 12,sm: 6}}>
+          <Grid size={12}>
             <TextField
               fullWidth
               id="title"
@@ -184,7 +183,7 @@ const ProductForm = () => {
               required
             />
           </Grid>
-          <Grid size={{ xs: 12,sm: 6}}>
+          <Grid size={12}>
             <TextField
               multiline
               rows={4}
@@ -235,7 +234,7 @@ const ProductForm = () => {
             />
           </Grid>
 
-          <Grid size={{ xs: 12,sm: 6,lg : 3}}>
+          <Grid size={{ xs: 12,sm: 6}}>
             <FormControl
               fullWidth
               error={formik.touched.color && Boolean(formik.errors.color)}
@@ -266,7 +265,7 @@ const ProductForm = () => {
               )}
             </FormControl>
           </Grid>
-          <Grid size={{ xs: 12,sm: 6,lg : 3}}>
+          <Grid size={{ xs: 12,sm: 6}}>
             <FormControl
               fullWidth
               error={formik.touched.sizes && Boolean(formik.errors.sizes)}
