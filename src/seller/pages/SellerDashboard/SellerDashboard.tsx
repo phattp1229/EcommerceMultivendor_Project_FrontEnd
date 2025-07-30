@@ -1,3 +1,4 @@
+import SellerRoutes from "../../../routes/SellerRoutes"
 import SellerDrawerList from "../../components/SideBar/SellerDrawerList"
 
 const SellerDashboard = () => {
@@ -11,7 +12,7 @@ const SellerDashboard = () => {
         </section>
 
         <section className="p-10 w-full lg:w-[80%]  overflow-y-auto">
-          seller routes
+          <SellerRoutes/>
         </section>
       </div>
     </div>

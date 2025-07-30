@@ -5,7 +5,8 @@ import AddProductForm from '../seller/pages/Products/AddProductForm'
 import Orders from '../seller/pages/Orders/Orders'
 import Profile from '../seller/pages/Account/Profile'
 import TransactionTable from "../seller/pages/Payment/TransactionTable"
-import Payment from "../seller/pages/Payment/payment"
+import Payment from "../seller/pages/Payment/Payment"
+
 
 
 

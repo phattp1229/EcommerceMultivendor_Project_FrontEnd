@@ -1,7 +1,8 @@
+import ProductTable from "./ProductTable"
 
 const Products = () => {
   return (
-    <div>Products</div>
+    <div><ProductTable/></div>
   )
 }
 
