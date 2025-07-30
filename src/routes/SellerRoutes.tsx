@@ -5,7 +5,8 @@ import AddProductForm from '../seller/pages/Products/AddProductForm'
 import Orders from '../seller/pages/Orders/Orders'
 import Profile from '../seller/pages/Account/Profile'
 import TransactionTable from "../seller/pages/Payment/TransactionTable"
-import Payment from "../seller/pages/Payment/Payment"
+import Payment from "../seller/pages/Payment/payment"
+
 
 
 // import Invetory from '../seller/pages/Invetory/Invetory'
@@ -22,7 +23,7 @@ const SellerRoutes = () => {
         <Route path='/orders' element={<Orders />} />
         {/* <Route path='/invetory' element={<Invetory />} /> */}
         <Route path='/account' element={<Profile />} />
-        <Route path='/payment' element={<Payment />} />
+        <Route path='/payment' element={<Payment/>}/>
         <Route path='/transaction' element={<TransactionTable/>} />
       </Routes>
     </div>
