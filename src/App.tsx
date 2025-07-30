@@ -7,12 +7,12 @@ import Product from './customer/pages/Product/Product';
 import ProductDetails from './customer/pages/Product/ProductDetails/ProductDetails';
 import Reviews from './customer/pages/Review/Reviews';
 import Cart from './customer/pages/Cart/Cart';
-import { Add } from '@mui/icons-material';
 import AddressPage from './customer/pages/Checkout/AddressPage';
 import Profile from './customer/pages/Account/Profile';
 import { Route, Routes } from 'react-router-dom';
 import BecomeSeller from './customer/pages/BecomeSeller/BecomeSeller';
 import SellerDashboard from './seller/pages/SellerDashboard/SellerDashboard';
+import AdminDashboard from './admin/pages/Dashboard/Dashboard';
 
 
 
@@ -33,6 +33,7 @@ function App() {
               <Route path="/become-seller" element={<BecomeSeller />} />
               <Route path="/account/*" element={<Profile />} />
               <Route path="/seller/*" element={<SellerDashboard />} />
+              <Route path="/admin/*" element={<AdminDashboard />} />
             </Routes>
           </div>
         </ThemeProvider>
