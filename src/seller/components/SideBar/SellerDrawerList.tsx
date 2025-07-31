@@ -8,7 +8,8 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import AddIcon from '@mui/icons-material/Add';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import DrawerList from "../../../customer/components/Navbar/DrawerList";
+import DrawerList from "../../../admin seller/components/drawerList/DrawerList";
+
 
 const menu = [
   {

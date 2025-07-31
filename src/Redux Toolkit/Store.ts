@@ -4,15 +4,20 @@ import sellerSlice from "./Seller/sellerSlice";
 import sellerAuthenticationSlice from "./Seller/sellerAuthenticationSlice";
 import AuthSlice from "./Customer/AuthSlice";
 import CustomerSlice from "./Customer/Customer/CustomerSlice";
+import UserSlice from "./Customer/UserSlice";
+import sellerProductSlice from "./Seller/sellerProductSlice";
+import ProductSlice from "./Customer/ProductSlice";
 
 const rootReducer = combineReducers({
     // customer
     auth: AuthSlice,
+    user: UserSlice,
     homePage: CustomerSlice,
+    products: ProductSlice,
     //seller
     sellers: sellerSlice,
-    sellerAuth: sellerAuthenticationSlice
-
+    sellerAuth: sellerAuthenticationSlice,
+    sellerProduct: sellerProductSlice
 });
 
 const store = configureStore({

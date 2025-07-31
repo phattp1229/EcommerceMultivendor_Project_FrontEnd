@@ -39,7 +39,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function ProductTable() {
 
-  // const { sellerProduct } = useAppSelector(store => store);
+  const { sellerProduct } = useAppSelector(store => store);
   const dispatch = useAppDispatch();
   const navigate=useNavigate();
 
@@ -47,11 +47,11 @@ export default function ProductTable() {
 
 
   React.useEffect(() => {
-     dispatch(fetchSellerProducts(localStorage.getItem("jwt")))
+    dispatch(fetchSellerProducts(localStorage.getItem("jwt")))
   }, [])
 
   const handleUpdateStack = (id: number | undefined)=>() => {
-    // dispatch(updateProductStock(id))
+    dispatch(updateProductStock(id))
   }
 
   return (
@@ -67,27 +67,28 @@ export default function ProductTable() {
               <StyledTableCell align="right">MRP</StyledTableCell>
               <StyledTableCell align="right">Selling Price</StyledTableCell>
               <StyledTableCell align="right">Color</StyledTableCell>
+              <StyledTableCell align="right">Quantity</StyledTableCell>
               <StyledTableCell align="right">Update Stock</StyledTableCell>
               <StyledTableCell align="right">Update</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {[1,1,1,1].map((item) => (
-              <StyledTableRow key={"item.id"}>
+            {sellerProduct.products.map((item) => (
+              <StyledTableRow key={item.id}>
                 <StyledTableCell component="th" scope="row">
                   <div className='flex gap-1 flex-wrap'>
-                    {[1,1,1,1].map((image) => <img className='w-20 rounded-md' 
-                    src={"https://product.hstatic.net/1000360022/product/7rv03977_1ee22ea50d6540d3ad689256c7745d80_1024x1024.jpg"} 
-                    alt="" />)}
+                    {item.images.map((image) => <img className='w-20 rounded-md' src={image} alt="" />)}
+
                   </div>
                 </StyledTableCell>
-                <StyledTableCell align="right">{"item.title"}</StyledTableCell>
-                <StyledTableCell align="right"> ₹{"item.mrpPrice"}.0</StyledTableCell>
-                <StyledTableCell align="right"> ₹{"item.sellingPrice"}.0</StyledTableCell>
-                <StyledTableCell align="right">{"item.color"}</StyledTableCell>
-                <StyledTableCell align="right"> <Button onClick={handleUpdateStack(1)} size='small'>{"in_stock"}</Button></StyledTableCell>
+                <StyledTableCell align="right">{item.title}</StyledTableCell>
+                <StyledTableCell align="right">  {item.mrpPrice.toLocaleString("vi-VN")} đ</StyledTableCell>
+                <StyledTableCell align="right"> {item.sellingPrice.toLocaleString("vi-VN")} đ</StyledTableCell>
+                <StyledTableCell align="right">{item.color}</StyledTableCell>
+                <StyledTableCell align="right">{item.quantity}</StyledTableCell>
+                <StyledTableCell align="right"> <Button onClick={handleUpdateStack(item.id)} size='small'>{item.in_stock?"in_stock":"out_stock"}</Button></StyledTableCell>
                 <StyledTableCell align="right">
-                  <IconButton onClick={(()=>navigate("/seller/update-product/"+"item.id"))} color='primary' className='bg-primary-color'>
+                  <IconButton onClick={(()=>navigate("/seller/update-product/"+item.id))} color='primary' className='bg-primary-color'>
                     <EditIcon />
                   </IconButton>
                 </StyledTableCell>

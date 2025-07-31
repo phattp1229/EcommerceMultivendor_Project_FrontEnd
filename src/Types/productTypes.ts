@@ -15,7 +15,7 @@ export interface Product {
   mrpPrice: number;
   sellingPrice: number;
   discountPercent?: number;
-  quantity?: number;
+  quantity: number;
   color: string;
   images: any[]; // Array of strings for image URLs
   numRatings?: number;

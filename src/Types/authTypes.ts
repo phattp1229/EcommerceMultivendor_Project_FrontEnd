@@ -11,8 +11,8 @@ export interface ApiResponse {
 }
 
 export interface LoginRequest {
-    email: string;
-    otp: string;
+    username: string;
+    password: string;
     navigate: (path: string) => void; // rõ ràng hơn so với `any`
 }
 

@@ -21,8 +21,10 @@ const ProductDetails = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const dispatch = useAppDispatch();
+    //@ts-ignore
     const { products, review } = useAppSelector(store => store)
     const navigate = useNavigate()
+     //@ts-ignore
     const { productId,categoryId } = useParams()
     const [selectedImage, setSelectedImage] = useState(0);
     const [quantity, setQuantity] = useState(1)

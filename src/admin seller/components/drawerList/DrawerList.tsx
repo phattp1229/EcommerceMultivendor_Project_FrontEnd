@@ -4,7 +4,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../Redux Toolkit/Store";
-// import { performLogout } from "../../../Redux Toolkit/Customer/AuthSlice";
+import { logout2, performLogout } from "../../../Redux Toolkit/Customer/AuthSlice";
 
 export interface Menu{
     name: string;
@@ -29,6 +29,7 @@ const DrawerList = ({ toggleDrawer,menu,menu2 }: DrawerListProps) => {
 
     const handleLogout = () => {
         // dispatch(performLogout())
+        dispatch(logout2(navigate));
     }
 
     const handleClick = (item: any)=>() => {

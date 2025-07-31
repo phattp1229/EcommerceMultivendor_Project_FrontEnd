@@ -3,7 +3,7 @@ import { ThemeProvider } from '@emotion/react';
 import customeTheme from './Theme/customeTheme';
 import Navbar from './customer/components/Navbar/Navbar'
 import Home from './customer/pages/Home/Home';
-import Product from './customer/pages/Product/Product';
+import Product from './customer/pages/Product/Products';
 import ProductDetails from './customer/pages/Product/ProductDetails/ProductDetails';
 import Reviews from './customer/pages/Review/Reviews';
 import Cart from './customer/pages/Cart/Cart';
@@ -16,6 +16,7 @@ import AdminDashboard from './admin/pages/Dashboard/Dashboard';
 import { fetchSellerProfile } from './Redux Toolkit/Seller/sellerSlice';
 import { useAppDispatch, useAppSelector } from './Redux Toolkit/Store';
 import { useEffect } from 'react';
+import LoginForm from './customer/pages/Auth/LoginForm';
 
 
 
@@ -42,6 +43,7 @@ function App() {
             <Navbar/>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/login" element={<LoginForm />} />
               <Route path="/products/:category" element={<Product />} />
               <Route path="/reviews/:productId" element={<Reviews />} />
               <Route path="/product-details/:categoryId/:name/:productId" element={<ProductDetails />} />

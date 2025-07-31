@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { Button, CircularProgress, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import OTPInput from '../../components/OtpFild/OTPInput'
 import {  useFormik } from 'formik';
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
 import { useNavigate } from 'react-router-dom';
-import { sendLoginSignupOtp, signup } from '../../../Redux Toolkit/Customer/Customer/AuthSlice';
+import { sendLoginSignupOtp, signup } from '../../../Redux Toolkit/Customer/AuthSlice';
 
 const SignupForm = () => {
 

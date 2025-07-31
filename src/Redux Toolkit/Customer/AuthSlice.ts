@@ -1,5 +1,5 @@
-// src/slices/authSlice.ts
-import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
+
+import { createSlice, createAsyncThunk, type PayloadAction, isRejectedWithValue } from '@reduxjs/toolkit';
 import { api } from '../../Config/Api';
 import type {
     AuthResponse,
@@ -108,7 +108,16 @@ export const resetPasswordRequest = createAsyncThunk<ApiResponse, { email: strin
         }
     }
 );
-
+export const logout2 = createAsyncThunk<any, any>("/auth/logout", async (navigate, { rejectWithValue }) => {
+    try {
+        localStorage.clear()
+        console.log("Logout success!");
+        navigate("/")
+    } catch (error) {
+        console.error("Logout error:", error);
+        return rejectWithValue("Logout failed");
+    }
+});
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -190,11 +199,11 @@ export default authSlice.reducer;
 
 
 
-// export const performLogout = () => async (dispatch: any) => {
-//     dispatch(logout());
-//     dispatch(resetUserState());
-//     dispatch(resetCartState());
-// };
+export const performLogout = () => async (dispatch: any) => {
+    dispatch(logout());
+    // dispatch(resetUserState());
+    // dispatch(resetCartState());
+};
 
 export const selectAuth = (state: RootState) => state.auth;
 export const selectAuthLoading = (state: RootState) => state.auth.loading;
