@@ -34,14 +34,14 @@ export const sendLoginSignupOtp = createAsyncThunk<ApiResponse, { email: string 
             return response.data;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
         catch (error: any) {
             console.log("error", error.response)
             return rejectWithValue(error.response.data.error || 'Failed to send OTP');
         }
     }
 );
-
+//login customer
 export const signup = createAsyncThunk<AuthResponse, SignupRequest>(
     'auth/signup',
     async (signupRequest, { rejectWithValue }) => {
@@ -54,7 +54,7 @@ export const signup = createAsyncThunk<AuthResponse, SignupRequest>(
             return response.data;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
         catch (error: any) {
             return rejectWithValue('Signup failed');
         }
@@ -71,7 +71,7 @@ export const signin = createAsyncThunk<AuthResponse, LoginRequest>(
             loginRequest.navigate("/");
             return response.data;
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
         catch (error: any) {
             console.log("error ", error.response)
             return rejectWithValue('Signin failed');
@@ -87,7 +87,7 @@ export const resetPassword = createAsyncThunk<ApiResponse, ResetPasswordRequest>
             return response.data;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
         catch (error: any) {
             return rejectWithValue('Reset password failed');
         }
@@ -102,7 +102,7 @@ export const resetPasswordRequest = createAsyncThunk<ApiResponse, { email: strin
             return response.data;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
         catch (error: any) {
             return rejectWithValue('Reset password request failed');
         }

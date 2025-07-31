@@ -1,6 +1,6 @@
 import { Button, TextField } from '@mui/material';
 import { useAppDispatch } from '../../../Redux Toolkit/Store';
-import { verifyLoginOtp } from '../../../Redux Toolkit/Seller/sellerAuthenticationSlice';
+import { verifyLoginOtp,verifyLogin } from '../../../Redux Toolkit/Seller/sellerAuthenticationSlice';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -22,7 +22,7 @@ const SellerLoginForm = () => {
     },
      validationSchema: validationSchema,
     onSubmit: (values) => {
-      dispatch(verifyLoginOtp({
+      dispatch(verifyLogin({
         username: values.username, 
         password: values.password,
         navigate

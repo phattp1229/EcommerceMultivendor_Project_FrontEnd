@@ -45,3 +45,6 @@ src/
 | `admin`         | Code giao diện & logic cho người quản trị                                   |
 | `customer`      | Code cho phía khách hàng                                                    |
 | `seller`        | Code cho người bán                                                          |
+
+Redux Toolkit:
+-slice được sử dụng để quản lý tất cả các trạng thái và tương tác API

@@ -4,6 +4,7 @@ import sellerSlice from "./Seller/sellerSlice";
 import sellerAuthenticationSlice from "./Seller/sellerAuthenticationSlice";
 import AuthSlice from "./Customer/AuthSlice";
 import CustomerSlice from "./Customer/Customer/CustomerSlice";
+
 const rootReducer = combineReducers({
     // customer
     auth: AuthSlice,
@@ -11,10 +12,12 @@ const rootReducer = combineReducers({
     //seller
     sellers: sellerSlice,
     sellerAuth: sellerAuthenticationSlice
+
 });
 
 const store = configureStore({
     reducer: rootReducer,
+
     // No need to define middleware unless you're adding custom ones
 });
 

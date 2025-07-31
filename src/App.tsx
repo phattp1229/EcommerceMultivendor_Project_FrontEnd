@@ -9,15 +9,32 @@ import Reviews from './customer/pages/Review/Reviews';
 import Cart from './customer/pages/Cart/Cart';
 import AddressPage from './customer/pages/Checkout/AddressPage';
 import Profile from './customer/pages/Account/Profile';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import BecomeSeller from './customer/pages/BecomeSeller/BecomeSeller';
 import SellerDashboard from './seller/pages/SellerDashboard/SellerDashboard';
 import AdminDashboard from './admin/pages/Dashboard/Dashboard';
+import { fetchSellerProfile } from './Redux Toolkit/Seller/sellerSlice';
+import { useAppDispatch, useAppSelector } from './Redux Toolkit/Store';
+import { useEffect } from 'react';
 
 
 
 
 function App() {
+  const dispatch = useAppDispatch()
+  const {sellers} = useAppSelector(store => store)
+  const navigate=useNavigate();
+
+  useEffect(()=>{
+    dispatch(fetchSellerProfile(localStorage.getItem("jwt") || ""))
+  },[])
+
+  useEffect(() =>{
+    if(sellers.profile){
+      navigate("/seller")
+    }
+  },[sellers.profile])
+
   return (
       <div className="">
         <ThemeProvider theme={customeTheme}>

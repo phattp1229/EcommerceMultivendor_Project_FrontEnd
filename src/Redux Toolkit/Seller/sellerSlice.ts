@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { api } from "../../Config/Api";

@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button, IconButton, styled } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
-// import { fetchSellerProducts, updateProductStock } from '../../../Redux Toolkit/Seller/sellerProductSlice';
+import { fetchSellerProducts, updateProductStock } from '../../../Redux Toolkit/Seller/sellerProductSlice';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
 
@@ -47,7 +47,7 @@ export default function ProductTable() {
 
 
   React.useEffect(() => {
-    // dispatch(fetchSellerProducts(localStorage.getItem("jwt")))
+     dispatch(fetchSellerProducts(localStorage.getItem("jwt")))
   }, [])
 
   const handleUpdateStack = (id: number | undefined)=>() => {
