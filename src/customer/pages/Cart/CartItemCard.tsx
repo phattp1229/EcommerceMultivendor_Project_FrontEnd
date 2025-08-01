@@ -1,13 +1,11 @@
 import { Button, Divider, IconButton } from '@mui/material'
-import React from 'react'
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-import { useAppDispatch } from '../../../Redux Toolkit/Store';
+import type { CartItem } from '../../../Types/cartTypes';
 
 
-const CartItemCard = () => {
-    const dispatch = useAppDispatch();
+const CartItemCard = ({item}: {item: CartItem}) => {
     const handleUpdateQuantity=()=>{
         //update quantity logic
     }
@@ -16,17 +14,17 @@ const CartItemCard = () => {
             <div className='p-5 flex gap-3'>
 
                 <div>
-                    <img className='w-[90px] rounded-md' 
-                 
-                    src="https://www.taneira.com/dw/image/v2/BKMH_PRD/on/demandware.static/-/Sites-Taneira-product-catalog/default/dw422bdf2e/images/Taneira/Catalog/BFW22CW0042_1.jpg?sw=1000&sh=1500"
-                     alt="" />
+                    <img className='w-[90px] rounded-md'                 
+                        src={item.product.images[0]}
+                        alt="" />
                 </div>
+
                 <div className='space-y-2'>
-                    <h1 className='font-semibold text-lg'>Crop Top Girl</h1>
-                    <p className='text-gray-600 font-medium text-sm'>Turquoise Blue Stonework Satin Designer Saree</p>
+                    <h1 className='font-semibold text-lg'> {item.product.seller?.businessDetails.businessName} </h1>
+                    <p className='text-gray-600 font-medium text-sm'> {item.product.title} </p>
                     <p className='text-gray-400 text-xs'><strong>Sold by:</strong> Natural Lifestyle Products Private Limited</p>
                     <p className='text-xs'><strong>7 days replacement</strong> available</p>
-                    <p className='text-sm text-gray-500'><strong>quantity : </strong> 5</p>
+                    <p className='text-sm text-gray-500'><strong>quantity : </strong> {item.quantity} </p>
                 </div>
 
             </div>
@@ -47,7 +45,7 @@ const CartItemCard = () => {
 
                 </div>
                 <div>
-                    <p className='text-gray-700 font-medium'>149.000đ</p>
+                    <p className='text-gray-700 font-medium'> {item.sellingPrice} </p>
                 </div>
 
 

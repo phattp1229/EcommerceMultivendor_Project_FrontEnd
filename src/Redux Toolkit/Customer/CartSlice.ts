@@ -153,12 +153,6 @@ const CartSlice = createSlice({
                 state.error = null;
             })
             .addCase(deleteCartItem.fulfilled, (state, action) => {
-                state.loading = false;
-                if (state.cart) {
-                    state.cart.cartItems = state.cart.cartItems.filter(item => item.id !== action.payload.id);
-                }
-            })
-            .addCase(deleteCartItem.rejected, (state, action) => {
                 if(state.cart){
                     state.cart.cartItems = state.cart.cartItems.filter(
                         (item:CartItem) => item.id !== action.meta.arg.cartItemId);

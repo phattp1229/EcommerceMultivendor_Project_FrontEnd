@@ -5,7 +5,7 @@ import {
   Snackbar,
   TextField,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import { teal } from "@mui/material/colors";
@@ -13,35 +13,67 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import CartItemCard from "./CartItemCard";
 import { useNavigate } from "react-router-dom";
 import PricingCard from "./PricingCard";
-import { useAppDispatch, useAppSelector } from "../../../Redux Toolkit/Store";
+import { useAppDispatch, useAppSelector} from "../../../Redux Toolkit/Store";
 import { Close } from "@mui/icons-material";
+import { fetchCustomerCart } from "../../../Redux Toolkit/Customer/CartSlice";
+import type { CartItem } from "../../../Types/cartTypes";
+import { applyCoupon } from "../../../Redux Toolkit/Customer/CouponSlice";
 
 const Cart = () => {
+  const [couponCode, setCouponCode] = useState("");
+  const [snackbarOpen, setOpenSnackbar] = useState(false);
+  const {cart, auth, coupon} = useAppSelector((store) => store);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [couponCode, setCouponCode] = useState("");
 
-  const [snackbarOpen, setOpenSnackbar] = useState(false);
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (e: any) => {
     setCouponCode(e.target.value);
   };
+  
+  useEffect(() => {
+    dispatch(fetchCustomerCart(localStorage.getItem("jwt") || ""));
+  }, [auth.jwt])
 
   const handleApllyCoupon = (apply: string) => {
     // console.log(couponCode,apply)
 
-    // eslint-disable-next-line no-var
-    var code = couponCode;
+    let code = couponCode;
+
+    if (apply == "false") {
+      code = cart.cart?.couponCode || "";
+    }
+
+    dispatch(
+      applyCoupon({
+        apply,
+        code,
+        orderValue: cart.cart?.totalSellingPrice || 100,
+        jwt: localStorage.getItem("jwt") || "",
+      })
+    );
   };
+
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
+
+  useEffect(() => {
+    if (coupon.couponApplied || coupon.error) {
+      setOpenSnackbar(true);
+      setCouponCode("");
+    }
+  }, [coupon.couponApplied, coupon.error]);
+
+  console.log("coupon", coupon);
+  console.log("cart", cart);
   return (
     <>
         <div className="pt-10 px-5 sm:px-10 md:px-60 lg:px-60 min-h-screen">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 ">
             <div className="lg:col-span-2 space-y-3 ">
-              {[1,1,1,1,1].map((item) => <CartItemCard/>)}
+              {cart.cart?.cartItems.map((item: CartItem) => (
+                <CartItemCard key={item.id} item={item} />
+              ))}
             </div>
 
             <div className="col-span-1  text-sm space-y-3">
@@ -125,11 +157,11 @@ const Cart = () => {
       >
         <Alert
           onClose={handleCloseSnackbar}
-          severity={"error"}
+          severity={coupon.error ? "error" : "success"}
           variant="filled"
           sx={{ width: "100%" }}
         >
-          {"Coupon Applied successfully"}
+          {coupon.error ? coupon.error : "Coupon Applied successfully"}
         </Alert>
       </Snackbar>
     </>
