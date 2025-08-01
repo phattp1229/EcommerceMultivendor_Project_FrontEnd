@@ -3,11 +3,17 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import type { CartItem } from '../../../Types/cartTypes';
+import { useAppDispatch } from '../../../Redux Toolkit/Store';
+import { updateCartItem } from '../../../Redux Toolkit/Customer/CartSlice';
 
 
 const CartItemCard = ({item}: {item: CartItem}) => {
-    const handleUpdateQuantity=()=>{
-        //update quantity logic
+    const dispatch = useAppDispatch();
+    
+    const handleUpdateQuantity=(value: number)=>{
+        dispatch(updateCartItem({jwt: localStorage.getItem("jwt"),
+            cartItemId: item.id,
+            cartItem: {quantity: item.quantity + value}}))
     }
     return (
         <div className=' border rounded-md relative'>
@@ -33,13 +39,13 @@ const CartItemCard = ({item}: {item: CartItem}) => {
 
                 <div className=' flex items-center gap-2  w-[140px] justify-between'>
 
-                    <Button size='small' onClick={handleUpdateQuantity} disabled={true}>
+                    <Button size='small' onClick={() => handleUpdateQuantity(-1)} disabled={true}>
                         <RemoveIcon />
                     </Button>
                     <span className='px-3  font-semibold'>
-                        {5}
+                        {item.quantity}
                     </span>
-                    <Button size='small' onClick={handleUpdateQuantity} >
+                    <Button size='small' onClick={() => handleUpdateQuantity(1)} >
                         <AddIcon />
                     </Button>
 

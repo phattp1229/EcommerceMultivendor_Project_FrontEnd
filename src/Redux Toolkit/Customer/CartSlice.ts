@@ -90,7 +90,7 @@ export const updateCartItem = createAsyncThunk<any, { jwt: string | null; cartIt
     "cart/updateCartItem",
     async ({ jwt, cartItemId, cartItem }, { rejectWithValue }) => {
         try {
-            const response = await api.put(`${API_URL}/item/${cartItemId}`, { cartItem }, {
+            const response = await api.put(`${API_URL}/item/${cartItemId}`, cartItem, {
                 headers: {
                     Authorization: `Bearer ${jwt}`,
                 },
