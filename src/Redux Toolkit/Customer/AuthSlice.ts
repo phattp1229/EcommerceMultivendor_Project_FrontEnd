@@ -11,7 +11,7 @@ import type {
 } from '../../types/authTypes';
 import type { RootState } from '../Store';
 import { boolean } from 'yup';
-// import { resetUserState } from './UserSlice';
+import { resetUserState } from './UserSlice';
 // import { resetCartState } from './CartSlice';
 
 
@@ -21,6 +21,7 @@ const initialState: AuthState = {
     loading: false,
     error: null,
     otpSent: false,
+    isLoggedIn: false
 
 };
 
@@ -128,6 +129,8 @@ const authSlice = createSlice({
         logout: (state) => {
             state.jwt = null;
             state.role = null;
+            state.isLoggedIn = false;
+            state.loading = false;
             localStorage.clear()
             console.log("logout successful !!")
         },
@@ -168,6 +171,7 @@ const authSlice = createSlice({
                 state.jwt = action.payload.jwt;
                 state.role = action.payload.role;
                 state.loading = false;
+                state.isLoggedIn = true;
             })
             .addCase(signin.rejected, (state, action) => {
                 state.loading = false;
@@ -207,8 +211,7 @@ export default authSlice.reducer;
 
 export const performLogout = () => async (dispatch: any) => {
     dispatch(logout());
-    // dispatch(resetAuthFlags());
-    // dispatch(resetUserState());
+    dispatch(resetUserState());
     // dispatch(resetCartState());
 };
 

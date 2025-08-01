@@ -53,6 +53,13 @@ const LoginForm = () => {
 //     }
 // }, [auth.success, dispatch]);
 
+useEffect(() => {
+    if (auth.isLoggedIn) {
+        enqueueSnackbar("Đăng nhập thành công!", { variant: "success" });
+        // dispatch(resetAuthFlags()); // reset tránh hiện lại
+    }
+}, [auth.isLoggedIn, dispatch]);
+
 
 
     return (

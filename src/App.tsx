@@ -19,6 +19,7 @@ import { useEffect } from 'react';
 
 import Auth from './customer/pages/Auth/Auth';
 import { fetchUserProfile } from './Redux Toolkit/Customer/UserSlice';
+import { SnackbarProvider } from 'notistack';
 
 
 
@@ -48,7 +49,11 @@ function App() {
   return (
       <div className="">
         <ThemeProvider theme={customeTheme}>
-          
+      <SnackbarProvider
+      maxSnack={3}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      autoHideDuration={3000}
+        >
           <div>
             <Navbar/>
             <Routes>
@@ -65,6 +70,7 @@ function App() {
               <Route path="/admin/*" element={<AdminDashboard />} />
             </Routes>
           </div>
+          </SnackbarProvider>
         </ThemeProvider>
     </div>
   )
