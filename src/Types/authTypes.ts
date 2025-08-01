@@ -34,4 +34,5 @@ export interface AuthState {
     loading: boolean;
     error: string | null;
     otpSent: boolean
+    success: boolean;
 }

@@ -10,14 +10,16 @@ const Auth = () => {
     const { auth } = useAppSelector(store => store)
     const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-    useEffect(() => {
+useEffect(() => {
+  if (isLoginPage && (auth.error || auth.success)) {
+    setSnackbarOpen(true);
+  }
 
-        if (auth.otpSent || auth.error) {
-            setSnackbarOpen(true);
-            console.log("store ", auth.error)
-        }
+  if (!isLoginPage && auth.otpSent) {
+    setSnackbarOpen(true);
+  }
+}, [auth.error, auth.success, auth.otpSent, isLoginPage]);
 
-    }, [auth.otpSent,auth.error])
 
     return (
         <div className='flex justify-center h-[90vh] items-center'>
@@ -34,20 +36,28 @@ const Auth = () => {
 
 
             </div>
-            <Snackbar
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                open={snackbarOpen} autoHideDuration={6000}
-                onClose={handleCloseSnackbar}
-            >
+         <Snackbar
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            open={snackbarOpen}
+            autoHideDuration={6000}
+            onClose={handleCloseSnackbar}
+        >
                 <Alert
-                    onClose={handleCloseSnackbar}
-                    severity={auth.error?"error":"success"}
-                    variant="filled"
-                    sx={{ width: '100%' }}
+                onClose={handleCloseSnackbar}
+                severity={auth.error ? "error" : "success"}
+                variant="filled"
+                sx={{ width: '100%' }}
                 >
-                    {auth.error?auth.error : " otp sent to your email!"}
+                {
+                    isLoginPage
+                    ? (auth.error || "Login successful!")
+                    : "OTP sent to your email!"
+                }
                 </Alert>
-            </Snackbar>
+
+        </Snackbar>
+
+
         </div>
     )
 }

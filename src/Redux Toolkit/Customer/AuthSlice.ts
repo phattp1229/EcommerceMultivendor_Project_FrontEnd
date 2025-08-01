@@ -10,6 +10,7 @@ import type {
     AuthState,
 } from '../../types/authTypes';
 import type { RootState } from '../Store';
+import { boolean } from 'yup';
 // import { resetUserState } from './UserSlice';
 // import { resetCartState } from './CartSlice';
 
@@ -19,7 +20,9 @@ const initialState: AuthState = {
     role: null,
     loading: false,
     error: null,
-    otpSent: false
+    otpSent: false,
+    success: false
+
 };
 
 // Define the base URL for the API
@@ -127,6 +130,9 @@ const authSlice = createSlice({
             state.role = null;
             localStorage.clear()
         },
+        resetAuthFlags: (state) => {
+            state.success = false;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -163,6 +169,7 @@ const authSlice = createSlice({
                 state.jwt = action.payload.jwt;
                 state.role = action.payload.role;
                 state.loading = false;
+                state.success = true;
             })
             .addCase(signin.rejected, (state, action) => {
                 state.loading = false;
@@ -193,7 +200,8 @@ const authSlice = createSlice({
     },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, resetAuthFlags } = authSlice.actions;
+
 
 export default authSlice.reducer;
 
@@ -201,6 +209,7 @@ export default authSlice.reducer;
 
 export const performLogout = () => async (dispatch: any) => {
     dispatch(logout());
+    dispatch(resetAuthFlags());
     // dispatch(resetUserState());
     // dispatch(resetCartState());
 };

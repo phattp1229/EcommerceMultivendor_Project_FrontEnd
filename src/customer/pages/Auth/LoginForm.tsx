@@ -7,7 +7,8 @@ import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
 import { useNavigate } from 'react-router-dom';
 import { sendLoginSignupOtp, signin } from '../../../Redux Toolkit/Customer/AuthSlice';
 import * as Yup from 'yup';
-
+import { enqueueSnackbar } from 'notistack'; // nếu dùng notistack
+import { resetAuthFlags } from '../../../Redux Toolkit/Customer/AuthSlice'; // import action
 
 //validate
 const validationSchema = Yup.object({
@@ -40,40 +41,17 @@ const LoginForm = () => {
            }
     });
 
-    const handleOtpChange = (otp: any) => {
-
-        setOtp(otp);
-
-    };
-
-
-
     const handleLogin = () => {
         formik.handleSubmit()
     }
 
   
-
-    useEffect(() => {
-        let interval: any;
-
-        if (isTimerActive) {
-            interval = setInterval(() => {
-                setTimer(prev => {
-                    if (prev === 1) {
-                        clearInterval(interval);
-                        setIsTimerActive(false);
-                        return 30; // Reset timer for next OTP request
-                    }
-                    return prev - 1;
-                });
-            }, 1000);
-        }
-
-        return () => {
-            if (interval) clearInterval(interval);
-        };
-    }, [isTimerActive]);
+useEffect(() => {
+    if (auth.success) {
+        enqueueSnackbar("Đăng nhập thành công!", { variant: "success" });
+        dispatch(resetAuthFlags()); // reset để tránh hiện lại nếu render lại
+    }
+}, [auth.success, dispatch]);
 
 
 

@@ -16,7 +16,9 @@ import AdminDashboard from './admin/pages/Dashboard/Dashboard';
 import { fetchSellerProfile } from './Redux Toolkit/Seller/sellerSlice';
 import { useAppDispatch, useAppSelector } from './Redux Toolkit/Store';
 import { useEffect } from 'react';
-import LoginForm from './customer/pages/Auth/LoginForm';
+
+import Auth from './customer/pages/Auth/Auth';
+import { SnackbarProvider } from 'notistack';
 
 
 
@@ -39,11 +41,15 @@ function App() {
   return (
       <div className="">
         <ThemeProvider theme={customeTheme}>
+          <SnackbarProvider maxSnack={3}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          autoHideDuration={3000}
+        >
           <div>
             <Navbar/>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/login" element={<LoginForm />} />
+              <Route path="/login" element={<Auth />} />
               <Route path="/products/:category" element={<Product />} />
               <Route path="/reviews/:productId" element={<Reviews />} />
               <Route path="/product-details/:categoryId/:name/:productId" element={<ProductDetails />} />
@@ -55,6 +61,7 @@ function App() {
               <Route path="/admin/*" element={<AdminDashboard />} />
             </Routes>
           </div>
+          </SnackbarProvider>
         </ThemeProvider>
 
     </div>
