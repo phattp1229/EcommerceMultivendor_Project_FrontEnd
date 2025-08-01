@@ -1,4 +1,4 @@
-import { Alert, Divider, Snackbar } from '@mui/material'
+import { Alert, Button, Divider, Snackbar } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import Order from './Order'
@@ -8,7 +8,7 @@ import OrderDetails from './OrderDetails'
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store'
 import { performLogout } from '../../../Redux Toolkit/Customer/AuthSlice'
 import Addresses from './Adresses'
-
+import {Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle} from "@mui/material";
 const menu = [
     { name: "orders", path: "/account/orders" },
     { name: "profile", path: "/account/profile" },
@@ -17,23 +17,34 @@ const menu = [
     { name: "Logout", path: "/" }
 ]
 const Profile = () => {
+    const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useAppDispatch()
-    // const { user,orders } = useAppSelector(store => store)
+    const { user } = useAppSelector(store => store)
     const [snackbarOpen, setOpenSnackbar] = useState(false);
 
-    const handleLogout = () => {
-        dispatch(performLogout())
-        navigate("/")
-    }
+    // const handleLogout = () => {
+    //     dispatch(performLogout())
+    //     navigate("/")
+    // }
+    const confirmLogout = () => {
+    dispatch(performLogout());
+    setOpenLogoutDialog(false);
+    navigate("/");
+    };
 
-    const handleClick = (item: any) => {
+    const cancelLogout = () => {
+    setOpenLogoutDialog(false);
+    };
+
+        const handleClick = (item: any) => {
         if (item.name === "Logout") {
-            handleLogout()
+            setOpenLogoutDialog(true); // mở hộp thoại xác nhận
+        } else {
+            navigate(`${item.path}`);
         }
-        else navigate(`${item.path}`)
-    }
+        };
     const handleCloseSnackbar = () => {
         setOpenSnackbar(false);
     };
@@ -43,7 +54,7 @@ const Profile = () => {
         <div className='px-5 lg:px-52 min-h-screen mt-10 '>
 
             <div>
-                <h1 className='text-xl font-bold pb-5'>Phat</h1>
+                <h1 className='text-xl font-bold pb-5'>{user.user?.fullName}</h1>
             </div>
             <Divider />
             <div className='grid grid-cols-1 lg:grid-cols-3 lg:min-h-[78vh]'>
@@ -80,13 +91,32 @@ const Profile = () => {
             >
                 <Alert
                     onClose={handleCloseSnackbar}
-                    severity={"success"}
+                    severity={user.error ? "error" : "success"}
                     variant="filled"
                     sx={{ width: "100%" }}
                 >
                     {"order canceled successfully"}
                 </Alert>
             </Snackbar>
+            <Dialog
+                open={openLogoutDialog}
+                onClose={cancelLogout}
+                >
+                <DialogTitle>Confirm Logout</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                   Are you sure you want to log out of your account?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={cancelLogout} color="primary">
+                    Cancel
+                    </Button>
+                    <Button onClick={confirmLogout} color="error" autoFocus>
+                    Logout
+                    </Button>
+                </DialogActions>
+                </Dialog>
         </div>
     )
 }

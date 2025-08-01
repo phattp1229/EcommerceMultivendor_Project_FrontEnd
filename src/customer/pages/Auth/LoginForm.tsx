@@ -45,18 +45,9 @@ const LoginForm = () => {
         formik.handleSubmit()
     }
 
-  
-// useEffect(() => {
-//     if (auth.success) {
-//         enqueueSnackbar("Đăng nhập thành công!", { variant: "success" });
-//         dispatch(resetAuthFlags()); // reset để tránh hiện lại nếu render lại
-//     }
-// }, [auth.success, dispatch]);
-
 useEffect(() => {
     if (auth.isLoggedIn) {
-        enqueueSnackbar("Đăng nhập thành công!", { variant: "success" });
-        // dispatch(resetAuthFlags()); // reset tránh hiện lại
+        enqueueSnackbar("Login Succesfully !", { variant: "success" });
     }
 }, [auth.isLoggedIn, dispatch]);
 

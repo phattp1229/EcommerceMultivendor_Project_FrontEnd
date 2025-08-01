@@ -4,7 +4,7 @@ import { api } from '../../Config/Api';
 import type {
     AuthResponse,
     LoginRequest,
-    SignupRequest,
+    CustomerSignUpRequest,
     ResetPasswordRequest,
     ApiResponse,
     AuthState,
@@ -45,21 +45,22 @@ export const sendLoginSignupOtp = createAsyncThunk<ApiResponse, { email: string 
     }
 );
 //login customer
-export const signup = createAsyncThunk<AuthResponse, SignupRequest>(
+export const signup = createAsyncThunk<AuthResponse, CustomerSignUpRequest>(
     'auth/signup',
-    async (signupRequest, { rejectWithValue }) => {
-        console.log("signup ", signupRequest)
+    async (CustomerSignUpRequest, { rejectWithValue }) => {
+        console.log("signup ", CustomerSignUpRequest)
         try {
 
-            const response = await api.post<AuthResponse>(`${API_URL}/signup`, signupRequest);
-            signupRequest.navigate("/")
+            const response = await api.post<AuthResponse>(`${API_URL}/signup`, CustomerSignUpRequest);
+            CustomerSignUpRequest.navigate("/")
             localStorage.setItem("jwt", response.data.jwt)
             return response.data;
         }
 
 
         catch (error: any) {
-            return rejectWithValue('Signup failed');
+            const errorMsg = error.response?.data?.error || "Signup failed";
+            return rejectWithValue(errorMsg); // trả lỗi custom
         }
     }
 );
@@ -111,17 +112,6 @@ export const resetPasswordRequest = createAsyncThunk<ApiResponse, { email: strin
         }
     }
 );
-export const logout2 = createAsyncThunk<any, any>("/auth/logout", async (navigate, { rejectWithValue }) => {
-    try {
-        localStorage.clear()
-        console.log("Logout success!");
-        navigate("/")
-        return rejectWithValue("Logout successed");
-    } catch (error) {
-        console.error("Logout error:", error);
-        return rejectWithValue("Logout failed");
-    }
-});
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -130,7 +120,6 @@ const authSlice = createSlice({
             state.jwt = null;
             state.role = null;
             state.isLoggedIn = false;
-            state.loading = false;
             localStorage.clear()
             console.log("logout successful !!")
         },

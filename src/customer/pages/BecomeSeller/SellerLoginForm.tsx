@@ -4,6 +4,7 @@ import { verifyLoginOtp,verifyLogin } from '../../../Redux Toolkit/Seller/seller
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { signin } from '../../../Redux Toolkit/Customer/AuthSlice';
 
 //validate
 const validationSchema = Yup.object({
@@ -22,7 +23,7 @@ const SellerLoginForm = () => {
     },
      validationSchema: validationSchema,
     onSubmit: (values) => {
-      dispatch(verifyLogin({
+      dispatch(signin({
         username: values.username, 
         password: values.password,
         navigate

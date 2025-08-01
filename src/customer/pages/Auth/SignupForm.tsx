@@ -7,6 +7,34 @@ import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
 import { useNavigate } from 'react-router-dom';
 import { sendLoginSignupOtp, signup } from '../../../Redux Toolkit/Customer/AuthSlice';
 import { Password } from '@mui/icons-material';
+import * as Yup from 'yup';
+
+const validationSchema = () =>
+Yup.object({
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Please enter your email"),
+
+  name: Yup.string()
+    .min(3, "Name must be at least 3 characters")
+    .required("Please enter your name"),
+
+  username: Yup.string()
+    .min(3, "Username must be at least 3 characters")
+    .required("Please enter your username"),
+
+  password: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Please enter your password"),
+
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password')], 'Passwords do not match')
+    .required("Please confirm your password"),
+
+  mobile: Yup.string()
+    .matches(/^0\d{9}$/, "Phone number must start with 0 and be 10 digits long")
+    .required("Please enter your phone number"),
+});
 
 const SignupForm = () => {
 
@@ -24,14 +52,30 @@ const SignupForm = () => {
             otp: '',
             name: "",
             username:'',
-            password:''
+            password:'',
+            confirmPassword: '',
+            mobile: ''
         },
+    validationSchema: validationSchema(),
+       onSubmit: (values: any) => {
+    const { confirmPassword, name, ...rest } = values;
 
-        onSubmit: (values: any) => {
-            // Handle form submission
-            dispatch(signup({ fullName: values.name, email: values.email, otp, navigate }))
-            console.log('Form data:', values);
-        }
+    const payload = {
+        account: {
+            email: values.email,
+            username: values.username,
+            password: values.password,
+            otp: otp // cái này lấy từ state riêng
+        },
+        fullName: name,
+        mobile: values.mobile,
+        navigate
+    };
+
+    dispatch(signup(payload));
+    console.log("Payload gửi backend:", payload);
+}
+
     });
 
     const handleOtpChange = (otp: any) => {
@@ -96,7 +140,7 @@ const SignupForm = () => {
                     helperText={formik.touched.email ? formik.errors.email as string : undefined}
                 />
 
-                {auth.otpSent && <div className="space-y-1">
+            {auth.otpSent && <div className="space-y-2">
                     <p className="font-medium text-sm">
                         * Enter OTP sent to your mobile number
                     </p>
@@ -105,7 +149,7 @@ const SignupForm = () => {
                         onChange={handleOtpChange}
                         error={false}
                     />
-                    <p className="text-xs space-x-1">
+                    <p className="text-xs space-x-2">
                         {isTimerActive ? (
                             <span>Resend OTP in {timer} seconds</span>
                         ) : (
@@ -123,10 +167,11 @@ const SignupForm = () => {
                     {formik.touched.otp && formik.errors.otp && <p>{formik.errors.otp as string}</p>}
                 </div>}
 
+
              {auth.otpSent && (
                 <>
                 <TextField
-                     fullWidth
+                    fullWidth
                     name="name"
                     label="Enter Your FullName"
                     value={formik.values.name}

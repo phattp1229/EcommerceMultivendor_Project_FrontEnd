@@ -15,14 +15,18 @@ export enum UserRole {
     ROLE_ADMIN = 'ROLE_ADMIN',
     ROLE_SELLER = 'ROLE_SELLER',
 }
-
+export interface Account {
+    id?: number;
+    email: string;
+    username: string;
+    password: string;
+}
 export interface User {
     id?: number;
-    password?: string;
-    email: string;
     fullName: string;
     mobile?: string;
     role: UserRole;
+    accountID: Account;
     addresses?: Address[];
 }
 

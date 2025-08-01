@@ -5,6 +5,7 @@ interface OTPInputProps {
     length: number;
     onChange: (otp: string) => void;
     error?: boolean;
+    
 }
 
 const OTPInput: React.FC<OTPInputProps> = ({ length, onChange, error = false }) => {

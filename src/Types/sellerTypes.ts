@@ -36,7 +36,7 @@ export interface Seller {
     bankDetails: BankDetails;
     sellerName: string;
     businessDetails: BusinessDetails;
-    accountID: Account;
+    account: Account;
     accountStatus?: string;
 }
 

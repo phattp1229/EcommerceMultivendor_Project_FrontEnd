@@ -22,7 +22,19 @@ export interface SignupRequest {
     otp: string;
     navigate: (path: string) => void;
 }
-
+export interface Account {
+    id?: number;
+    email: string;
+    username: string;
+    password: string;
+    otp: string;
+}
+export interface CustomerSignUpRequest {
+    fullName: string;
+    mobile: string;
+    account: Account;
+    navigate: (path: string) => void;
+}
 export interface ResetPasswordRequest {
     token: string;
     password: string;
