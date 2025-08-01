@@ -14,6 +14,20 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import SimilarProduct from '../SimilarProduct/SimilarProduct';
 import ProductReviewCard from '../../Review/ProductReviewCard';
+import { fetchProductById, getAllProducts } from '../../../../Redux Toolkit/Customer/ProductSlice';
+import ZoomableImage from './ZoomableImage';
+
+const style = {
+    position: 'absolute' as const,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: "auto",
+    height: "100%",
+    // bgcolor: 'background.paper',
+    boxShadow: 24,
+    outline: "none",
+};
 
 
 const ProductDetails = () => {
@@ -29,41 +43,51 @@ const ProductDetails = () => {
     const [selectedImage, setSelectedImage] = useState(0);
     const [quantity, setQuantity] = useState(1)
 
-    //     useEffect(() => {
+        useEffect(() => {
 
-    //     if (productId) {
-    //         dispatch(fetchProductById(Number(productId)))
-    //         dispatch(fetchReviewsByProductId({ productId: Number(productId) }))
-    //     }
-    //     dispatch(getAllProducts({ category: categoryId}));
+        if (productId) {
+            dispatch(fetchProductById(Number(productId)))
+            // dispatch(fetchReviewsByProductId({ productId: Number(productId) }))
+        }
+        dispatch(getAllProducts({ category: categoryId}));
 
-    // }, [productId])
+    }, [productId])
 
-    // const handleAddCart = () => {
-    //     dispatch(addItemToCart({
-    //         jwt: localStorage.getItem('jwt'),
-    //         request: { productId: Number(productId), size: "FREE", quantity }
+    const handleAddCart = () => {
+        // dispatch(addItemToCart({
+        //     jwt: localStorage.getItem('jwt'),
+        //     request: { productId: Number(productId), size: "FREE", quantity }
 
-    //     }))
-    // }
+        // }))
+    }
   return (
       <div className='px-5 lg:px-20 pt-10 '>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
 
                 <section className='flex flex-col lg:flex-row gap-5'>
                     <div className='w-full lg:w-[15%] flex flex-wrap lg:flex-col gap-3'>
-                        {[1,1,1,1].map((item, index) => <img className='lg:w-full w-[50px] cursor-pointer rounded-md' 
-                        src="https://media.routine.vn/1200x1500/prod/media/10s25shs002-jpg-wgv4.webp" alt="" />)}
+                        {products.product?.images.map((item, index) => <img onClick={() => 
+                            setSelectedImage(index)} className='lg:w-full w-[50px] cursor-pointer rounded-md' src={item} alt="" />)}
                     </div>
                     <div className='w-full lg:w-[85%]'>
-                        <img className='w-full rounded-md cursor-zoom-out' 
-                        src="https://media.routine.vn/1200x1500/prod/product/10s25shs002-blue-1-jpg-ir16.webp" alt="" />
+                        <img onClick={handleOpen} className='w-full rounded-md cursor-zoom-out' src={products.product?.images[selectedImage]} alt="" />
                     </div>
+                    <Modal
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={style}>
+
+                            <ZoomableImage src={products.product?.images[selectedImage]} alt="" />
+                        </Box>
+                    </Modal>
                 </section>
             
                 <section>
-                    <h1 className='font-bold text-lg text-teal-950'>Ramm Clothing</h1>
-                    <p className='text-gray-500 font-semibold'>men black shirt</p>
+                    <h1 className='font-bold text-lg text-teal-950'>{products.product?.seller?.businessDetails.businessName}</h1>
+                    <p className='text-gray-500 font-semibold'>{products.product?.title}</p>
 
                     <div className='flex justify-between items-center py-2 border w-[180px] px-3 mt-5'>
                         <div className='flex gap-1 items-center'>

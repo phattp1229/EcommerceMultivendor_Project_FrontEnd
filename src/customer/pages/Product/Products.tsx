@@ -2,20 +2,7 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard/ProductCard";
 import FilterSection from "./FilterSection";
-import {
-  Box,
-  Divider,
-  FormControl,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Pagination,
-  Select,
-  useMediaQuery,
-  useTheme,
-  type SelectChangeEvent,
-} from "@mui/material";
-
+import {Box,Divider,FormControl,IconButton,InputLabel, MenuItem,Pagination,Select,useMediaQuery,useTheme,type SelectChangeEvent} from "@mui/material";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../Redux Toolkit/Store";
@@ -137,12 +124,13 @@ const Products = () => {
               </h1>
             </section>
           )}
-          <div className="flex justify-center pt-10">
+          <div className="flex justify-center pt-4 pb-6">
             <Pagination
               page={page}
               onChange={(e, value) => handlePageChange(value)}
               color="primary"
               count={products?.totalPages}
+              variant="outlined"
               shape="rounded"
             />
           </div>
