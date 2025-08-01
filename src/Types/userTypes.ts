@@ -21,6 +21,7 @@ export interface Account {
     username: string;
     password: string;
 }
+//customer
 export interface User {
     id?: number;
     fullName: string;

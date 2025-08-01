@@ -35,16 +35,16 @@ const BecomeSellerFormStep1 = ({ formik, handleOtpChange }: any) => {
 
                 <TextField
                 fullWidth
-                name="TaxCode"
+                name="taxCode"
                 label="TaxCode Number"
-                value={formik.values.TaxCode}
+                value={formik.values.taxCode}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.TaxCode && Boolean(formik.errors.TaxCode)}
-                helperText={formik.touched.TaxCode && formik.errors.TaxCode}
+                error={formik.touched.taxCode && Boolean(formik.errors.taxCode)}
+                helperText={formik.touched.taxCode && formik.errors.taxCode}
                 />
 
-                <div>
+                {/* <div>
                 <input
                     accept=".pdf,.jpg,.jpeg,.png"
                     id="business-license"
@@ -76,7 +76,7 @@ const BecomeSellerFormStep1 = ({ formik, handleOtpChange }: any) => {
                     {formik.errors.businessLicense}
                     </Typography>
                 )}
-                </div>
+                </div> */}
             </div>
         </Box>
     );

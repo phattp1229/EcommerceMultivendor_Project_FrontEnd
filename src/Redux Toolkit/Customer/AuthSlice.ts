@@ -44,7 +44,7 @@ export const sendLoginSignupOtp = createAsyncThunk<ApiResponse, { email: string 
         }
     }
 );
-//login customer
+//create customer
 export const signup = createAsyncThunk<AuthResponse, CustomerSignUpRequest>(
     'auth/signup',
     async (CustomerSignUpRequest, { rejectWithValue }) => {
@@ -64,7 +64,7 @@ export const signup = createAsyncThunk<AuthResponse, CustomerSignUpRequest>(
         }
     }
 );
-
+//login
 export const signin = createAsyncThunk<AuthResponse, LoginRequest>(
     'auth/signin',
     async (loginRequest, { rejectWithValue }) => {

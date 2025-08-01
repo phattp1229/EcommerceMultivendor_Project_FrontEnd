@@ -36,25 +36,25 @@ const BecomeSellerFormStep2: React.FC<BecomeSellerFormStep2Props> = ({ formik })
         <Grid size={6}>
           <TextField
             fullWidth
-            name="pickupAddress.pincode"
-            label="Pincode"
-            value={formik.values.pickupAddress.pincode}
+            name="pickupAddress.postalCode"
+            label="PostalCode"
+            value={formik.values.pickupAddress.postalCode}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.pickupAddress?.pincode && Boolean(formik.errors.pickupAddress?.pincode)}
-            helperText={formik.touched.pickupAddress?.pincode && formik.errors.pickupAddress?.pincode}
+            error={formik.touched.pickupAddress?.postalCode && Boolean(formik.errors.pickupAddress?.postalCode)}
+            helperText={formik.touched.pickupAddress?.postalCode && formik.errors.pickupAddress?.postalCode}
           />
         </Grid>
         <Grid size={12}>
           <TextField
             fullWidth
-            name="pickupAddress.address"
+            name="pickupAddress.street"
             label="Address (House No, Building, Street)"
-            value={formik.values.pickupAddress.address}
+            value={formik.values.pickupAddress.street}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.pickupAddress?.address && Boolean(formik.errors.pickupAddress?.address)}
-            helperText={formik.touched.pickupAddress?.address && formik.errors.pickupAddress?.address}
+            error={formik.touched.pickupAddress?.street && Boolean(formik.errors.pickupAddress?.street)}
+            helperText={formik.touched.pickupAddress?.street && formik.errors.pickupAddress?.street}
           />
         </Grid>
         <Grid size={12}>

@@ -30,36 +30,51 @@ const BecomeSellerFormStep4 = ({ formik }: BecomeSellerFormStep2Props) => {
         helperText={formik.touched.sellerName && formik.errors.sellerName}
       />
 
-      <TextField
-        fullWidth
-        name="email"
-        label="Email"
-        value={formik.values.email}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.email && Boolean(formik.errors.email)}
-        helperText={formik.touched.email && formik.errors.email}
-      />
-      <TextField
-        fullWidth
-        name="username"
-        label="Username"
-        value={formik.values.username}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.usernamel && Boolean(formik.errors.username)}
-        helperText={formik.touched.username && formik.errors.username}
-      />
-      <TextField
-        fullWidth
-        name="password"
-        label="Password"
-        value={formik.values.password}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched?.password && Boolean(formik.errors?.password)}
-        helperText={formik.touched?.password && formik.errors?.password}
-      />
+     <TextField
+      fullWidth
+      name="account.email"
+      label="Email"
+      value={formik.values.account.email}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      error={formik.touched?.account?.email && Boolean(formik.errors?.account?.email)}
+      helperText={formik.touched?.account?.email && formik.errors?.account?.email}
+    />
+
+    <TextField
+      fullWidth
+      name="account.username"
+      label="Username"
+      value={formik.values.account.username}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      error={formik.touched?.account?.username && Boolean(formik.errors?.account?.username)}
+      helperText={formik.touched?.account?.username && formik.errors?.account?.username}
+    />
+
+    <TextField
+      fullWidth
+      name="account.password"
+      label="Enter Password"
+      type="password"
+      value={formik.values.account.password}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      error={formik.touched?.account?.password && Boolean(formik.errors?.account?.password)}
+      helperText={formik.touched?.account?.password && formik.errors?.account?.password}
+    />
+       <TextField
+          fullWidth
+          name="confirmPassword"
+          type="password"
+          label="Confirm Password"
+          value={formik.values.confirmPassword}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+          helperText={formik.touched.confirmPassword ? formik.errors.confirmPassword as string : undefined}
+          margin="normal"
+       />
     </div>
   )
 }

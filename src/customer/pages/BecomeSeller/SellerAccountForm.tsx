@@ -35,10 +35,10 @@ const SellerAccountForm = () => {
       account: {
       username: "",
       email: "",
-      password: ""
+      password: "",
+      otp: ""
     },
       mobile: "",
-      otp: "",
       taxCode: "",
       pickupAddress: {
         name: "",
