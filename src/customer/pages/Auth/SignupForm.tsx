@@ -6,6 +6,7 @@ import {  useFormik } from 'formik';
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
 import { useNavigate } from 'react-router-dom';
 import { sendLoginSignupOtp, signup } from '../../../Redux Toolkit/Customer/AuthSlice';
+import { Password } from '@mui/icons-material';
 
 const SignupForm = () => {
 
@@ -21,7 +22,9 @@ const SignupForm = () => {
         initialValues: {
             email: '',
             otp: '',
-            name: ""
+            name: "",
+            username:'',
+            password:''
         },
 
         onSubmit: (values: any) => {
@@ -77,8 +80,8 @@ const SignupForm = () => {
 
     return (
         <div>
-            <h1 className='text-center font-bold text-xl text-primary-color pb-5'>Signup</h1>
-            <form className="space-y-5">
+            <h1 className='text-center font-bold text-l text-primary-color pb-2'>Signup</h1>
+            <form className="space-y-3">
 
 
 
@@ -93,7 +96,7 @@ const SignupForm = () => {
                     helperText={formik.touched.email ? formik.errors.email as string : undefined}
                 />
 
-                {auth.otpSent && <div className="space-y-2">
+                {auth.otpSent && <div className="space-y-1">
                     <p className="font-medium text-sm">
                         * Enter OTP sent to your mobile number
                     </p>
@@ -102,7 +105,7 @@ const SignupForm = () => {
                         onChange={handleOtpChange}
                         error={false}
                     />
-                    <p className="text-xs space-x-2">
+                    <p className="text-xs space-x-1">
                         {isTimerActive ? (
                             <span>Resend OTP in {timer} seconds</span>
                         ) : (
@@ -120,23 +123,75 @@ const SignupForm = () => {
                     {formik.touched.otp && formik.errors.otp && <p>{formik.errors.otp as string}</p>}
                 </div>}
 
-                {auth.otpSent && <TextField
-                    fullWidth
+             {auth.otpSent && (
+                <>
+                <TextField
+                     fullWidth
                     name="name"
-                    label="Enter Your Name"
+                    label="Enter Your FullName"
                     value={formik.values.name}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={formik.touched.name && Boolean(formik.errors.name)}
                     helperText={formik.touched.name ? formik.errors.name as string : undefined}
-                />}
+                />
+                    <TextField
+                    fullWidth
+                    name="username"
+                    label="Enter Username"
+                    value={formik.values.username}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.username && Boolean(formik.errors.username)}
+                    helperText={formik.touched.username ? formik.errors.username as string : undefined}
+                    margin="normal"
+                    />
 
+                    <TextField
+                    fullWidth
+                    name="password"
+                    type="password"
+                    label="Enter Password"
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.password && Boolean(formik.errors.password)}
+                    helperText={formik.touched.password ? formik.errors.password as string : undefined}
+                    margin="normal"
+                    />
+
+                    <TextField
+                    fullWidth
+                    name="confirmPassword"
+                    type="password"
+                    label="Confirm Password"
+                    value={formik.values.confirmPassword}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+                    helperText={formik.touched.confirmPassword ? formik.errors.confirmPassword as string : undefined}
+                    margin="normal"
+                    />
+
+                    <TextField
+                    fullWidth
+                    name="mobile"
+                    label="Mobile Number"
+                    value={formik.values.mobile}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.mobile && Boolean(formik.errors.mobile)}
+                    helperText={formik.touched.mobile ? formik.errors.mobile as string : undefined}
+                    margin="normal"
+                    />
+                </>
+                )}
                 {auth.otpSent && <div>
                     <Button
                         disabled={auth.loading}
                         onClick={handleLogin}
-                        fullWidth variant='contained' sx={{ py: "11px" }}> {auth.loading ? <CircularProgress size="small"
-                            sx={{ width: "27px", height: "27px" }} /> : " Signup "}  </Button>
+                        fullWidth variant='contained' sx={{ py: "9px" }}> {auth.loading ? <CircularProgress size="small"
+                            sx={{ width: "22px", height: "22px" }} /> : " Signup "}  </Button>
                 </div>}
 
                 {!auth.otpSent && <Button
@@ -144,9 +199,9 @@ const SignupForm = () => {
                     variant='contained'
                     onClick={handleSentOtp}
                     disabled={auth.loading}
-                    sx={{ py: "11px" }}>
+                    sx={{ py: "9px" }}>
                     {auth.loading ? <CircularProgress size="small"
-                        sx={{ width: "27px", height: "27px" }} /> : "sent otp"}
+                        sx={{ width: "22px", height: "22px" }} /> : "sent otp"}
 
                 </Button>
                 }

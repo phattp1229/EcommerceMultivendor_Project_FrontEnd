@@ -10,27 +10,28 @@ const Auth = () => {
     const { auth } = useAppSelector(store => store)
     const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-useEffect(() => {
-  if (isLoginPage && (auth.error || auth.success)) {
-    setSnackbarOpen(true);
-  }
+    useEffect(() => {
 
-  if (!isLoginPage && auth.otpSent) {
-    setSnackbarOpen(true);
-  }
-}, [auth.error, auth.success, auth.otpSent, isLoginPage]);
+        if (auth.otpSent || auth.error) {
+            setSnackbarOpen(true);
+            console.log("store ", auth.error)
+        }
+
+    }, [auth.otpSent,auth.error])
 
 
     return (
+        
         <div className='flex justify-center h-[90vh] items-center'>
-            <div className='max-w-md h-[85vh] rounded-md border shadow-lg '>
-                <img className='w-full rounded-t-md' src="/login_banner.png" alt="" />
+            <div className='max-w-md h-[95vh] rounded-md border shadow-lg '>
+                <img className='w-full rounded-t-md' src="https://www.shutterstock.com/image-vector/ecommerce-website-banner-template-presents-260nw-2252124451.jpg" alt="" />
                 <div className='mt-8 px-10'>
                     {isLoginPage ? <LoginForm /> : <SignupForm />}
 
                     <div className='flex items-center gap-1 justify-center mt-5'>
                         <p>{isLoginPage && "Don't"} have Account ?</p>
-                        <Button onClick={() => setIsLoginPage(!isLoginPage)} size='small'>{isLoginPage ? "create account" : "login"}</Button>
+                        <Button onClick={() => setIsLoginPage(!isLoginPage)} size='small'>{isLoginPage 
+                        ? "create account" : "login"}</Button>
                     </div>
                 </div>
 
@@ -42,17 +43,13 @@ useEffect(() => {
             autoHideDuration={6000}
             onClose={handleCloseSnackbar}
         >
-                <Alert
-                onClose={handleCloseSnackbar}
-                severity={auth.error ? "error" : "success"}
-                variant="filled"
-                sx={{ width: '100%' }}
+              <Alert
+                    onClose={handleCloseSnackbar}
+                    severity={auth.error?"error":"success"}
+                    variant="filled"
+                    sx={{ width: '100%' }}
                 >
-                {
-                    isLoginPage
-                    ? (auth.error || "Login successful!")
-                    : "OTP sent to your email!"
-                }
+                    {auth.error?auth.error : " otp sent to your email!"}
                 </Alert>
 
         </Snackbar>

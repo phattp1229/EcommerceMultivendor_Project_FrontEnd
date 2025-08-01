@@ -6,14 +6,13 @@ import UserDetails from './UserDetails'
 import SavedCards from './SavedCards'
 import OrderDetails from './OrderDetails'
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store'
-// import { performLogout } from '../../../Redux Toolkit/Customer/AuthSlice'
+import { performLogout } from '../../../Redux Toolkit/Customer/AuthSlice'
 import Addresses from './Adresses'
 
 const menu = [
     { name: "orders", path: "/account/orders" },
     { name: "profile", path: "/account/profile" },
     { name: "Saved Cards", path: "/account/saved-card" },
-
     { name: "Addresses", path: "/account/addresses" },
     { name: "Logout", path: "/" }
 ]
@@ -25,7 +24,7 @@ const Profile = () => {
     const [snackbarOpen, setOpenSnackbar] = useState(false);
 
     const handleLogout = () => {
-        // dispatch(performLogout())
+        dispatch(performLogout())
         navigate("/")
     }
 

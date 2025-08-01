@@ -18,14 +18,14 @@ import { useAppDispatch, useAppSelector } from './Redux Toolkit/Store';
 import { useEffect } from 'react';
 
 import Auth from './customer/pages/Auth/Auth';
-import { SnackbarProvider } from 'notistack';
+import { fetchUserProfile } from './Redux Toolkit/Customer/UserSlice';
 
 
 
 
 function App() {
   const dispatch = useAppDispatch()
-  const {sellers} = useAppSelector(store => store)
+  const {auth,sellers} = useAppSelector(store => store)
   const navigate=useNavigate();
 
   useEffect(()=>{
@@ -38,13 +38,17 @@ function App() {
     }
   },[sellers.profile])
 
+  useEffect(() => {
+  const jwt = auth.jwt || localStorage.getItem("jwt");
+  if (jwt) {
+    dispatch(fetchUserProfile({ jwt, navigate }));
+  }
+}, [auth.jwt]);
+
   return (
       <div className="">
         <ThemeProvider theme={customeTheme}>
-          <SnackbarProvider maxSnack={3}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          autoHideDuration={3000}
-        >
+          
           <div>
             <Navbar/>
             <Routes>
@@ -61,9 +65,7 @@ function App() {
               <Route path="/admin/*" element={<AdminDashboard />} />
             </Routes>
           </div>
-          </SnackbarProvider>
         </ThemeProvider>
-
     </div>
   )
 }export default App;

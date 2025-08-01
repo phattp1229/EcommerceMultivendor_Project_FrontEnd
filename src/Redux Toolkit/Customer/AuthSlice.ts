@@ -21,7 +21,6 @@ const initialState: AuthState = {
     loading: false,
     error: null,
     otpSent: false,
-    success: false
 
 };
 
@@ -116,6 +115,7 @@ export const logout2 = createAsyncThunk<any, any>("/auth/logout", async (navigat
         localStorage.clear()
         console.log("Logout success!");
         navigate("/")
+        return rejectWithValue("Logout successed");
     } catch (error) {
         console.error("Logout error:", error);
         return rejectWithValue("Logout failed");
@@ -129,10 +129,9 @@ const authSlice = createSlice({
             state.jwt = null;
             state.role = null;
             localStorage.clear()
+            console.log("logout successful !!")
         },
-        resetAuthFlags: (state) => {
-            state.success = false;
-        }
+
     },
     extraReducers: (builder) => {
         builder
@@ -169,7 +168,6 @@ const authSlice = createSlice({
                 state.jwt = action.payload.jwt;
                 state.role = action.payload.role;
                 state.loading = false;
-                state.success = true;
             })
             .addCase(signin.rejected, (state, action) => {
                 state.loading = false;
@@ -200,7 +198,7 @@ const authSlice = createSlice({
     },
 });
 
-export const { logout, resetAuthFlags } = authSlice.actions;
+export const { logout } = authSlice.actions;
 
 
 export default authSlice.reducer;
@@ -209,7 +207,7 @@ export default authSlice.reducer;
 
 export const performLogout = () => async (dispatch: any) => {
     dispatch(logout());
-    dispatch(resetAuthFlags());
+    // dispatch(resetAuthFlags());
     // dispatch(resetUserState());
     // dispatch(resetCartState());
 };

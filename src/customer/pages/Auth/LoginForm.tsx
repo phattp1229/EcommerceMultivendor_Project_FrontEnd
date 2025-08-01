@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { sendLoginSignupOtp, signin } from '../../../Redux Toolkit/Customer/AuthSlice';
 import * as Yup from 'yup';
 import { enqueueSnackbar } from 'notistack'; // nếu dùng notistack
-import { resetAuthFlags } from '../../../Redux Toolkit/Customer/AuthSlice'; // import action
+// import { resetAuthFlags } from '../../../Redux Toolkit/Customer/AuthSlice'; // import action
 
 //validate
 const validationSchema = Yup.object({
@@ -46,12 +46,12 @@ const LoginForm = () => {
     }
 
   
-useEffect(() => {
-    if (auth.success) {
-        enqueueSnackbar("Đăng nhập thành công!", { variant: "success" });
-        dispatch(resetAuthFlags()); // reset để tránh hiện lại nếu render lại
-    }
-}, [auth.success, dispatch]);
+// useEffect(() => {
+//     if (auth.success) {
+//         enqueueSnackbar("Đăng nhập thành công!", { variant: "success" });
+//         dispatch(resetAuthFlags()); // reset để tránh hiện lại nếu render lại
+//     }
+// }, [auth.success, dispatch]);
 
 
 
