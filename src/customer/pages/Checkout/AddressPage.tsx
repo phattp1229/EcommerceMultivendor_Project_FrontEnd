@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import PricingCard from '../Cart/PricingCard'
 import { Box, Button, FormControlLabel, Modal, Radio, RadioGroup } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
 import AddressForm from './AddresssForm'
 import AddressCard from './AddressCard'
 import AddIcon from '@mui/icons-material/Add';
@@ -32,7 +31,6 @@ const paymentGatwayList = [
     }
 ]
 const AddressPage = () => {
-    const navigate = useNavigate()
     const [value, setValue] = React.useState(0);
     const dispatch = useAppDispatch();
     const { user } = useAppSelector(store => store)
