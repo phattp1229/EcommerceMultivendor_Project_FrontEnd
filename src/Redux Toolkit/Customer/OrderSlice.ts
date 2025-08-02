@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/tool
 import type { Order, OrderItem, OrderState } from "../../Types/orderTypes";
 import { api } from "../../Config/Api";
 import type { Address } from "../../types/userTypes";
-import { ApiResponse } from "../../types/authTypes";
+import type { ApiResponse } from "../../types/authTypes";
 import axios from "axios";
 import type { RootState } from "../Store";
 
