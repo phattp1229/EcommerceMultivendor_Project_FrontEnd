@@ -14,6 +14,7 @@ export enum UserRole {
     ROLE_CUSTOMER = 'ROLE_CUSTOMER',
     ROLE_ADMIN = 'ROLE_ADMIN',
     ROLE_SELLER = 'ROLE_SELLER',
+    ROLE_KOC = 'ROLE_KOC'
 }
 export interface Account {
     id?: number;
