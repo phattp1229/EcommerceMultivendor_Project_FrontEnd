@@ -77,8 +77,9 @@ export const signin = createAsyncThunk<AuthResponse, LoginRequest>(
         }
 
         catch (error: any) {
-            console.log("error ", error.response)
-            return rejectWithValue('Signin failed');
+            console.log("Error from backend:", error.response?.data);
+            const backendError = error.response?.data?.error || "Signin failed";
+            return rejectWithValue(backendError); // trả error từ backend
         }
     }
 );
