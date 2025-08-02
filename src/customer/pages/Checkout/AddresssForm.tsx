@@ -4,6 +4,8 @@ import * as Yup from 'yup';
 import {Box, Button, TextField,} from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useAppDispatch } from '../../../Redux Toolkit/Store';
+import type { Address } from '../../../types/userTypes';
+import { createOrder } from '../../../Redux Toolkit/Customer/OrderSlice';
 
 
 // Validation schema
@@ -13,7 +15,7 @@ const ContactSchema = Yup.object().shape({
   .matches(/^0\d{9}$/, 'Invalid mobile number')
   .required('Required'),
   postalCode: Yup.string()
-    .matches(/^\d{5}$/, 'Invalid postalCode')
+    .matches(/^\d{5}$/, 'Invalid postal code')
     .required('Required'),
   street: Yup.string().required('Required'),
   locality: Yup.string().required('Required'),
@@ -41,14 +43,14 @@ const AddressForm:React.FC<AddressFormProp> = ({handleClose,paymentGateway}) => 
     validationSchema: ContactSchema,
     onSubmit: (values) => {
       console.log("form submited", values);
-      handleCreateOrder();
+      handleCreateOrder(values as unknown as Address);
       handleClose();
     },
   });
 
-  const handleCreateOrder=()=>{
+  const handleCreateOrder=(address: Address)=>{
     // Dispatch action to create order
-
+    dispatch(createOrder({address, jwt: localStorage.getItem('jwt') || '', paymentGateway}));
   }
  
   return (
