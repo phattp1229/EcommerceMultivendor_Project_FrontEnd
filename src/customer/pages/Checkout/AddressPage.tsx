@@ -6,9 +6,9 @@ import AddressForm from './AddresssForm'
 import AddressCard from './AddressCard'
 import AddIcon from '@mui/icons-material/Add';
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store'
+import { createOrder } from '../../../Redux Toolkit/Customer/OrderSlice'
 
 const style = {
-    // position: 'absolute' as 'absolute',
     position: 'absolute' as const,
     top: '50%',
     left: '50%',
@@ -35,7 +35,7 @@ const AddressPage = () => {
     const navigate = useNavigate()
     const [value, setValue] = React.useState(0);
     const dispatch = useAppDispatch();
-    // const { user } = useAppSelector(store => store)
+    const { user } = useAppSelector(store => store)
     const [paymentGateway, setPaymentGateway] = useState(paymentGatwayList[0].value);
 
     const [open, setOpen] = React.useState(false);
@@ -49,6 +49,12 @@ const AddressPage = () => {
 
     const handleCreateOrder = () => {
        // Dispatch action to create order
+       if(user.user?.addresses)
+        dispatch(createOrder({
+            paymentGateway,
+            address: user.user.addresses[value],
+            jwt: localStorage.getItem('jwt') || ''
+        }))
     }
 
     const handlePaymentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,7 +75,12 @@ const AddressPage = () => {
                     <div className='text-xs font-medium space-y-5'>
                         <p>Saved Addreses</p>
                         <div className='space-y-3'>
-                            {[1,1,1].map((item) => <AddressCard/>)}
+                            {user.user?.addresses?.map((item, index) => <AddressCard
+                                key = {item.id}
+                                item = {item}
+                                selectedValue = {value} 
+                                value = {index}
+                                handleChange = {handleChange} />)}
                         </div>
                     </div>
                     <div className='py-4 px-5 rounded-md border'>
@@ -80,7 +91,7 @@ const AddressPage = () => {
                 </div>
                 <div className="col-span-1 text-sm space-y-3 ">
                     <section className='space-y-3 border p-5 rounded-md'>
-                        <h1 className='text-primary-color font-medium pb-2 text-center'>Chose Payment Gatway</h1>
+                        <h1 className='text-primary-color font-medium pb-2 text-center'>Choose Payment Gatway</h1>
 
                         <RadioGroup
                             row
