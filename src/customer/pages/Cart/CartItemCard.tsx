@@ -39,7 +39,7 @@ const CartItemCard = ({item}: {item: CartItem}) => {
 
                 <div className=' flex items-center gap-2  w-[140px] justify-between'>
 
-                    <Button size='small' onClick={() => handleUpdateQuantity(-1)} disabled={true}>
+                    <Button size='small' onClick={() => handleUpdateQuantity(-1)} disabled={item.quantity <= 1}>
                         <RemoveIcon />
                     </Button>
                     <span className='px-3  font-semibold'>

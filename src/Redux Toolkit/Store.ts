@@ -9,6 +9,7 @@ import sellerProductSlice from "./Seller/sellerProductSlice";
 import ProductSlice from "./Customer/ProductSlice";
 import CartSlice from "./Customer/CartSlice";
 import CouponSlice from "./Customer/CouponSlice";
+import OrderSlice from "./Customer/OrderSlice";
 
 const rootReducer = combineReducers({
     // customer
@@ -16,9 +17,10 @@ const rootReducer = combineReducers({
     user: UserSlice,
     homePage: CustomerSlice,
     products: ProductSlice,
-    // cart
     cart: CartSlice,
+    orders: OrderSlice,
     coupon: CouponSlice,
+
     //seller
     sellers: sellerSlice,
     sellerAuth: sellerAuthenticationSlice,
