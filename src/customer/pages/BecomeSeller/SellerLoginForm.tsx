@@ -40,7 +40,7 @@ const SellerLoginForm = () => {
   //     enqueueSnackbar("You are logged in as a Customer. Please log out before logging in as a Seller.", {
   //       variant: "warning",
   //     });
-  //     navigate("/"); // hoặc redirect đâu đó
+  //     navigate("/");
   //   }
   // }, []);
 
@@ -51,7 +51,7 @@ const SellerLoginForm = () => {
     }, [auth.isLoggedIn, dispatch]);
     useEffect(() => {
       if (auth.error) {
-        enqueueSnackbar(auth.error, { variant: "error" }); // ✅ Hiển thị lỗi
+        enqueueSnackbar(auth.error, { variant: "error" }); 
       }
     }, [auth.error]);
   return (

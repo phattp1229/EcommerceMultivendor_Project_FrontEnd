@@ -35,7 +35,7 @@ const Navbar = () => {
   const isSellerPage = location.pathname.startsWith("/seller");  
 
   const [open, setOpen] = React.useState(false);
-
+  if (isSellerPage) return null; // Ẩn toàn bộ Navbar khi ở trang seller
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };

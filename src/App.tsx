@@ -38,11 +38,12 @@ function App() {
     dispatch(fetchSellerProfile(localStorage.getItem("jwt") || ""))
   },[])
 
-  useEffect(() =>{
-    if(sellers.profile){
-      navigate("/seller")
-    }
-  },[sellers.profile])
+useEffect(() => {
+  if (!sellers.profile && location.pathname.startsWith("/seller")) {
+    navigate("/");
+  }
+}, [sellers.profile]);
+
 
   useEffect(() => {
   const jwt = auth.jwt || localStorage.getItem("jwt");
