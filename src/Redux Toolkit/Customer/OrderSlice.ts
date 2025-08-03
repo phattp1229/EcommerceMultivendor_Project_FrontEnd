@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { Order, OrderItem, OrderState } from "../../Types/orderTypes";
+import type { Order, OrderItem, OrderState } from "../../types/orderTypes";
 import { api } from "../../Config/Api";
 import type { Address } from "../../types/userTypes";
 import type { ApiResponse } from "../../types/authTypes";
@@ -8,145 +8,145 @@ import type { RootState } from "../Store";
 
 
 const initialState: OrderState = {
-    orders: [],
-    orderItem: null,
-    currentOrder: null, 
-    paymentOrder: null,
-    loading: false,
-    error: null,
-    orderCancelled: false,
+  orders: [],
+  orderItem: null,
+  currentOrder: null,
+  paymentOrder: null,
+  loading: false,
+  error: null,
+  orderCancelled: false,
 };
 
 const API_URL = "/api/orders";
 
 // Fetch customer order history
 export const fetchCustomerOrderHistory = createAsyncThunk<Order[], string>(
-    "orders/fetchCustomerOrderHistory",
-    async(jwt, { rejectWithValue }) => {
-        try {
-            const response = await api.get<Order[]>(`${API_URL}/customer`, {
-                headers: {
-                    Authorization: `Bearer ${jwt}`,
-                },
-            });
-            console.log("Customer order history fetched successfully", response.data);
-            return response.data;
-        } catch (error: any) {
-            console.error("Error fetching customer order history:", error.response);
-            return rejectWithValue(error.response?.data?.error || 'Failed to fetch customer order history');
-        }
+  "orders/fetchCustomerOrderHistory",
+  async (jwt, { rejectWithValue }) => {
+    try {
+      const response = await api.get<Order[]>(`${API_URL}/customer`, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+      console.log("Customer order history fetched successfully", response.data);
+      return response.data;
+    } catch (error: any) {
+      console.error("Error fetching customer order history:", error.response);
+      return rejectWithValue(error.response?.data?.error || 'Failed to fetch customer order history');
     }
+  }
 )
 
 // Fetch order by ID
 export const fetchOrderById = createAsyncThunk<Order, { jwt: string; orderId: number }>(
-    "orders/fetchOrderById",
-    async ({ jwt, orderId }, { rejectWithValue }) => {
-        try {
-            const response = await api.get<Order>(`${API_URL}/${orderId}`, {
-                headers: {
-                    Authorization: `Bearer ${jwt}`,
-                },
-            });
-            console.log("Order fetched successfully", response.data);
-            return response.data;
-        } catch (error: any) {
-            console.error("Error fetching order by ID:", error.response);
-            return rejectWithValue(error.response?.data?.error || 'Failed to fetch order by ID');
-        }
+  "orders/fetchOrderById",
+  async ({ jwt, orderId }, { rejectWithValue }) => {
+    try {
+      const response = await api.get<Order>(`${API_URL}/${orderId}`, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+      console.log("Order fetched successfully", response.data);
+      return response.data;
+    } catch (error: any) {
+      console.error("Error fetching order by ID:", error.response);
+      return rejectWithValue(error.response?.data?.error || 'Failed to fetch order by ID');
     }
+  }
 );
 
 // Create a new order
 export const createOrder = createAsyncThunk<
-    any, 
-    { address: Address; jwt: string, paymentGateway: string}>(
+  any,
+  { address: Address; jwt: string, paymentGateway: string }>(
     "orders/createOrder",
-    async ({ address, jwt, paymentGateway }, { rejectWithValue }) => {  
-        try {
-            const response = await api.post<any>(`${API_URL}`, address, 
-                {
-                    headers: {
-                        Authorization: `Bearer ${jwt}`,
-                    },
-                    params: {
-                        paymentMethod: paymentGateway,
-                    }
-                }
-            );
-            console.log("Order created successfully", response.data);
-
-            if(response.data.payment_link_url){
-                window.location.href = response.data.payment_link_url;
+    async ({ address, jwt, paymentGateway }, { rejectWithValue }) => {
+      try {
+        const response = await api.post<any>(`${API_URL}`, address,
+          {
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+            params: {
+              paymentMethod: paymentGateway,
             }
+          }
+        );
+        console.log("Order created successfully", response.data);
 
-            return response.data;
-        } catch (error: any) {
-            console.error("Error creating order:", error.response);
-            return rejectWithValue(error.response?.data?.error || 'Failed to create order');
+        if (response.data.payment_link_url) {
+          window.location.href = response.data.payment_link_url;
         }
+
+        return response.data;
+      } catch (error: any) {
+        console.error("Error creating order:", error.response);
+        return rejectWithValue(error.response?.data?.error || 'Failed to create order');
+      }
     }
-);
+  );
 
 
 export const fetchOrderItemById = createAsyncThunk<
-    OrderItem,
-    { orderItemId: number; jwt: string }>(
+  OrderItem,
+  { orderItemId: number; jwt: string }>(
     "orders/fetchOrderItemById",
     async ({ orderItemId, jwt }, { rejectWithValue }) => {
-        try {
-            const response = await api.get<OrderItem>(`${API_URL}/item/${orderItemId}`, {
-                headers: {
-                    Authorization: `Bearer ${jwt}`,
-                },
-            });
-            console.log("Order item fetched successfully", response.data);
-            return response.data;
-        } catch (error: any) {
-            console.error("Error fetching order item by ID:", error.response);
-            return rejectWithValue(error.response?.data?.error || 'Failed to fetch order item by ID');
-        }
+      try {
+        const response = await api.get<OrderItem>(`${API_URL}/item/${orderItemId}`, {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        });
+        console.log("Order item fetched successfully", response.data);
+        return response.data;
+      } catch (error: any) {
+        console.error("Error fetching order item by ID:", error.response);
+        return rejectWithValue(error.response?.data?.error || 'Failed to fetch order item by ID');
+      }
     }
-);
+  );
 
 
-// export const paymentSuccess = createAsyncThunk<
-//     ApiResponse,
-//     { paymentId: string; jwt: string, paymentLinkId: string},
-//     { rejectValue: string }>(
-//     "orders/paymentSuccess",
-//     async ({ paymentId, jwt, paymentLinkId }, { rejectWithValue }) => {
-//         try {
-//             const response = await api.get(`/api/payment/${paymentId}`, 
-//                 {
-//                     headers: {
-//                         Authorization: `Bearer ${jwt}`,
-//                     },
-//                     params: {paymentLinkId}
-//                 }
-//             );
-//             console.log("Payment success response:", response.data);
-//             return response.data;
-//         } catch (error: any) {
-//             console.error("Error processing payment success:", error.response);
-//             return rejectWithValue(error.response?.data?.error || 'Failed to process payment success');
-//         }
-//     }
-// );
+export const paymentSuccess = createAsyncThunk<
+  ApiResponse,
+  { paymentId: string; jwt: string, paymentLinkId: string },
+  { rejectValue: string }>(
+    "orders/paymentSuccess",
+    async ({ paymentId, jwt, paymentLinkId }, { rejectWithValue }) => {
+      try {
+        const response = await api.get(`/api/payment/${paymentId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+            params: { paymentLinkId }
+          }
+        );
+        console.log("Payment success response:", response.data);
+        return response.data;
+      } catch (error: any) {
+        console.error("Error processing payment success:", error.response);
+        return rejectWithValue(error.response?.data?.error || 'Failed to process payment success');
+      }
+    }
+  );
 
 
 export const cancelOrder = createAsyncThunk<Order, any>(
   'orders/cancelOrder',
-  async ( orderId, { rejectWithValue }) => {
+  async (orderId, { rejectWithValue }) => {
     try {
       const response = await api.put(`${API_URL}/${orderId}/cancel`, {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
         },
       });
-      console.log("cancel order ",response.data)
+      console.log("cancel order ", response.data)
       return response.data;
-    } catch (error:any) {
+    } catch (error: any) {
       console.log("error ", error.response)
       if (axios.isAxiosError(error) && error.response) {
         return rejectWithValue(error.response.data);
@@ -157,53 +157,53 @@ export const cancelOrder = createAsyncThunk<Order, any>(
 );
 
 interface PaypalCompleteRequest {
-    paymentId: string;
-    payerId: string;
-    paymentOrderId: number;
-    jwt: string;
+  paymentId: string;
+  payerId: string;
+  paymentOrderId: number;
+  jwt: string;
 }
 
 export const completePaypalPayment = createAsyncThunk<ApiResponse, PaypalCompleteRequest>(
-    "orders/completePaypalPayment",
-    async (requestData, { rejectWithValue }) => {
-        try {
-            const { jwt, ...body } = requestData;
-            const response = await api.post(`${API_URL}/paypal/complete`, body, {
-                headers: {
-                    Authorization: `Bearer ${jwt}`,
-                },
-            });
-            console.log("PayPal payment completed successfully", response.data);
-            return response.data;
-        } catch (error: any) {
-            console.error("Error completing PayPal payment:", error.response);
-            return rejectWithValue(error.response?.data?.error || 'Failed to complete PayPal payment');
-        }
+  "orders/completePaypalPayment",
+  async (requestData, { rejectWithValue }) => {
+    try {
+      const { jwt, ...body } = requestData;
+      const response = await api.post(`${API_URL}/paypal/complete`, body, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+      console.log("PayPal payment completed successfully", response.data);
+      return response.data;
+    } catch (error: any) {
+      console.error("Error completing PayPal payment:", error.response);
+      return rejectWithValue(error.response?.data?.error || 'Failed to complete PayPal payment');
     }
+  }
 );
 
 interface StripeCompleteRequest {
-    paymentOrderId: number;
-    jwt: string;
+  paymentOrderId: number;
+  jwt: string;
 }
 
 export const completeStripePayment = createAsyncThunk<ApiResponse, StripeCompleteRequest>(
-    "orders/completeStripePayment",
-    async ({ paymentOrderId, jwt }, { rejectWithValue }) => {
-        try {
-            // Gọi đến endpoint chính xác cho việc hoàn tất đơn hàng Stripe
-            const response = await api.put(`${API_URL}/payment-order/${paymentOrderId}/complete`, {}, {
-                headers: {
-                    Authorization: `Bearer ${jwt}`,
-                },
-            });
-            console.log("Stripe payment completed successfully", response.data);
-            return response.data;
-        } catch (error: any) {
-            console.error("Error completing Stripe payment:", error.response);
-            return rejectWithValue(error.response?.data?.error || 'Failed to complete Stripe payment');
-        }
+  "orders/completeStripePayment",
+  async ({ paymentOrderId, jwt }, { rejectWithValue }) => {
+    try {
+      // Gọi đến endpoint chính xác cho việc hoàn tất đơn hàng Stripe
+      const response = await api.put(`${API_URL}/payment-order/${paymentOrderId}/complete`, {}, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+      console.log("Stripe payment completed successfully", response.data);
+      return response.data;
+    } catch (error: any) {
+      console.error("Error completing Stripe payment:", error.response);
+      return rejectWithValue(error.response?.data?.error || 'Failed to complete Stripe payment');
     }
+  }
 );
 
 
@@ -277,7 +277,7 @@ const orderSlice = createSlice({
       })
 
       // payment success handler
-       // --- ADDED: Case reducer cho việc hoàn tất PayPal ---
+      // --- ADDED: Case reducer cho việc hoàn tất PayPal ---
       .addCase(completePaypalPayment.pending, (state) => {
         state.loading = true;
         state.error = null;
