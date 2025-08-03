@@ -17,7 +17,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { mainCategory } from "../../../data/category/mainCategory";
 import CategorySheet from "./CategorySheet";
 import DrawerList from "./DrawerList";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useAppDispatch, useAppSelector } from "../../../Redux Toolkit/Store";
 import { FavoriteBorder } from "@mui/icons-material";
@@ -31,7 +31,8 @@ const Navbar = () => {
   const dispatch = useAppDispatch();
   const { user, auth, sellers } = useAppSelector((store) => store);
   const navigate = useNavigate();
-  
+   const location = useLocation();  
+  const isSellerPage = location.pathname.startsWith("/seller");  
 
   const [open, setOpen] = React.useState(false);
 
@@ -50,6 +51,7 @@ const Navbar = () => {
  
 
   return (
+    
     <Box
       sx={{ zIndex: 2 }}
       className="sticky top-0 left-0 right-0 bg-white blur-bg bg-opacity-80 "
@@ -98,8 +100,8 @@ const Navbar = () => {
           <IconButton onClick={()=>navigate("/search-products")}>
             <SearchIcon className="text-gray-700" sx={{ fontSize: 29 }} />
           </IconButton>
-
-          {user.user ? (
+          {!isSellerPage && (
+          user.user ? (
             <Button
               onClick={() => navigate("/account/orders")}
               className="flex items-center gap-2"
@@ -129,7 +131,7 @@ const Navbar = () => {
             >
               Login
             </Button>
-          )}
+          ))}
 
           <IconButton onClick={()=>navigate("/wishlist")}>
             <FavoriteBorder sx={{ fontSize: 29 }}

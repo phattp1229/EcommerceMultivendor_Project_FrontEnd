@@ -39,6 +39,26 @@ export const fetchUserProfile = createAsyncThunk<
     }
   }
 );
+export const updateUserProfile = createAsyncThunk<
+  User,
+  { jwt: string; data: any },
+  { rejectValue: string }
+>(
+  "user/updateUserProfile",
+  async ({ jwt, data }, { rejectWithValue }) => {
+    try {
+      const response = await api.patch(`${API_URL}/profile`, data, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      });
+      return response.data; // dữ liệu đã cập nhật
+    } catch (error: any) {
+      console.log("Update error", error.response);
+      console.log("Payload gửi backend:", data);
+      console.log("JWT gửi đi:", jwt);
+      return rejectWithValue("Failed to update user profile");
+    }
+  }
+);
 
 const userSlice = createSlice({
   name: "user",
@@ -67,6 +87,22 @@ const userSlice = createSlice({
       .addCase(fetchUserProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(updateUserProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.profileUpdated = false;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action: PayloadAction<User>) => {
+        state.user = action.payload;
+        state.loading = false;
+        state.profileUpdated = true;
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.profileUpdated = false;
+
       });
   },
 });

@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { api } from "../../Config/Api";
-import type { Cart, CartItem } from "../../Types/cartTypes";
+import type { Cart, CartItem } from "../../types/cartTypes";
 import { sumCartItemSellingPrice, sumCartItemsMrpPrice } from "../../customer/util/sumCartItemsMrpPrice";
 import { applyCoupon } from "./CouponSlice";
 
 
-interface CartState{
+interface CartState {
     cart: Cart | null;
     loading: boolean;
     error: string | null;
@@ -23,7 +23,7 @@ const API_URL = "/api/cart";
 
 export const fetchCustomerCart = createAsyncThunk<Cart, string>(
     "cart/fetchCustomerCart",
-    async (jwt: string, {rejectWithValue}) => {
+    async (jwt: string, { rejectWithValue }) => {
         try {
             const response = await api.get(API_URL, {
                 headers: {
@@ -47,8 +47,8 @@ interface AddItemRequest {
 }
 
 
-export const addItemToCart = createAsyncThunk<CartItem,{ jwt: string | null; request: AddItemRequest}>(
-    "cart/addItemToCart", 
+export const addItemToCart = createAsyncThunk<CartItem, { jwt: string | null; request: AddItemRequest }>(
+    "cart/addItemToCart",
     async ({ jwt, request }, { rejectWithValue }) => {
         try {
             const response = await api.put(`${API_URL}/add`, request, {
@@ -62,11 +62,11 @@ export const addItemToCart = createAsyncThunk<CartItem,{ jwt: string | null; req
         } catch (error: any) {
             console.error("Error adding item to cart:", error.response);
             return rejectWithValue(error.response?.data?.error || 'Failed to add item to cart');
-        }  
-});
+        }
+    });
 
 
-export const deleteCartItem = createAsyncThunk<any, { jwt: string; cartItemId: number}>(
+export const deleteCartItem = createAsyncThunk<any, { jwt: string; cartItemId: number }>(
     "cart/deleteCartItem",
     async ({ jwt, cartItemId }, { rejectWithValue }) => {
         try {
@@ -86,7 +86,7 @@ export const deleteCartItem = createAsyncThunk<any, { jwt: string; cartItemId: n
 );
 
 
-export const updateCartItem = createAsyncThunk<any, { jwt: string | null; cartItemId: number; cartItem: any}>(
+export const updateCartItem = createAsyncThunk<any, { jwt: string | null; cartItemId: number; cartItem: any }>(
     "cart/updateCartItem",
     async ({ jwt, cartItemId, cartItem }, { rejectWithValue }) => {
         try {
@@ -153,10 +153,10 @@ const CartSlice = createSlice({
                 state.error = null;
             })
             .addCase(deleteCartItem.fulfilled, (state, action) => {
-                if(state.cart){
+                if (state.cart) {
                     state.cart.cartItems = state.cart.cartItems.filter(
-                        (item:CartItem) => item.id !== action.meta.arg.cartItemId);
-                    
+                        (item: CartItem) => item.id !== action.meta.arg.cartItemId);
+
                     const mrpPrice = sumCartItemsMrpPrice(state.cart?.cartItems || [])
                     const sellingPrice = sumCartItemSellingPrice(state.cart?.cartItems || [])
                     state.cart.totalSellingPrice = sellingPrice;
@@ -185,9 +185,9 @@ const CartSlice = createSlice({
                             ...action.payload,
                         };
                     }
-                    
+
                     const mrpPrice = sumCartItemsMrpPrice(state.cart?.cartItems || []);
-                    const sellingPrice = sumCartItemSellingPrice(state.cart?.cartItems || []);  
+                    const sellingPrice = sumCartItemSellingPrice(state.cart?.cartItems || []);
                     state.cart.totalSellingPrice = sellingPrice;
                     state.cart.totalMrpPrice = mrpPrice;
                 }
@@ -197,7 +197,7 @@ const CartSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload as string;
             })
-            
+
             // Apply Coupon
             .addCase(applyCoupon.fulfilled, (state, action) => {
                 state.loading = false;

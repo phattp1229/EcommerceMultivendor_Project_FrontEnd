@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../../Redux Toolkit/Store";
 import SellerLoginForm from "./SellerLoginForm";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SellerAccountForm from "./SellerAccountForm";
 
 const BecomeSeller = () => {
@@ -11,10 +11,17 @@ const BecomeSeller = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const [isLoginPage, setIsLoginPage] = useState(false);
-  const { sellerAuth } = useAppSelector(store => store)
-
+  const { sellerAuth ,auth} = useAppSelector(store => store)
+  const navigate = useNavigate();
+  
   const handleCloseSnackbar = () => setSnackbarOpen(false)
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  useEffect(() => {
+    if (auth.isLoggedIn && auth.role === "ROLE_SELLER") {
+      navigate("/seller");
+    }
+  }, [auth.isLoggedIn, auth.role, navigate]);
 
   useEffect(() => {
 

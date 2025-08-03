@@ -3,8 +3,8 @@ export interface Address {
     id?: number;
     name: string;
     mobile: string;
-    pinCode: string;
-    address: string;
+    postalCode: string;
+    street: string;
     locality: string;
     city: string;
     state: string;
@@ -28,8 +28,12 @@ export interface User {
     fullName: string;
     mobile?: string;
     role: UserRole;
-    accountID: Account;
+    account: Account;
     addresses?: Address[];
+    koc?: boolean;
+    email: string;
+    gender?: "MALE" | "FEMALE" | "OTHER" | null; // hoặc string nếu backend để dạng chuỗi
+    dob?: string | null; // backend trả kiểu LocalDate → JS nhận là string
 }
 
 export interface UserState {

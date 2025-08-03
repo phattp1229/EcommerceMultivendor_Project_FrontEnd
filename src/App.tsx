@@ -23,6 +23,8 @@ import { SnackbarProvider } from 'notistack';
 import PaymentSucess from './customer/pages/Payment/PaymentSuccess';
 import PaymentSuccess from './customer/pages/Payment/PaymentSuccess';
 import PaypalCallback from './customer/pages/Payment/PaypalPaymentCallBack';
+import SellerLoginForm from './customer/pages/BecomeSeller/SellerLoginForm';
+
 
 
 
@@ -62,6 +64,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Auth />} />
+               <Route path="/seller/login" element={<SellerLoginForm />} />
               <Route path="/products/:category" element={<Product />} />
               <Route path="/reviews/:productId" element={<Reviews />} />
               <Route path="/product-details/:categoryId/:name/:productId" element={<ProductDetails />} />

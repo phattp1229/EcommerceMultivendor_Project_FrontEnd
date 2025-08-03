@@ -18,6 +18,7 @@ export interface BankDetails {
 
 export interface BusinessDetails {
     businessName: string;
+    businessLicenseUrl: string;
 }
 
 export interface Account {

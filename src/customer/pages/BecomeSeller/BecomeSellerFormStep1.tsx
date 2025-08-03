@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Box, Button, TextField, Grid, Typography } from "@mui/material";
 import OTPInput from "../../components/OtpFild/OTPInput";
+import { uploadToCloudinary } from "../../../util/uploadToCloudnary";
 
 // Validation schema
 
@@ -14,8 +15,6 @@ const BecomeSellerFormStep1 = ({ formik, handleOtpChange }: any) => {
     const handleResendOTP = () => {
         console.log("handle resend otp")
     }
-
-
 
     return (
         <Box>
@@ -44,39 +43,45 @@ const BecomeSellerFormStep1 = ({ formik, handleOtpChange }: any) => {
                 helperText={formik.touched.taxCode && formik.errors.taxCode}
                 />
 
-                {/* <div>
+                <div>
+                <label htmlFor="business-license">
+                    <Button variant="contained" component="span">
+                    Upload Business License
+                    </Button>
+                </label>
                 <input
                     accept=".pdf,.jpg,.jpeg,.png"
                     id="business-license"
-                    name="businessLicense"
+                    name="businessLicenseUrl"
                     type="file"
-                    onChange={(event) => {
-                    formik.setFieldValue("businessLicense", event.currentTarget.files?.[0]);
+                    onChange={async (event) => {
+                    const file = event.currentTarget.files?.[0];
+                    if (!file) return;
+
+                    try {
+                        const url = await uploadToCloudinary(file);
+                        formik.setFieldValue("businessLicenseUrl", url);
+                    } catch (error) {
+                        console.error("Upload failed", error);
+                        formik.setFieldError("businessLicenseUrl", "Upload failed");
+                    }
                     }}
                     style={{ display: "none" }}
                 />
+                <div style={{ marginTop: '10px' }}>
+                    {formik.values.businessLicenseUrl && (
+                        <Typography variant="body2" color="textSecondary">
+                        ✅ Uploaded:{" "}
+                        <a href={formik.values.businessLicenseUrl} target="_blank" rel="noopener noreferrer">
+                            {formik.values.businessLicenseUrl.split("/").pop()}
+                        </a>
+                        </Typography>
+                    )}
+                    </div>
 
-                <label htmlFor="business-license">
-                    <Box
-                    border="2px dashed #aaa"
-                    p={1.5}
-                    textAlign="center"
-                    sx={{ cursor: "pointer", borderRadius: 2 }}
-                    >
-                    <Typography variant="body1" color="textSecondary">
-                        {formik.values.businessLicense
-                        ? formik.values.businessLicense.name
-                        : "Click or drag to upload your business license"}
-                    </Typography>
-                    </Box>
-                </label>
 
-                {formik.touched.businessLicense && formik.errors.businessLicense && (
-                    <Typography variant="caption" color="error">
-                    {formik.errors.businessLicense}
-                    </Typography>
-                )}
-                </div> */}
+                </div>
+
             </div>
         </Box>
     );

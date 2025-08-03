@@ -56,6 +56,7 @@ const SellerAccountForm = () => {
       },
       sellerName: "",
       businessDetails: {
+        businessLicenseUrl:"",
         businessName: "",
         businessEmail:"",
         businessMobile:"",

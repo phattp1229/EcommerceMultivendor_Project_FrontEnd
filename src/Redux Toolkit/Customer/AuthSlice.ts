@@ -1,6 +1,8 @@
 
 import { createSlice, createAsyncThunk, type PayloadAction, isRejectedWithValue } from '@reduxjs/toolkit';
 import { api } from '../../Config/Api';
+import { toast } from 'react-toastify';
+
 import type {
     AuthResponse,
     LoginRequest,
@@ -13,10 +15,10 @@ import type { RootState } from '../Store';
 import { boolean } from 'yup';
 import { resetUserState } from './UserSlice';
 // import { resetCartState } from './CartSlice';
-
+const savedJwt = localStorage.getItem("jwt");
 
 const initialState: AuthState = {
-    jwt: null,
+    jwt: savedJwt || null,
     role: null,
     loading: false,
     error: null,
@@ -64,7 +66,7 @@ export const signup = createAsyncThunk<AuthResponse, CustomerSignUpRequest>(
         }
     }
 );
-//login
+//login customer and Koc
 export const signin = createAsyncThunk<AuthResponse, LoginRequest>(
     'auth/signin',
     async (loginRequest, { rejectWithValue }) => {
@@ -83,7 +85,25 @@ export const signin = createAsyncThunk<AuthResponse, LoginRequest>(
         }
     }
 );
+//login seller
+export const signInSeller = createAsyncThunk<AuthResponse, LoginRequest>(
+    'sellers/login',
+    async (loginRequest, { rejectWithValue }) => {
+        try {
+            const response = await api.post<AuthResponse>(`${API_URL}/sellers/login`, loginRequest);
+            console.log("login successful", response.data)
+            localStorage.setItem("jwt", response.data.jwt)
+            loginRequest.navigate("/seller");
+            return response.data;
+        }
 
+        catch (error: any) {
+            console.log("Error from backend:", error.response?.data);
+            const backendError = error.response?.data?.error || "Signin failed";
+            return rejectWithValue(backendError); // trả error từ backend
+        }
+    }
+);
 export const resetPassword = createAsyncThunk<ApiResponse, ResetPasswordRequest>(
     'auth/resetPassword',
     async (resetPasswordRequest, { rejectWithValue }) => {
@@ -164,6 +184,20 @@ const authSlice = createSlice({
                 state.isLoggedIn = true;
             })
             .addCase(signin.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+            .addCase(signInSeller.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(signInSeller.fulfilled, (state, action: PayloadAction<AuthResponse>) => {
+                state.jwt = action.payload.jwt;
+                state.role = action.payload.role;
+                state.loading = false;
+                state.isLoggedIn = true;
+            })
+            .addCase(signInSeller.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             })

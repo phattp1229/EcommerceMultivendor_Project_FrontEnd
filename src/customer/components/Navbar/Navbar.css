@@ -12,4 +12,8 @@
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(10px); /* For Safari */
   }
-  
+  .MuiInputBase-input.Mui-disabled {
+  color: #000 !important; /* Màu chữ rõ nét */
+  -webkit-text-fill-color: #000 !important; /* Đảm bảo không bị ghi đè */
+  opacity: 1 !important; /* Loại bỏ độ trong suốt */
+}

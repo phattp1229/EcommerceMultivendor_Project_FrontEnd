@@ -1,10 +1,12 @@
 import { Button, TextField } from '@mui/material';
-import { useAppDispatch } from '../../../Redux Toolkit/Store';
+import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
 import { verifyLoginOtp,verifyLogin } from '../../../Redux Toolkit/Seller/sellerAuthenticationSlice';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { signin } from '../../../Redux Toolkit/Customer/AuthSlice';
+import { signInSeller } from '../../../Redux Toolkit/Customer/AuthSlice';
+import { useEffect} from 'react'
+import { enqueueSnackbar } from 'notistack';
 
 //validate
 const validationSchema = Yup.object({
@@ -15,6 +17,7 @@ const validationSchema = Yup.object({
 const SellerLoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { auth } = useAppSelector(store => store)
 
   const formik = useFormik({
     initialValues: {
@@ -23,14 +26,34 @@ const SellerLoginForm = () => {
     },
      validationSchema: validationSchema,
     onSubmit: (values) => {
-      dispatch(signin({
+      dispatch(signInSeller({
         username: values.username, 
         password: values.password,
         navigate
       }));
     }
   });
+  // const { isLoggedIn: isCustomerLoggedIn } = useAppSelector(state => state.auth);
 
+  //   useEffect(() => {
+  //   if (isCustomerLoggedIn) {
+  //     enqueueSnackbar("You are logged in as a Customer. Please log out before logging in as a Seller.", {
+  //       variant: "warning",
+  //     });
+  //     navigate("/"); // hoặc redirect đâu đó
+  //   }
+  // }, []);
+
+    useEffect(() => {
+        if (auth.isLoggedIn) {
+            enqueueSnackbar("Welcome Seller !", { variant: "success" });
+        }
+    }, [auth.isLoggedIn, dispatch]);
+    useEffect(() => {
+      if (auth.error) {
+        enqueueSnackbar(auth.error, { variant: "error" }); // ✅ Hiển thị lỗi
+      }
+    }, [auth.error]);
   return (
     <div>
       <h1 className='text-center font-bold text-xl text-primary-color pb-5'>Login As Seller</h1>
