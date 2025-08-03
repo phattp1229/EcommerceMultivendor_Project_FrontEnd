@@ -22,6 +22,7 @@ import { fetchUserProfile } from './Redux Toolkit/Customer/UserSlice';
 import { SnackbarProvider } from 'notistack';
 import PaymentSucess from './customer/pages/Payment/PaymentSuccess';
 import PaymentSuccess from './customer/pages/Payment/PaymentSuccess';
+import PaypalCallback from './customer/pages/Payment/PaypalPaymentCallBack';
 
 
 
@@ -66,8 +67,8 @@ function App() {
               <Route path="/product-details/:categoryId/:name/:productId" element={<ProductDetails />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout/address" element={<AddressPage />} />
-              <Route path="/payment-success/:orderId" element={<PaymentSucess/>} /> //Dành cho Stripe
-              <Route path="/payment-success/:paymentOrderId" element={<PaymentSuccess />} /> // Dành cho PayPal
+              <Route path="/payment-success/:paymentOrderId" element={<PaymentSucess/>} /> //Dành cho Stripe
+              <Route path="/payment/paypal/callback:" element={<PaypalCallback />} /> // Dành cho PayPal
               <Route path="/become-seller" element={<BecomeSeller />} />
               <Route path="/account/*" element={<Profile />} />
               <Route path="/seller/*" element={<SellerDashboard />} />
