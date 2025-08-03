@@ -110,29 +110,29 @@ export const fetchOrderItemById = createAsyncThunk<
 );
 
 
-export const paymentSuccess = createAsyncThunk<
-    ApiResponse,
-    { paymentId: string; jwt: string, paymentLinkId: string},
-    { rejectValue: string }>(
-    "orders/paymentSuccess",
-    async ({ paymentId, jwt, paymentLinkId }, { rejectWithValue }) => {
-        try {
-            const response = await api.get(`/api/payment/${paymentId}`, 
-                {
-                    headers: {
-                        Authorization: `Bearer ${jwt}`,
-                    },
-                    params: {paymentLinkId}
-                }
-            );
-            console.log("Payment success response:", response.data);
-            return response.data;
-        } catch (error: any) {
-            console.error("Error processing payment success:", error.response);
-            return rejectWithValue(error.response?.data?.error || 'Failed to process payment success');
-        }
-    }
-);
+// export const paymentSuccess = createAsyncThunk<
+//     ApiResponse,
+//     { paymentId: string; jwt: string, paymentLinkId: string},
+//     { rejectValue: string }>(
+//     "orders/paymentSuccess",
+//     async ({ paymentId, jwt, paymentLinkId }, { rejectWithValue }) => {
+//         try {
+//             const response = await api.get(`/api/payment/${paymentId}`, 
+//                 {
+//                     headers: {
+//                         Authorization: `Bearer ${jwt}`,
+//                     },
+//                     params: {paymentLinkId}
+//                 }
+//             );
+//             console.log("Payment success response:", response.data);
+//             return response.data;
+//         } catch (error: any) {
+//             console.error("Error processing payment success:", error.response);
+//             return rejectWithValue(error.response?.data?.error || 'Failed to process payment success');
+//         }
+//     }
+// );
 
 
 export const cancelOrder = createAsyncThunk<Order, any>(
@@ -155,6 +155,57 @@ export const cancelOrder = createAsyncThunk<Order, any>(
     }
   }
 );
+
+interface PaypalCompleteRequest {
+    paymentId: string;
+    payerId: string;
+    paymentOrderId: number;
+    jwt: string;
+}
+
+export const completePaypalPayment = createAsyncThunk<ApiResponse, PaypalCompleteRequest>(
+    "orders/completePaypalPayment",
+    async (requestData, { rejectWithValue }) => {
+        try {
+            const { jwt, ...body } = requestData;
+            const response = await api.post(`${API_URL}/paypal/complete`, body, {
+                headers: {
+                    Authorization: `Bearer ${jwt}`,
+                },
+            });
+            console.log("PayPal payment completed successfully", response.data);
+            return response.data;
+        } catch (error: any) {
+            console.error("Error completing PayPal payment:", error.response);
+            return rejectWithValue(error.response?.data?.error || 'Failed to complete PayPal payment');
+        }
+    }
+);
+
+interface StripeCompleteRequest {
+    paymentOrderId: number;
+    jwt: string;
+}
+
+export const completeStripePayment = createAsyncThunk<ApiResponse, StripeCompleteRequest>(
+    "orders/completeStripePayment",
+    async ({ paymentOrderId, jwt }, { rejectWithValue }) => {
+        try {
+            // Gọi đến endpoint chính xác cho việc hoàn tất đơn hàng Stripe
+            const response = await api.put(`${API_URL}/payment-order/${paymentOrderId}/complete`, {}, {
+                headers: {
+                    Authorization: `Bearer ${jwt}`,
+                },
+            });
+            console.log("Stripe payment completed successfully", response.data);
+            return response.data;
+        } catch (error: any) {
+            console.error("Error completing Stripe payment:", error.response);
+            return rejectWithValue(error.response?.data?.error || 'Failed to complete Stripe payment');
+        }
+    }
+);
+
 
 const orderSlice = createSlice({
   name: "orders",
@@ -226,18 +277,34 @@ const orderSlice = createSlice({
       })
 
       // payment success handler
-      .addCase(paymentSuccess.pending, (state) => {
+       // --- ADDED: Case reducer cho việc hoàn tất PayPal ---
+      .addCase(completePaypalPayment.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(paymentSuccess.fulfilled, (state, action) => {
+      .addCase(completePaypalPayment.fulfilled, (state, action) => {
         state.loading = false;
-        console.log('Payment successful:', action.payload);
+        console.log('PayPal payment fulfilled:', action.payload);
       })
-      .addCase(paymentSuccess.rejected, (state, action) => {
+      .addCase(completePaypalPayment.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
+
+      // --- ADDED: Case reducer cho việc hoàn tất Stripe ---
+      .addCase(completeStripePayment.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(completeStripePayment.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log('Stripe payment fulfilled:', action.payload);
+      })
+      .addCase(completeStripePayment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      // Cancel order
       .addCase(cancelOrder.pending, (state) => {
         state.loading = true;
         state.error = null;
