@@ -1,29 +1,37 @@
 import { Button, Divider } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  sumCartItemMrpPrice,
+  sumCartItemSellingPrice,
+} from "../../util/cartCalculator";
+import { useAppSelector } from "../../../Redux Toolkit/Store";
 
-
-const PricingCard = () => {
+//@ts-ignore
+const PricingCard = ({ showBuyButton, SubmitButton }: any) => {
   const navigate = useNavigate();
+  const { cart, auth } = useAppSelector((store) => store);
   return (
     <div>
       <div className="space-y-3 p-5">
         <div className="flex justify-between items-center">
           <span>Subtotal</span>
-          <span>800.000đ</span>
+          <span>₹ {cart.cart?.totalMrpPrice}</span>
         </div>
         <div className="flex justify-between items-center">
           <span>Discount</span>
           <span>
-            100.000đ
+            ₹{" "}
+            {sumCartItemMrpPrice(cart.cart?.cartItems || []) -
+              sumCartItemSellingPrice(cart.cart?.cartItems || [])}
           </span>
         </div>
         <div className="flex justify-between items-center">
           <span>Shipping</span>
-          <span>30.000đ</span>
+          <span>₹ 79</span>
         </div>
         <div className="flex justify-between items-center">
-          <span>Platform fee</span>
+          <span>plateform fee</span>
           <span className="text-teal-600">Free</span>
         </div>
       </div>
@@ -31,7 +39,7 @@ const PricingCard = () => {
 
       <div className="font-medium px-5 py-2 flex justify-between items-center">
         <span>Total</span>
-        <span>730.000đ</span>
+        <span>₹ {cart.cart?.totalSellingPrice}</span>
       </div>
     </div>
   );

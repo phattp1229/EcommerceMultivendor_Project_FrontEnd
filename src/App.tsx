@@ -83,11 +83,11 @@ const navigate=useNavigate();
     //     </ThemeProvider>
     // </div>
         <ThemeProvider theme={customeTheme}>
-          <SnackbarProvider
+          {/* <SnackbarProvider
       maxSnack={3}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       autoHideDuration={3000}
-        >
+        > */}
       <div className='App' >
 
 
@@ -107,8 +107,8 @@ const navigate=useNavigate();
         {/* <Footer/> */}
       </div>
 
-
-    </SnackbarProvider>
+{/* 
+    </SnackbarProvider> */}
     </ThemeProvider>
   )
 }export default App;

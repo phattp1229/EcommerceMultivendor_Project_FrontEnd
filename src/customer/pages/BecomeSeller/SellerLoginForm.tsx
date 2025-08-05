@@ -34,16 +34,16 @@ const SellerLoginForm = () => {
     }
   });
 
-    useEffect(() => {
-        if (auth.isLoggedIn) {
-            enqueueSnackbar("Welcome Seller !", { variant: "success" });
-        }
-    }, [auth.isLoggedIn, dispatch]);
-    useEffect(() => {
-      if (auth.error) {
-        enqueueSnackbar(auth.error, { variant: "error" }); 
-      }
-    }, [auth.error]);
+    // useEffect(() => {
+    //     if (auth.isLoggedIn) {
+    //         enqueueSnackbar("Welcome Seller !", { variant: "success" });
+    //     }
+    // }, [auth.isLoggedIn, dispatch]);
+    // useEffect(() => {
+    //   if (auth.error) {
+    //     enqueueSnackbar(auth.error, { variant: "error" }); 
+    //   }
+    // }, [auth.error]);
   return (
     <div>
       <h1 className='text-center font-bold text-xl text-primary-color pb-5'>Login As Seller</h1>
