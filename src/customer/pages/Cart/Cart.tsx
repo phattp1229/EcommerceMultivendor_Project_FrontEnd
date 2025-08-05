@@ -82,7 +82,9 @@ const Cart = () => {
                     <LocalOfferIcon
                       sx={{ color: teal[600], fontSize: "17px" }}
                     />
-                    <span>Apply Coupens</span>
+                    <span className="bg-green-100 text-green-800 text-sm font-semibold px-2.5 py-0.5 rounded">
+                    <strong>Apply Coupon</strong>
+                  </span>
                   </div>
                 </div>
                 {!cart.cart?.couponCode ? (
@@ -99,7 +101,7 @@ const Cart = () => {
                       disabled={couponCode ? false : true}
                       size="small"
                     >
-                      Aplly
+                      Apply
                     </Button>
                   </div>
                 ) : (
@@ -126,7 +128,7 @@ const Cart = () => {
                     variant="contained"
                     fullWidth
                   >
-                    BUY NOW
+                    Buy Now
                   </Button>
                 </div>
               </section>

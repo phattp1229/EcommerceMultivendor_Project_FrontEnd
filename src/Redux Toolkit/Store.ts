@@ -17,6 +17,7 @@ import sellerOrderSlice from "./Seller/sellerOrderSlice";
 import revenueChartSlice from "./Seller/revenueChartSlice";
 import transactionSlice from "./Seller/transactionSlice";
 import WishlistSlice from "./Customer/WishlistSlice";
+import ReviewSlice from "./Customer/ReviewSlice";
 const rootReducer = combineReducers({
     // customer
     auth: AuthSlice,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
     orders: OrderSlice,
     coupon: CouponSlice,
     wishlist: WishlistSlice,
+    review: ReviewSlice,
     //seller
     sellers: sellerSlice,
     sellerAuth: sellerAuthenticationSlice,

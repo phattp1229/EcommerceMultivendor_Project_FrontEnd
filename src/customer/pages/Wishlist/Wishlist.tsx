@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react'
+
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store'
-import { getWishlistByUserId } from '../../../Redux Toolkit/Customer/WishlistSlice';
 import WishlistProductCard from './WishlistProductCard';
 
 const Wishlist = () => {

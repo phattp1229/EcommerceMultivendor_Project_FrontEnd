@@ -3,58 +3,67 @@ import React, { useEffect } from 'react'
 import PaymentsIcon from '@mui/icons-material/Payments';
 import OrderStepper from './OrderStepper';
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
-// import { cancelOrder, fetchOrderById, fetchOrderItemById } from '../../../Redux Toolkit/Customer/OrderSlice';
+import { cancelOrder, fetchOrderById, fetchOrderItemById } from '../../../Redux Toolkit/Customer/OrderSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const OrderDetails = () => {
   const dispatch = useAppDispatch()
-  // const { cart, auth, orders } = useAppSelector(store => store);
-  //@ts-ignore
+  const { cart, auth, orders } = useAppSelector(store => store);
   const { orderItemId, orderId } = useParams()
   const navigate = useNavigate();
 
+  useEffect(() => {
+    dispatch(fetchOrderItemById({
+      orderItemId: Number(orderItemId),
+      jwt: localStorage.getItem("jwt") || ""
+    }))
+    dispatch(fetchOrderById({
+      orderId: Number(orderId),
+      jwt: localStorage.getItem("jwt") || ""
+    }))
+  }, [auth.jwt])
 
-  // if (!orders.orders || !orders.orderItem) {
-  //   return <div className='h-[80vh] flex justify-center items-center'>
-  //     No order found
-  //   </div>;
-  // }
+  if (!orders.orders || !orders.orderItem) {
+    return <div className='h-[80vh] flex justify-center items-center'>
+      No order found
+    </div>;
+  }
 
   const handleCancelOrder = () => {
-    // dispatch(cancelOrder(orderId))
+    dispatch(cancelOrder(orderId))
   }
 
   return (
     <Box className='space-y-5 '>
 
       <section className='flex flex-col gap-5 justify-center items-center'>
-        <img className='w-[100px]' src="" alt="" />
+        <img className='w-[100px]' src={orders.orderItem?.product.images[0]} alt="" />
         <div className='text-sm space-y-1 text-center'>
-          <h1 className='font-bold'>CTY TNHH TMDV PHAT
+          <h1 className='font-bold'>{orders.orderItem?.product.seller?.businessDetails.businessName}
           </h1>
-          <p>Áo T-Shirt Nam</p>
+          <p>{orders.orderItem?.product.title}</p>
           <p><strong>Size:</strong>M</p>
         </div>
         <div>
-          <Button onClick={() => navigate(`/reviews/${1}/create`)}>Write Review</Button>
+          <Button onClick={() => navigate(`/reviews/${orders.orderItem?.product.id}/create`)}>Write Review</Button>
         </div>
       </section>
 
       <section className='border p-5'>
-        <OrderStepper orderStatus={"PENDING"} />
+        <OrderStepper orderStatus={orders.currentOrder?.orderStatus} />
 
       </section>
       <div className='border p-5'>
         <h1 className='font-bold pb-3'>Delivery Address</h1>
         <div className='text-sm space-y-2'>
           <div className='flex gap-5 font-medium'>
-            <p> {"Tan Phat"}</p>
+            <p> {orders.currentOrder?.shippingAddress.name}</p>
             <Divider flexItem orientation='vertical' />
-            <p>{"0379205270"}</p>
+            <p>{orders.currentOrder?.shippingAddress.mobile}</p>
           </div>
 
           <p>
-            12ab Phường 25 Bình Thạnh TPHCM ,PostalCode = 70000
+            {orders.currentOrder?.shippingAddress.street}, {orders.currentOrder?.shippingAddress.city}, {orders.currentOrder?.shippingAddress.state} - {orders.currentOrder?.shippingAddress.postalCode}
           </p>
         </div>
       </div>
@@ -64,10 +73,13 @@ const OrderDetails = () => {
         <div className='flex justify-between text-sm pt-5 px-5'>
           <div className='space-y-1'>
             <p className='font-bold'>Total Item Price</p>
-            <p>You saved <span className='text-green-500 font-medium text-xs'>10%</span> on this item</p>
+            <p>You saved <span className='text-green-500 font-medium text-xs'>
+               {(
+            orders.orderItem?.mrpPrice - orders.orderItem?.sellingPrice
+          )?.toLocaleString('vi-VN')} ₫</span> on this item</p>
           </div>
 
-          <p className='font-medium'>200.000đ</p>
+          <p className='font-medium'> {orders.orderItem?.sellingPrice.toLocaleString("vi-VN")}đ</p>
         </div>
 
         <div className='px-5 '>
@@ -82,15 +94,15 @@ const OrderDetails = () => {
 
         <Divider />
         <div className='px-5 pb-5'>
-          <p className='text-xs'><strong>Sold by : </strong>CTY TNHH</p>
+          <p className='text-xs'><strong>Sold by : </strong>{orders.orderItem.product.seller?.businessDetails.businessName}</p>
         </div>
 
         <div className='p-10'>
           <Button
-          disabled={"Cancel" !== "Cancel"}
+          disabled={orders.currentOrder?.orderStatus==="CANCELLED"}
             onClick={handleCancelOrder}
             color='error' sx={{ py: "0.7rem" }} className='' variant='outlined' fullWidth>
-            {"order canceled"}
+            {orders.currentOrder?.orderStatus==="CANCELLED"?"order canceled":"Cancel Order"}
           </Button>
         </div>
       </div>

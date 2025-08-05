@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import StarIcon from '@mui/icons-material/Star';
 import { teal } from '@mui/material/colors';
+import { Box, Button, Divider, Grid, IconButton, LinearProgress, Modal, Rating } from '@mui/material';
 import ShieldIcon from '@mui/icons-material/Shield';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import { Wallet } from '@mui/icons-material';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { Box, Button, Divider, Modal, Rating } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { useAppDispatch, useAppSelector } from '../../../../Redux Toolkit/Store';
-import { useNavigate, useParams } from 'react-router-dom';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import SimilarProduct from '../SimilarProduct/SimilarProduct';
-import ProductReviewCard from '../../Review/ProductReviewCard';
-import { fetchProductById, getAllProducts } from '../../../../Redux Toolkit/Customer/ProductSlice';
+import SmilarProduct from '../SimilarProduct/SimilarProduct';
 import ZoomableImage from './ZoomableImage';
+import { useAppDispatch, useAppSelector } from '../../../../Redux Toolkit/Store';
+import { useNavigate, useParams } from 'react-router-dom';
+import { fetchProductById, getAllProducts } from '../../../../Redux Toolkit/Customer/ProductSlice';
+import { addItemToCart } from '../../../../Redux Toolkit/Customer/CartSlice';
+import ProductReviewCard from '../../Review/ProductReviewCard';
+import RatingCard from '../../Review/RatingCard';
+import { fetchReviewsByProductId } from '../../../../Redux Toolkit/Customer/ReviewSlice';
 
 const style = {
     position: 'absolute' as const,
@@ -35,43 +39,46 @@ const ProductDetails = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const dispatch = useAppDispatch();
-    //@ts-ignore
     const { products, review } = useAppSelector(store => store)
     const navigate = useNavigate()
-     //@ts-ignore
     const { productId,categoryId } = useParams()
     const [selectedImage, setSelectedImage] = useState(0);
     const [quantity, setQuantity] = useState(1)
 
-        useEffect(() => {
+
+    useEffect(() => {
 
         if (productId) {
             dispatch(fetchProductById(Number(productId)))
-            // dispatch(fetchReviewsByProductId({ productId: Number(productId) }))
+            dispatch(fetchReviewsByProductId({ productId: Number(productId) }))
         }
         dispatch(getAllProducts({ category: categoryId}));
 
     }, [productId])
 
     const handleAddCart = () => {
-        // dispatch(addItemToCart({
-        //     jwt: localStorage.getItem('jwt'),
-        //     request: { productId: Number(productId), size: "FREE", quantity }
+        dispatch(addItemToCart({
+            jwt: localStorage.getItem('jwt'),
+            request: { productId: Number(productId), size: "FREE", quantity }
 
-        // }))
+        }))
     }
-  return (
-      <div className='px-5 lg:px-20 pt-10 '>
+
+ 
+
+
+    return (
+        <div className='px-5 lg:px-20 pt-10 '>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
 
                 <section className='flex flex-col lg:flex-row gap-5'>
                     <div className='w-full lg:w-[15%] flex flex-wrap lg:flex-col gap-3'>
-                        {products.product?.images.map((item, index) => <img onClick={() => 
-                            setSelectedImage(index)} className='lg:w-full w-[50px] cursor-pointer rounded-md' src={item} alt="" />)}
+                        {products.product?.images.map((item, index) => <img onClick={() => setSelectedImage(index)} className='lg:w-full w-[50px] cursor-pointer rounded-md' src={item} alt="" />)}
                     </div>
                     <div className='w-full lg:w-[85%]'>
                         <img onClick={handleOpen} className='w-full rounded-md cursor-zoom-out' src={products.product?.images[selectedImage]} alt="" />
                     </div>
+
                     <Modal
                         open={open}
                         onClose={handleClose}
@@ -83,8 +90,9 @@ const ProductDetails = () => {
                             <ZoomableImage src={products.product?.images[selectedImage]} alt="" />
                         </Box>
                     </Modal>
+
                 </section>
-            
+
                 <section>
                     <h1 className='font-bold text-lg text-teal-950'>{products.product?.seller?.businessDetails.businessName}</h1>
                     <p className='text-gray-500 font-semibold'>{products.product?.title}</p>
@@ -99,13 +107,14 @@ const ProductDetails = () => {
                             358 Ratings
                         </span>
                     </div>
-                     <div className='space-y-2'>
+
+                    <div className='space-y-2'>
                         <div className='price flex items-center gap-3 mt-5 text-lg'>
-                            <span className='font-semibold text-gray-800' >79.999đ</span>
-                            <span className='text thin-line-through text-gray-400 '>100.000đ</span>
-                            <span className='text-[#00927c] font-semibold'>20% off</span>
+                            <span className='font-semibold text-gray-800' > {products.product?.sellingPrice.toLocaleString("vi-VN")}đ</span>
+                            <span className='text thin-line-through text-gray-400 '>{products.product?.mrpPrice.toLocaleString("vi-VN")}đ</span>
+                            <span className='text-[#00927c] font-semibold'>{products.product?.discountPercent}% off</span>
                         </div>
-                        <p className='text-sm'>Inclusive of all taxes. Free Shipping above 150.000đ</p>
+                        <p className='text-sm'>Inclusive of all taxes. Free Shipping above 500.000 đ.</p>
                     </div>
 
                     <div className='mt-7 space-y-3'>
@@ -124,10 +133,16 @@ const ProductDetails = () => {
                             <LocalShippingIcon sx={{ color: teal[400] }} />
                             <p>Free Shipping & Returns</p>
                         </div>
+
+
+
                         <div className='flex items-center gap-4'>
                             <Wallet sx={{ color: teal[400] }} />
                             <p>Pay on delivery might be available</p>
                         </div>
+
+
+
                     </div>
 
                     <div className='mt-7 space-y-2'>
@@ -149,7 +164,7 @@ const ProductDetails = () => {
 
                     <div className="mt-12 flex items-center gap-5">
                         <Button
-                            //onClick={handleAddCart}
+                            onClick={handleAddCart}
                             sx={{ py: "1rem" }}
                             variant='contained' fullWidth startIcon={<AddShoppingCartIcon />}>
                             Add To Bag
@@ -161,28 +176,47 @@ const ProductDetails = () => {
                         </Button>
 
                     </div>
-
                     <div className='mt-5'>
-                        <p >Mẫu áo sơ mi tay ngắn nam oxford fitted là dòng sản phẩm thời trang cao cấp, 
-                            được đội ngũ thiết kế Routine chăm chút tỉ mỉ trong từng đường kim mũi chỉ, 
-                            chú trọng đến từng chi tiết dù là nhỏ nhất. Sản phẩm sở hữu những đặc tính vượt trội 
-                            mà chắc chắn bạn sẽ yêu thích </p>
+                        <p >
+                            {products.product?.description}
+                        </p>
                     </div>
-                    <div className='mt-7'>
-                        <ProductReviewCard />
-                        <Divider />
+                    <div className="ratings w-full mt-10">
+                        <h1 className="font-semibold text-lg pb-4">
+                            Review & Ratings
+                        </h1>
+
+                        <RatingCard totalReview={review.reviews.length} />
+                        <div className='mt-10'>
+                            <div className="space-y-5">
+                                {review.reviews.map((item, i) => (
+                                    <div className='space-y-5'>
+                                        <ProductReviewCard item={item} />
+                                        <Divider />
+                                    </div>
+                                ))}
+                                <Button onClick={() => navigate(`/reviews/${productId}`)}>View All {review.reviews.length} Reviews</Button>
+                            </div>
+                        </div>
+
+
+
                     </div>
                 </section>
-            </div>
 
-            <div className='mt-20'>
-                <h1 className="text-lg font-bold">Similar Product</h1>
-                <div className='pt-5'>
-                    <SimilarProduct/>
-                </div>
+
+
             </div>
+            <section className='mt-20'>
+                <h1 className='text-lg font-bold'>Similar Product</h1>
+
+                <div className='pt-5'>
+                    <SmilarProduct />
+                </div>
+
+            </section>
         </div>
-  )
+    )
 }
 
 export default ProductDetails

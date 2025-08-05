@@ -1,36 +1,56 @@
 import { Button, Divider, IconButton } from '@mui/material'
+import React from 'react'
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import type { CartItem } from '../../../types/cartTypes';
 import { useAppDispatch } from '../../../Redux Toolkit/Store';
-import { updateCartItem } from '../../../Redux Toolkit/Customer/CartSlice';
+import { deleteCartItem, updateCartItem } from '../../../Redux Toolkit/Customer/CartSlice';
 
+interface CartItemProps {
+    item:CartItem
+}
 
-const CartItemCard = ({item}: {item: CartItem}) => {
+const CartItemCard : React.FC<CartItemProps> = ({ item }) => {
     const dispatch = useAppDispatch();
     
-    const handleUpdateQuantity=(value: number)=>{
-        dispatch(updateCartItem({jwt: localStorage.getItem("jwt"),
-            cartItemId: item.id,
-            cartItem: {quantity: item.quantity + value}}))
+    const handleUpdateQuantity=(value:number)=>{
+        dispatch(updateCartItem({jwt:localStorage.getItem("jwt"),
+            cartItemId:item.id, cartItem:{quantity:item.quantity + value}}))
+    }
+    const handleRemoveCartItem=()=>{
+        dispatch(deleteCartItem({
+            jwt:localStorage.getItem("jwt") || "", 
+            cartItemId:item.id}))
     }
     return (
         <div className=' border rounded-md relative'>
             <div className='p-5 flex gap-3'>
 
                 <div>
-                    <img className='w-[90px] rounded-md'                 
-                        src={item.product.images[0]}
-                        alt="" />
+                    <img className='w-[90px] rounded-md' 
+                    src={item.product.images[0]}
+                    // src="https://www.taneira.com/dw/image/v2/BKMH_PRD/on/demandware.static/-/Sites-Taneira-product-catalog/default/dw422bdf2e/images/Taneira/Catalog/BFW22CW0042_1.jpg?sw=1000&sh=1500"
+                     alt="" />
                 </div>
+                <div className="space-y-1.5">
+                <h1 className="font-semibold text-base text-gray-800">{item.product.title}</h1>
 
-                <div className='space-y-2'>
-                    <h1 className='font-semibold text-lg'> {item.product.seller?.businessDetails.businessName} </h1>
-                    <p className='text-gray-600 font-medium text-sm'> {item.product.title} </p>
-                    <p className='text-gray-400 text-xs'><strong>Sold by:</strong> Natural Lifestyle Products Private Limited</p>
-                    <p className='text-xs'><strong>7 days replacement</strong> available</p>
-                    <p className='text-sm text-gray-500'><strong>quantity : </strong> {item.quantity} </p>
+                <p className="text-sm text-black-600">
+                    <span className="font-medium">Size:</span> {item.product.sizes} — <span className="font-medium">Color:</span> {item.product.color}
+                </p>
+
+                <p className="text-sm text-gray-600">
+                    <span className="font-medium text-red-700">Sold by:</span> {item.product?.seller?.businessDetails.businessName}
+                </p>
+
+                <p className="text-sm text-gray-500">
+                    <span className="font-medium text-teal-600">7 days replacement </span> available
+                </p>
+
+                <p className="text-sm text-gray-500">
+                    <span className="font-medium">Quantity:</span> {item.quantity}
+                </p>
                 </div>
 
             </div>
@@ -39,7 +59,7 @@ const CartItemCard = ({item}: {item: CartItem}) => {
 
                 <div className=' flex items-center gap-2  w-[140px] justify-between'>
 
-                    <Button size='small' onClick={() => handleUpdateQuantity(-1)} disabled={item.quantity <= 1}>
+                    <Button size='small' disabled={item.quantity == 1} onClick={() => handleUpdateQuantity(-1)} >
                         <RemoveIcon />
                     </Button>
                     <span className='px-3  font-semibold'>
@@ -51,13 +71,13 @@ const CartItemCard = ({item}: {item: CartItem}) => {
 
                 </div>
                 <div>
-                    <p className='text-gray-700 font-medium'> {item.sellingPrice} </p>
+                    <p className='text-gray-700 font-medium'>{item.sellingPrice.toLocaleString("vi-VN")}đ</p>
                 </div>
 
 
             </div>
             <div className='absolute top-1 right-1'>
-                <IconButton color='primary' >
+                <IconButton onClick={handleRemoveCartItem} color='primary' >
                     <CloseIcon />
                 </IconButton>
             </div>

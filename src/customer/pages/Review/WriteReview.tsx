@@ -35,8 +35,8 @@ const WriteReviews = () => {
                     </div>
 
                     <div className='price flex items-center gap-3 mt-5 text-lg'>
-                        <span className='font-semibold text-gray-800' > ₹{products.product?.sellingPrice}</span>
-                        <span className='text thin-line-through text-gray-400 '>₹{products.product?.mrpPrice}</span>
+                        <span className='font-semibold text-gray-800' > {products.product?.sellingPrice.toLocaleString("vi-Vn")}đ</span>
+                        <span className='text thin-line-through text-gray-400 '>{products.product?.mrpPrice.toLocaleString("vi-Vn")}đ</span>
                         <span className='text-[#00927c] font-semibold'>{products.product?.discountPercent}% off</span>
                     </div>
 

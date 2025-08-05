@@ -1,4 +1,5 @@
-import React, { useState, useEffect, MouseEvent } from 'react';
+import React, { useState, useEffect } from 'react';
+import type { MouseEvent } from 'react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { teal } from '@mui/material/colors';
 import { Button, IconButton } from '@mui/material';
@@ -51,8 +52,8 @@ const WishlistProductCard: React.FC<ProductCardProps> = ({ item }) => {
 
                 </div>
                 <div className=' flex items-center gap-3 '>
-                    <span className='font-semibold text-gray-800'> ₹{item.sellingPrice}</span>
-                    <span className='text thin-line-through text-gray-400 '>₹{item.mrpPrice}</span>
+                    <span className='font-semibold text-gray-800'> {item.sellingPrice.toLocaleString("vi-VN")}đ</span>
+                    <span className='text thin-line-through text-gray-400 '>{item.mrpPrice.toLocaleString("vi-VN")}đ</span>
                     <span className='text-[#00927c] font-semibold'>{item.discountPercent}% off</span>
                 </div>
 
