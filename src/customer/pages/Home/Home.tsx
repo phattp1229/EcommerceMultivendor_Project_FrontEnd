@@ -1,48 +1,79 @@
-//import React from 'react'
-import ElectronicCategory from "./ElectronicCategory/ElectronicCategory"
-import CategoryGrid from "./TopBrands/Grid"
-import Deals from "./Deals/Deals"
-import ShopByCategory from "./ShopByCategory/ShopByCategory"
+import HomeCategory from './HomeCategory/HomeCategory'
+import TopBrand from './TopBrands/Grid'
+import ElectronicCategory from './ElectronicCategory/ElectronicCategory'
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import { Backdrop, Button, CircularProgress } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import StorefrontIcon from '@mui/icons-material/Storefront';
 import { useAppSelector } from '../../../Redux Toolkit/Store'
-import { Button } from "@mui/material"
-import { Storefront } from "@mui/icons-material"
+import DealSlider from './Deals/Deals'
+import { useState } from 'react';
+
+
+
 const Home = () => {
+    const [showChatBot, setShowChatBot] = useState(false)
+    const { homePage } = useAppSelector(store => store)
 
-  const { homePage } = useAppSelector(store => store)
+    console.log("Inside ElectronicCategory:", homePage.homePageData?.electricCategories)
 
-  return (
-    <>
-        <div className='space-y-5 lg:space-y-10 relative'>
-          <ElectronicCategory />
-          <CategoryGrid />
-         
+    const navigate = useNavigate();
 
-          <div className="pt-20">
-            <h1 className='text-lg lg:text-4xl font-bold text-primary-color 
-            pb-5 lg:pb-20 text-center'> TODAY'S DEAL</h1>
-           <Deals />
-        </div>
+    const becomeSellerClick = () => {
+        navigate("/become-seller")
+    }
+    return (
+        
+        <>
+        {(!homePage.loading)?<div className='space-y-5 lg:space-y-10 relative'>
+            {homePage.homePageData?.electricCategories && <ElectronicCategory />}
+            {/* <Banner /> */}
 
-          <div className="py-20">
-            <h1 className='text-lg lg:text-4xl font-bold text-primary-color 
-            pb-5 lg:pb-20 text-center'> SHOP BY CATEGORY</h1>
-          </div>
-          <ShopByCategory />
-        </div>
 
-        <section className='mt-20 lg:px-20 relative h-[200px] lg:h-[450px] object-cover'>
-          <img className='w-full h-full object-cover' 
-          src="https://stutern-udemy.netlify.app/images/header-img.jpg" alt="" />
-          <div className='absolute top-1/2 left-4 lg:left-[15rem] transform-translate-y-1/2 font-semibold lg:text-4xl space-y-3'>
-          <h1>Sell your Product</h1>
-            <p className='text-lg md:text-2xl'>With <span className='logo'>Zonix Mall</span></p>
-            <Button startIcon={<Storefront/>} variant='contained' size='large'>
-              Become Seller
-            </Button>
-          </div>
-        </section>
-    </>
-  )
+          {homePage.homePageData?.grid &&  <section >
+                {/* <h1 className='text-lg lg:text-4xl font-bold text-[#00927c] pb-5 lg:pb-20 text-center'>SHOP FOR WEDDING</h1> */}
+                <TopBrand />
+            </section>}
+        {homePage.homePageData?.deals &&    <section className='pt-10'>
+            <h1 className='text-center text-lg lg:text-4xl font-bold text-[#00927c] pb-5 lg:pb-10'>Today's Deals</h1>
+                <DealSlider/>
+            </section>}
+           {homePage.homePageData?.shopByCategories && <section className='flex flex-col justify-center items-center py-20 px-5 lg:px-20'>
+                <h1 className='text-lg lg:text-4xl font-bold text-[#00927c] pb-5 lg:pb-20'>SHOP BY CATEGORY</h1>
+                <HomeCategory />
+            </section>}
+            <section className='lg:px-20 relative h-[200px] lg:h-[450px] object-cover'>
+                <img className='w-full h-full' src="https://stutern-udemy.netlify.app/images/header-img.jpg" alt="" />
+                <div className='absolute top-1/2 left-4 lg:left-[15rem] transform  -translate-y-1/2 font-semibold lg:text-4xl space-y-3 '>
+                    <h1 className=''>
+                        Sell Your Product
+                    </h1>
+                    <p className='text-lg md:text-2xl'>With <strong className='logo text-3xl md:text-5xl pl-2'>Zonix Mall</strong></p>
+
+                    <div className='pt-6 flex justify-center'>
+                        <Button
+                            onClick={becomeSellerClick}
+                            startIcon={<StorefrontIcon />}
+                            variant="contained"
+                        >
+                            Become Seller
+                        </Button>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>: <Backdrop
+                open={true}
+
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>}
+       
+        </>
+        
+    )
 }
 
 export default Home

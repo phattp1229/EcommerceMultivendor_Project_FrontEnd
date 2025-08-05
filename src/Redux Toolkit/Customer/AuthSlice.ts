@@ -1,11 +1,12 @@
 
 import { createSlice, createAsyncThunk, type PayloadAction, isRejectedWithValue } from '@reduxjs/toolkit';
 import { api } from '../../Config/Api';
-import { toast } from 'react-toastify';
+
 
 import type {
     AuthResponse,
     LoginRequest,
+    LoginAdminRequest,
     CustomerSignUpRequest,
     ResetPasswordRequest,
     ApiResponse,
@@ -85,15 +86,14 @@ export const signin = createAsyncThunk<AuthResponse, LoginRequest>(
         }
     }
 );
-//login seller
-export const signInSeller = createAsyncThunk<AuthResponse, LoginRequest>(
-    'sellers/login',
+export const loginAdmin = createAsyncThunk<AuthResponse, LoginAdminRequest>(
+    'auth/loginAdmin',
     async (loginRequest, { rejectWithValue }) => {
         try {
-            const response = await api.post<AuthResponse>(`${API_URL}/sellers/login`, loginRequest);
+            const response = await api.post<AuthResponse>(`${API_URL}/admin/login`, loginRequest);
             console.log("login successful", response.data)
             localStorage.setItem("jwt", response.data.jwt)
-            loginRequest.navigate("/seller");
+            loginRequest.navigate("/");
             return response.data;
         }
 
@@ -187,20 +187,21 @@ const authSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload as string;
             })
-            .addCase(signInSeller.pending, (state) => {
+            .addCase(loginAdmin.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(signInSeller.fulfilled, (state, action: PayloadAction<AuthResponse>) => {
+            .addCase(loginAdmin.fulfilled, (state, action: PayloadAction<AuthResponse>) => {
                 state.jwt = action.payload.jwt;
                 state.role = action.payload.role;
                 state.loading = false;
                 state.isLoggedIn = true;
             })
-            .addCase(signInSeller.rejected, (state, action) => {
+            .addCase(loginAdmin.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             })
+
             .addCase(resetPassword.pending, (state) => {
                 state.loading = true;
                 state.error = null;

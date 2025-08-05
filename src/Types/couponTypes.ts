@@ -17,5 +17,5 @@ export interface CouponState {
     loading: boolean;
     error: string | null;
     couponCreated: boolean;
-    couponApplied: boolean;
+    couponApplied: boolean,
 }

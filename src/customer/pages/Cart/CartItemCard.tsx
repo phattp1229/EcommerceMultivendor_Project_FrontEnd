@@ -2,7 +2,7 @@ import { Button, Divider, IconButton } from '@mui/material'
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-import type { CartItem } from '../../../Types/cartTypes';
+import type { CartItem } from '../../../types/cartTypes';
 import { useAppDispatch } from '../../../Redux Toolkit/Store';
 import { updateCartItem } from '../../../Redux Toolkit/Customer/CartSlice';
 

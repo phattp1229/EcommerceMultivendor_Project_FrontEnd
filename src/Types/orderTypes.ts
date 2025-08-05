@@ -1,6 +1,5 @@
-import { Customer } from "./customerTypes";
-import { Address } from "./addressTypes";
-import { Product } from "./productTypes";
+import type { Product } from './productTypes';
+import type { Address, User } from './userTypes';
 
 export interface OrderState {
     orders: Order[];
@@ -9,30 +8,31 @@ export interface OrderState {
     paymentOrder: any | null;
     loading: boolean;
     error: string | null;
-    orderCancelled: boolean;
+    orderCanceled: boolean
 }
 
 export interface Order {
     id: number;
     orderId: string;
-    customer: Customer;
+    user: User;
+    sellerId: number;
     orderItems: OrderItem[];
     orderDate: string;
     shippingAddress: Address;
     paymentDetails: any;
     totalMrpPrice: number;
-    totalSellingPrice?: number; // Optional, as it may not be present in all orders
-    discount?: number; // Optional, as it may not be present in all orders
+    totalSellingPrice?: number; // Optional field
+    discount?: number; // Optional field
     orderStatus: OrderStatus;
     totalItem: number;
     deliverDate: string;
 }
-
+//@ts-ignore
 export enum OrderStatus {
-    PENDING = "PENDING",
-    SHIPPED = "SHIPPED",
-    DELIVERED = "DELIVERED",
-    CANCELLED = "CANCELLED",
+    PENDING = 'PENDING',
+    SHIPPED = 'SHIPPED',
+    DELIVERED = 'DELIVERED',
+    CANCELLED = 'CANCELLED'
 }
 
 export interface OrderItem {
@@ -43,5 +43,5 @@ export interface OrderItem {
     quantity: number;
     mrpPrice: number;
     sellingPrice: number;
-    customerId: number;
+    userId: number;
 }

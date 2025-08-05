@@ -4,7 +4,13 @@ export interface AuthResponse {
     message: string;
     role: string;
 }
-
+export interface LoginAdminRequest {
+    email: string;
+    username: string;
+    password: string;
+    otp: string;
+    navigate: any;
+}
 export interface ApiResponse {
     message: string;
     status: boolean;

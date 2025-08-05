@@ -29,7 +29,7 @@ export const fetchUserProfile = createAsyncThunk<
         headers: { Authorization: `Bearer ${jwt}` },
       });
       console.log(" user profile ", response.data);
-      if (response.data.role === "ROLE_ADMIN") {
+      if (response.data.role === "ROLE_MANAGER") {
         navigate("/admin");
       }
       return response.data;
@@ -53,8 +53,8 @@ export const updateUserProfile = createAsyncThunk<
       return response.data; // dữ liệu đã cập nhật
     } catch (error: any) {
       console.log("Update error", error.response);
-      console.log("Payload gửi backend:", data);
-      console.log("JWT gửi đi:", jwt);
+      console.log("Payload send backend:", data);
+      console.log("JWT send:", jwt);
       return rejectWithValue("Failed to update user profile");
     }
   }

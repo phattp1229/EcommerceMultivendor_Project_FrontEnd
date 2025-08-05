@@ -1,7 +1,7 @@
 import React from "react";
-import ElectronicCategoryCard from "./ElectronicCategoryCard.tsx";
-import { ThemeProvider, useMediaQuery } from "@mui/material";
-
+import ElectronicCategoryCard from "./ElectronicCategoryCard";
+import { useMediaQuery } from "@mui/material";
+import { useAppSelector } from "../../../../Redux Toolkit/Store";
 const electronics = [
   {
     section: "ELECTRIC_CATEGORIES",
@@ -63,15 +63,15 @@ const electronics = [
 ];
 
 const ElectronicCategory = () => {
-    const homePage = {
-        homePageData: {
-        electricCategories: electronics,
-        },
-    };
+  const {homePage}=useAppSelector(store=>store)
   const isSmallScreen = useMediaQuery("(max-width:600px)");
   return (
     <div className="flex flex-wrap justify-between py-5 lg:px-20 border-b">
-      {[1,1,1,1,1,1,1].map((item) =>  <ElectronicCategoryCard />)}
+      {homePage.homePageData?.electricCategories
+        .slice(0, isSmallScreen ? 5 : electronics.length)
+        .map((item) => (
+          <ElectronicCategoryCard item={item} />
+        ))}
     </div>
   );
 };

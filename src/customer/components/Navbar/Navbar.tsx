@@ -17,7 +17,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { mainCategory } from "../../../data/category/mainCategory";
 import CategorySheet from "./CategorySheet";
 import DrawerList from "./DrawerList";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useAppDispatch, useAppSelector } from "../../../Redux Toolkit/Store";
 import { FavoriteBorder } from "@mui/icons-material";
@@ -29,13 +29,12 @@ const Navbar = () => {
   const theme = useTheme();
   const isLarge = useMediaQuery(theme.breakpoints.up("lg"));
   const dispatch = useAppDispatch();
-  const { user, auth, sellers } = useAppSelector((store) => store);
+  const { user, auth, cart, sellers } = useAppSelector((store) => store);
   const navigate = useNavigate();
-   const location = useLocation();  
-  const isSellerPage = location.pathname.startsWith("/seller");  
+  
 
   const [open, setOpen] = React.useState(false);
-  if (isSellerPage) return null; // Ẩn toàn bộ Navbar khi ở trang seller
+
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
@@ -51,7 +50,6 @@ const Navbar = () => {
  
 
   return (
-    
     <Box
       sx={{ zIndex: 2 }}
       className="sticky top-0 left-0 right-0 bg-white blur-bg bg-opacity-80 "
@@ -100,8 +98,8 @@ const Navbar = () => {
           <IconButton onClick={()=>navigate("/search-products")}>
             <SearchIcon className="text-gray-700" sx={{ fontSize: 29 }} />
           </IconButton>
-          {!isSellerPage && (
-          user.user ? (
+
+          {user.user ? (
             <Button
               onClick={() => navigate("/account/orders")}
               className="flex items-center gap-2"
@@ -111,17 +109,9 @@ const Navbar = () => {
                 src="https://cdn.pixabay.com/photo/2015/04/15/09/28/head-723540_640.jpg"
                 // src="https://www.tanishq.co.in/dw/image/v2/BKCK_PRD/on/demandware.static/-/Library-Sites-TanishqSharedLibrary/default/dwc0abe627/homepage/ShopByGender/Woman.jpg"
               />
-            <h1
-              className="font-semibold hidden lg:block overflow-hidden text-ellipsis whitespace-nowrap max-w-[120px] text-base"
-              style={{ textTransform: "none" }}
-            >
-              {user.user?.fullName &&
-                user.user.fullName
-                  .split(" ")
-                  .slice(0, 2)
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-                  .join(" ")}
-            </h1>
+              <h1 className="font-semibold hidden lg:block">
+                {user.user?.fullName?.split(" ")[0]}
+              </h1>
             </Button>
           ) : (
             <Button
@@ -131,7 +121,7 @@ const Navbar = () => {
             >
               Login
             </Button>
-          ))}
+          )}
 
           <IconButton onClick={()=>navigate("/wishlist")}>
             <FavoriteBorder sx={{ fontSize: 29 }}
@@ -139,7 +129,7 @@ const Navbar = () => {
           </IconButton>
 
           <IconButton onClick={() => navigate("/cart")}>
-            <Badge badgeContent={"4"} color="primary">
+            <Badge badgeContent={cart.cart?.cartItems.length} color="primary">
               <AddShoppingCartIcon
                 sx={{ fontSize: 29 }}
                 className="text-gray-700"

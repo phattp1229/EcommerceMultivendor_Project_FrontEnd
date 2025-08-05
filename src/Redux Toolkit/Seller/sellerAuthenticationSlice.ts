@@ -35,7 +35,7 @@ export const sendLoginOtp = createAsyncThunk('otp/sendLoginOtp', async (email: s
         return rejectWithValue(error.response?.data?.message || 'Failed to send OTP');
     }
 });
-//login use email otp
+//login seller use email otp
 export const verifyLoginOtp = createAsyncThunk('otp/verifyLoginOtp',
     async (data: { email: string; otp: string, navigate: any }, { rejectWithValue }) => {
         try {
@@ -49,7 +49,7 @@ export const verifyLoginOtp = createAsyncThunk('otp/verifyLoginOtp',
             return rejectWithValue(error.response?.data?.message || 'Failed to verify OTP');
         }
     });
-//login use username & password
+//login seller use username & password
 export const verifyLogin = createAsyncThunk('otp/verifyLogin',
     async (data: { username: string; password: string; navigate: any }, { rejectWithValue }) => {
         try {

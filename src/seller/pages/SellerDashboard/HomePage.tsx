@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-// import SellingChart from "./SellingChart";
+import SellingChart from "./SellingChart";
 import { useAppDispatch, useAppSelector } from "../../../Redux Toolkit/Store";
 import { fetchSellerReport } from "../../../Redux Toolkit/Seller/sellerSlice";
-// import ReportCard from "./Report/ReportCard";
+import ReportCard from "./Report/ReportCard";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import {
   FormControl,
@@ -32,11 +32,11 @@ const HomePage = () => {
   };
   return (
     <div className="space-y-5">
-      {/* <section className="grid grid-cols-4 gap-5">
+      <section className="grid grid-cols-4 gap-5">
         <div className="col-span-4 md:col-span-2 lg:col-span-1">
           <ReportCard
             icon={<AccountBalanceIcon />}
-            value={"$" + "" + sellers.report?.totalEarnings}
+            value={ "" + sellers.report?.totalEarnings.toLocaleString("vi-VN") +" đ" }
             title={"Total Earnings"}
           />
         </div>
@@ -62,7 +62,7 @@ const HomePage = () => {
             title={"Cancel Orders"}
           />
         </div>
-      </section> */}
+      </section>
 
       <div className="h-[500px] space-y-10 p-5 lg:p-10 bg-slate-800 rounded-md">
         {/* <h1 className="text-lg font-bold text-white ">Total Revanue</h1> */}
@@ -98,9 +98,9 @@ const HomePage = () => {
           </FormControl>
         </div>
 
-        {/* <div className="h-[350px]">
+        <div className="h-[350px]">
           <SellingChart chartType={chartType} />
-        </div> */}
+        </div>
       </div>
     </div>
   );

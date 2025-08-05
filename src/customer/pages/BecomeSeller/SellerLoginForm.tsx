@@ -1,10 +1,10 @@
 import { Button, TextField } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
-import { verifyLoginOtp,verifyLogin } from '../../../Redux Toolkit/Seller/sellerAuthenticationSlice';
+// import { verifyLoginOtp,verifyLogin } from '../../../Redux Toolkit/Seller/sellerAuthenticationSlice';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { signInSeller } from '../../../Redux Toolkit/Customer/AuthSlice';
+import { sellerLogin } from '../../../Redux Toolkit/Seller/sellerAuthSlice';
 import { useEffect} from 'react'
 import { enqueueSnackbar } from 'notistack';
 
@@ -26,23 +26,13 @@ const SellerLoginForm = () => {
     },
      validationSchema: validationSchema,
     onSubmit: (values) => {
-      dispatch(signInSeller({
+      dispatch(sellerLogin({
         username: values.username, 
         password: values.password,
         navigate
       }));
     }
   });
-  // const { isLoggedIn: isCustomerLoggedIn } = useAppSelector(state => state.auth);
-
-  //   useEffect(() => {
-  //   if (isCustomerLoggedIn) {
-  //     enqueueSnackbar("You are logged in as a Customer. Please log out before logging in as a Seller.", {
-  //       variant: "warning",
-  //     });
-  //     navigate("/");
-  //   }
-  // }, []);
 
     useEffect(() => {
         if (auth.isLoggedIn) {

@@ -10,6 +10,12 @@ import ProductSlice from "./Customer/ProductSlice";
 import CartSlice from "./Customer/CartSlice";
 import CouponSlice from "./Customer/CouponSlice";
 import OrderSlice from "./Customer/OrderSlice";
+import DealSlice from "./Admin/DealSlice";
+import AdminSlice from "./Admin/AdminSlice";
+import AdminCouponSlice from "./Admin/AdminCouponSlice";
+import sellerOrderSlice from "./Seller/sellerOrderSlice";
+import revenueChartSlice from "./Seller/revenueChartSlice";
+import transactionSlice from "./Seller/transactionSlice";
 
 const rootReducer = combineReducers({
     // customer
@@ -24,7 +30,14 @@ const rootReducer = combineReducers({
     //seller
     sellers: sellerSlice,
     sellerAuth: sellerAuthenticationSlice,
-    sellerProduct: sellerProductSlice
+    sellerProduct: sellerProductSlice,
+    sellerOrder: sellerOrderSlice,
+    transaction: transactionSlice,
+    revenueChart: revenueChartSlice,
+    // admin
+    adminCoupon: AdminCouponSlice,
+    adminDeals: DealSlice,
+    admin: AdminSlice,
 });
 
 const store = configureStore({

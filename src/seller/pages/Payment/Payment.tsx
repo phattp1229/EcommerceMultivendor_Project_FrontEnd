@@ -20,9 +20,9 @@ const Payment = () => {
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-3'>
                 <Card className='col-span-1 p-5 rounded-md space-y-4'>
                     <h1 className='text-gray-600 font-medium'>Total Earning</h1>
-                    <h1 className='font-bold text-xl pb-1'>₹{sellers.report?.totalEarnings}</h1>
+                    <h1 className='font-bold text-xl pb-1'>{sellers.report?.totalEarnings.toLocaleString("vi-VN")} đ</h1>
                     <Divider />
-                    <p className='text-gray-600 font-medium pt-1'>Last Payment : <strong>₹0</strong></p>
+                    <p className='text-gray-600 font-medium pt-1'>Last Payment : <strong>0 đ</strong></p>
                 </Card>
             </div>
             <div className='mt-20'>

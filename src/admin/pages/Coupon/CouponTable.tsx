@@ -8,9 +8,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button, IconButton, Menu, MenuItem, Select, styled } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
-// import type { Coupon } from '../../../types/couponTypes';
+import type { Coupon } from '../../../types/couponTypes';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-// import { deleteCoupon } from '../../../Redux Toolkit/Admin/AdminCouponSlice';
+import { deleteCoupon } from '../../../Redux Toolkit/Admin/AdminCouponSlice';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -33,22 +33,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const accountStatuses = [
-    { status: 'ACTIVE', title: 'Active', description: 'Account is active and in good standing' },
-    { status: 'PENDING_VERIFICATION', title: 'Pending Verification', description: 'Account is created but not yet verified' },
-    { status: 'SUSPENDED', title: 'Suspended', description: 'Account is temporarily suspended, possibly due to violations' },
-    { status: 'DEACTIVATED', title: 'Deactivated', description: 'Account is deactivated, user may have chosen to deactivate it' },
-    { status: 'BANNED', title: 'Banned', description: 'Account is permanently banned due to severe violations' },
-    { status: 'CLOSED', title: 'Closed', description: 'Account is permanently closed, possibly at user request' }
+    { status: 'ACTIVE', title: 'Active', description: 'Coupon is active' },
+    { status: 'INACTIVE', title: 'InActive', description: 'Coupon is no-active' },
 ];
 
 export default function CouponTable() {
     const [page, setPage] = React.useState(0);
     const [status, setStatus] = React.useState(accountStatuses[0].status)
-    // const { sellers, adminCoupon } = useAppSelector(store => store)
+    const { sellers, adminCoupon } = useAppSelector(store => store)
     const dispatch = useAppDispatch();
 
     const handleDeleteCoupon = (id:number) => {
-        // dispatch(deleteCoupon({ id, jwt: localStorage.getItem("jwt") || "" }))
+        dispatch(deleteCoupon({ id, jwt: localStorage.getItem("jwt") || "" }))
     }
 
     return (
@@ -79,7 +75,7 @@ export default function CouponTable() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {[1,1,1,1,1].map((coupon: any) => (
+                        {adminCoupon.coupons?.map((coupon: Coupon) => (
                             <StyledTableRow key={coupon.id}>
                                 <StyledTableCell component="th" scope="row">
                                     {coupon.code}

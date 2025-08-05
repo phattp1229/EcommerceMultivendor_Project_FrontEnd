@@ -1,15 +1,16 @@
-import { useEffect } from "react";
-import { useAppDispatch } from "../../../Redux Toolkit/Store";
-import OrderItemCard from "./OrderItemCard"
-import { fetchCustomerOrderHistory } from "../../../Redux Toolkit/Customer/OrderSlice";
+import React, { useEffect } from 'react'
+import OrderItemCard from './OrderItemCard'
+import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
+import { fetchCustomerOrderHistory } from '../../../Redux Toolkit/Customer/OrderSlice';
+import { Button } from '@mui/material';
 
 const Order = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
+    const { cart, auth,orders } = useAppSelector(store => store);
 
-  useEffect(() => {
-    dispatch(fetchCustomerOrderHistory(localStorage.getItem('jwt') || ''));
-  }, []);
-  
+    useEffect(() => {
+        dispatch(fetchCustomerOrderHistory(localStorage.getItem("jwt") || ""))
+    }, [auth.jwt])
   return (
     <div className='text-sm min-h-screen'>
        <div className='pb-5'>
@@ -18,7 +19,7 @@ const Order = () => {
         <p>from anytime</p>
        </div>
         <div className='space-y-2'>
-            {[1,1,1,1,1,1,1].map((item)=><OrderItemCard/>)}
+            {orders?.orders?.map((order)=>order?.orderItems.map((item)=><OrderItemCard item={item} order={order}/>))}
         </div>
         
     </div>

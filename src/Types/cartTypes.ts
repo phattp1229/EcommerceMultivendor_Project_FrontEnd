@@ -1,24 +1,26 @@
-import type { Product } from './productTypes';
-import { Customer } from './customerTypes';
 
-export interface CartItem{
+import type { Product } from "./productTypes";
+import type { User } from "./userTypes";
+
+export interface CartItem {
     id: number;
     cart?: Cart;
     product: Product;
+    size: string;
     quantity: number;
     mrpPrice: number;
     sellingPrice: number;
-    customerId: number;
+    userId: number;
 }
 
 
 export interface Cart {
     id: number;
-    customer: Customer;
+    user: User;
     cartItems: CartItem[];
     totalSellingPrice: number;
+    totalItem: number;
     totalMrpPrice: number;
     discount: number;
     couponCode: string | null;
-
 }

@@ -4,14 +4,14 @@ import AddressCard from '../Checkout/AddressCard'
 import UserAddressCard from './UserAddressCard'
 
 const Addresses = () => {
-    // const { user } = useAppSelector(store => store)
+    const { user } = useAppSelector(store => store)
     return (
         <>
             <div className='space-y-3'>
-                {[1,1,1].map((item) =>
+                {user.user?.addresses?.map((item, index) =>
                     <UserAddressCard
-                        key={"item.id"}
-                        />)}
+                        key={item.id}
+                        item={item} />)}
             </div>
         </>
     )
