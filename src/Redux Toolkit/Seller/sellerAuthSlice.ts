@@ -13,32 +13,33 @@ import type { RootState } from '../Store';
 import { resetUserState } from '../Customer/UserSlice'; // Nếu seller cũng xài chung userSlice
 
 // Lấy token từ localStorage
-const savedJwt = localStorage.getItem("jwt");
+// const savedJwt = localStorage.getItem("jwt");
 
 const initialState: AuthState = {
-    jwt: savedJwt || null,
+    jwt: null,
     role: null,
     loading: false,
     error: null,
     otpSent: false,
-    isLoggedIn: !!savedJwt,
+    isLoggedIn: false
 };
+
 
 
 const API_URL = '/auth';
 
 export const sellerLogin = createAsyncThunk<AuthResponse, LoginRequest>(
     'sellerAuth/login',
-    async (loginRequest, { rejectWithValue }) => {
+    async (data: { username: string; password: string, navigate: any }, { rejectWithValue }) => {
         try {
-            const response = await api.post<AuthResponse>(`${API_URL}/sellers/login`, loginRequest);
+            const response = await api.post<AuthResponse>(`${API_URL}/sellers/login`, data);
             console.log("Seller login successful", response.data);
 
             // Lưu JWT vào localStorage đúng key
             localStorage.setItem("jwt", response.data.jwt);
 
             // Chuyển trang sau khi login
-            loginRequest.navigate("/seller");
+            data.navigate("/seller");
 
             return response.data;
         } catch (error: any) {
@@ -55,10 +56,11 @@ const sellerAuthSlice = createSlice({
     initialState,
     reducers: {
         sellerLogout: (state) => {
-            localStorage.removeItem('jwt');
+            // localStorage.removeItem('jwt');
             state.jwt = null;
             state.role = null;
             state.isLoggedIn = false;
+            localStorage.clear()
             console.log("Seller logout successful!");
         },
     },
@@ -67,16 +69,18 @@ const sellerAuthSlice = createSlice({
             .addCase(sellerLogin.pending, (state) => {
                 state.loading = true;
                 state.error = null;
+
             })
             .addCase(sellerLogin.fulfilled, (state, action: PayloadAction<AuthResponse>) => {
                 state.jwt = action.payload.jwt;
                 state.role = action.payload.role;
-                state.isLoggedIn = true;
                 state.loading = false;
+                state.isLoggedIn = true;
+
             })
             .addCase(sellerLogin.rejected, (state, action) => {
-                state.error = action.payload as string;
                 state.loading = false;
+                state.error = action.payload as string;
             });
     },
 });

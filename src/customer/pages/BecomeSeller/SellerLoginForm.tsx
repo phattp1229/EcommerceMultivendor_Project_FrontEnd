@@ -4,9 +4,9 @@ import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { sellerLogin } from '../../../Redux Toolkit/Seller/sellerAuthSlice';
 import { useEffect} from 'react'
 import { enqueueSnackbar } from 'notistack';
+import { verifyLogin } from '../../../Redux Toolkit/Seller/sellerAuthenticationSlice';
 
 //validate
 const validationSchema = Yup.object({
@@ -26,11 +26,12 @@ const SellerLoginForm = () => {
     },
      validationSchema: validationSchema,
     onSubmit: (values) => {
-      dispatch(sellerLogin({
+      dispatch(verifyLogin({
         username: values.username, 
         password: values.password,
         navigate
-      }));
+      }))
+      console.log('Form data:', values);
     }
   });
 

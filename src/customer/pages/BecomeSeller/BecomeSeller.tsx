@@ -17,11 +17,11 @@ const BecomeSeller = () => {
   const handleCloseSnackbar = () => setSnackbarOpen(false)
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  useEffect(() => {
-    if (auth.isLoggedIn && auth.role === "ROLE_SELLER") {
-      navigate("/seller");
-    }
-  }, [auth.isLoggedIn, auth.role, navigate]);
+  // useEffect(() => {
+  //   if (auth.isLoggedIn && auth.role === "ROLE_SELLER") {
+  //     navigate("/seller");
+  //   }
+  // }, [auth.isLoggedIn, auth.role, navigate]);
 
   useEffect(() => {
 

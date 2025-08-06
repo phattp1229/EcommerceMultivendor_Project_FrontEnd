@@ -53,10 +53,7 @@ export const verifyLoginOtp = createAsyncThunk('otp/verifyLoginOtp',
 export const verifyLogin = createAsyncThunk('otp/verifyLogin',
     async (data: { username: string; password: string; navigate: any }, { rejectWithValue }) => {
         try {
-            const response = await api.post('/sellers/login', {
-                username: data.username,
-                password: data.password
-            });
+            const response = await api.post('/auth/sellers/login', data);
 
             console.log("login seller success - ", response.data);
             localStorage.setItem("jwt", response.data.jwt);
@@ -134,6 +131,19 @@ const sellerAuthSlice = createSlice({
                 state.error = null;
             })
             .addCase(verifyLoginOtp.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+            .addCase(verifyLogin.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(verifyLogin.fulfilled, (state, action) => {
+                state.loading = false;
+                state.jwt = action.payload.jwt;
+                state.error = null;
+            })
+            .addCase(verifyLogin.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             })
