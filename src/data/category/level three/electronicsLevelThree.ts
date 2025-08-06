@@ -492,4 +492,11 @@ export const electronicsLevelThree = [
     name: "Dr. Morepen",
     parentCategoryName: "Featured",
   },
+  {
+    parentCategoryId: "televisions",
+    categoryId: "smart_tv",
+    level: 3,
+    name: "Smart TV",
+    parentCategoryName: "Televisions",
+  },
 ];

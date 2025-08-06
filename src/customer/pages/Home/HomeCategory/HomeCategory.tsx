@@ -4,7 +4,7 @@ import { useAppSelector } from '../../../../Redux Toolkit/Store';
 
 const homeCategory=[
   {
-    "name": "Home Décor",
+    "name": "Home Decord",
     "categoryId": "home_decor",
     "parentCategoryName": "Furniture",
     "parentCategoryId": "furniture",
@@ -44,8 +44,8 @@ const homeCategory=[
     {
       "parentCategoryId":"women",
       "level":2,
-      "name":"Indian & fusion Wear",
-      "categoryId": "women_indian_and_fusion_wear",
+      "name":"Vietnamese & Fusion Wear",
+      "categoryId": "women_vietnamese_and_fusion_wear",
       "section":"SHOP_BY_CATEGORIES",
       image:"https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/22866694/2023/4/24/98951db4-e0a5-47f8-a1be-353863d24dc01682349679664KaliniOrangeSilkBlendEthnicWovenDesignFestiveSareewithMatchi2.jpg"
     },

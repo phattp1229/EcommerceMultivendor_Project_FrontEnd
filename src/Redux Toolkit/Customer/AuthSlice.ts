@@ -15,7 +15,7 @@ import type {
 import type { RootState } from '../Store';
 import { boolean } from 'yup';
 import { resetUserState } from './UserSlice';
-// import { resetCartState } from './CartSlice';
+import { resetCartState } from './CartSlice';
 const savedJwt = localStorage.getItem("jwt");
 
 const initialState: AuthState = {
@@ -237,7 +237,7 @@ export default authSlice.reducer;
 export const performLogout = () => async (dispatch: any) => {
     dispatch(logout());
     dispatch(resetUserState());
-    // dispatch(resetCartState());
+    dispatch(resetCartState());
 };
 
 export const selectAuth = (state: RootState) => state.auth;

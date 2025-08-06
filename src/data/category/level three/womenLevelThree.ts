@@ -49,8 +49,8 @@ export const womenLevelThree = [
         "level": 3
     },
     {
-        "name": "Matching Sets",
-        "categoryId": "matching_sets",
+        "name": "women's clothing",
+        "categoryId": "women_clothing",
         "parentCategoryName": "Vietnamese & Fusion Wear",
         "parentCategoryId": "women_vietnamese_and_fusion_wear",
         "level": 3
@@ -70,15 +70,15 @@ export const womenLevelThree = [
         "level": 3
     },
     {
-        "name": "Hair & Ethnic Jewelry",
-        "categoryId": "hair_ethnic_jewelry",
+        "name": "Wedding Dress",
+        "categoryId": "wedding_dress",
         "parentCategoryName": "Vietnamese & Fusion Wear",
         "parentCategoryId": "women_vietnamese_and_fusion_wear",
         "level": 3
     },
     {
-        "name": "Watches & Modern Accessories",
-        "categoryId": "watches_modern_accessories",
+        "name": "National Costume",
+        "categoryId": "national_custome",
         "parentCategoryName": "Vietnamese & Fusion Wear",
         "parentCategoryId": "women_vietnamese_and_fusion_wear",
         "level": 3

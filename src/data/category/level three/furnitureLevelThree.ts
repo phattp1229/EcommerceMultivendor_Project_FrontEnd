@@ -198,98 +198,98 @@ export const furnitureLevelThree = [
   {
     "name": "Plants & Planters",
     "categoryId": "plants_planters",
-    "parentCategoryName": "Home Décor",
+    "parentCategoryName": "Home Decord",
     "parentCategoryId": "home_decor",
     "level": 3
   },
   {
     "name": "Aromas & Candles",
     "categoryId": "aromas_candles",
-    "parentCategoryName": "Home Décor",
+    "parentCategoryName": "Home Decord",
     "parentCategoryId": "home_decor",
     "level": 3
   },
   {
     "name": "Clocks",
     "categoryId": "clocks",
-    "parentCategoryName": "Home Décor",
+    "parentCategoryName": "Home Decord",
     "parentCategoryId": "home_decor",
     "level": 3
   },
   {
     "name": "Mirrors",
     "categoryId": "mirrors",
-    "parentCategoryName": "Home Décor",
+    "parentCategoryName": "Home Decord",
     "parentCategoryId": "home_decor",
     "level": 3
   },
   {
     "name": "Wall Décor",
     "categoryId": "wall_decor",
-    "parentCategoryName": "Home Décor",
+    "parentCategoryName": "Home Decord",
     "parentCategoryId": "home_decor",
     "level": 3
   },
   {
     "name": "Festive Decor",
     "categoryId": "festive_decor",
-    "parentCategoryName": "Home Décor",
+    "parentCategoryName": "Home Decord",
     "parentCategoryId": "home_decor",
     "level": 3
   },
   {
     "name": "Pooja Essentials",
     "categoryId": "pooja_essentials",
-    "parentCategoryName": "Home Décor",
+    "parentCategoryName": "Home Decord",
     "parentCategoryId": "home_decor",
     "level": 3
   },
   {
     "name": "Wall Shelves",
     "categoryId": "wall_shelves",
-    "parentCategoryName": "Home Décor",
+    "parentCategoryName": "Home Decord",
     "parentCategoryId": "home_decor",
     "level": 3
   },
   {
     "name": "Fountains",
     "categoryId": "fountains",
-    "parentCategoryName": "Home Décor",
+    "parentCategoryName": "Home Decord",
     "parentCategoryId": "home_decor",
     "level": 3
   },
   {
     "name": "Showpieces & Vases",
     "categoryId": "showpieces_vases",
-    "parentCategoryName": "Home Décor",
+    "parentCategoryName": "Home Decord",
     "parentCategoryId": "home_decor",
     "level": 3
   },
   {
     "name": "Ottoman",
     "categoryId": "ottoman",
-    "parentCategoryName": "Home Décor",
+    "parentCategoryName": "Home Decord",
     "parentCategoryId": "home_decor",
     "level": 3
   },
   {
     "name": "Cushions & Cushion Covers",
     "categoryId": "cushions_cushion_covers",
-    "parentCategoryName": "Home Décor",
+    "parentCategoryName": "Home Decord",
     "parentCategoryId": "home_decor",
     "level": 3
   },
   {
     "name": "Curtains",
     "categoryId": "curtains",
-    "parentCategoryName": "Home Décor",
+    "parentCategoryName": "Home Decord",
     "parentCategoryId": "home_decor",
     "level": 3
   },
   {
     "name": "Home Gift Sets",
     "categoryId": "home_gift_sets",
-    "parentCategoryName": "Home Décor",
+    "parentCategoryName": "Home Decord",
     "parentCategoryId": "home_decor",
     "level": 3
   },
@@ -377,5 +377,5 @@ export const furnitureLevelThree = [
     "parentCategoryId": "storage",
     "level": 3
   },
-  
+
 ];

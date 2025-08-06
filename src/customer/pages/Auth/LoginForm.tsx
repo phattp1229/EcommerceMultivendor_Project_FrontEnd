@@ -32,12 +32,12 @@ const LoginForm = () => {
             password: ''
         },
  validationSchema: validationSchema,
-           onSubmit: (values) => {
+           onSubmit: (values : any) => {
              dispatch(signin({
                username: values.username, 
                password: values.password,
-               navigate
-             }));
+               navigate}))
+             console.log('Form data:', values);
            }
     });
 
@@ -66,7 +66,7 @@ const LoginForm = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.username && Boolean(formik.errors.username)}
-          helperText={formik.touched.username && formik.errors.username}
+          helperText={formik.touched.username ? formik.errors.username as string : undefined}
             />
             <TextField
             fullWidth
@@ -77,7 +77,7 @@ const LoginForm = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
+            helperText={formik.touched.password ? formik.errors.password as string : undefined}
                 />
                 {<div>
                     <Button disabled={auth.loading} onClick={handleLogin}

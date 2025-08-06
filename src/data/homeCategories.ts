@@ -88,10 +88,10 @@ export const homeCategories = [
     section: "GRID",
     name: "women footwear",
     image:
-      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/13837166/2021/8/19/04e40e02-4c56-4705-94d0-f444b29973aa1629373611707-House-of-Pataudi-Women-Maroon-Embellished-Handcrafted-Wedges-1.jpg",
+      "https://img.freepik.com/premium-photo/picture-laptop_931878-305748.jpg",
   },
   {
-    name: "Home Décor",
+    name: "Home Decord",
     categoryId: "home_decor",
 
     section: "SHOP_BY_CATEGORIES",
@@ -114,26 +114,26 @@ export const homeCategories = [
     categoryId: "women_sports_active_wear",
     section: "SHOP_BY_CATEGORIES",
     image:
-      "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/22109480/2023/9/5/06a17ac3-46b0-4f9d-bcb1-2d3582feda041693895310152PumaWomenBrandLogoPrintedPureCottonOutdoorT-shirt1.jpg",
+      "https://bizweb.dktcdn.net/thumb/1024x1024/100/455/994/products/9l.jpg?v=1704855518180",
   },
   {
     parentCategoryId: "women",
 
-    name: "Lingerie Sleepwear",
-    categoryId: "women_lingerie_sleepwear",
+    name: "Smart TV",
+    categoryId: "smart_tv",
     section: "SHOP_BY_CATEGORIES",
     image:
-      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/362895/2023/10/18/bfb55058-fe1a-45d6-a39d-1b8d421e02001697603774147TriumphShapeSensation33withHighWaistTummyandThighControlMaxi1.jpg",
+      "https://i5.walmartimages.com/asr/4c0a13e0-8c33-4341-b6e7-2d1c8c063bc3.310d1226a143ce3b1f6f7cc236deb222.jpeg",
   },
 
   {
     parentCategoryId: "women",
 
-    name: "Indian & fusion Wear",
-    categoryId: "women_indian_and_fusion_wear",
+    name: "Vietnamese & Fusion Wear",
+    categoryId: "women_vietnamese_and_fusion_wear",
     section: "SHOP_BY_CATEGORIES",
     image:
-      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/22866694/2023/4/24/98951db4-e0a5-47f8-a1be-353863d24dc01682349679664KaliniOrangeSilkBlendEthnicWovenDesignFestiveSareewithMatchi2.jpg",
+      "https://i.pinimg.com/736x/96/3b/4d/963b4ded045c936799965187038fb99c.jpg",
   },
   {
     parentCategoryId: "women",
@@ -142,7 +142,7 @@ export const homeCategories = [
     categoryId: "women_western_wear",
     section: "SHOP_BY_CATEGORIES",
     image:
-      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/22391504/2023/3/17/3259c109-060a-4c39-aba2-e9d32e2068e41679049035856StyleQuotientPeach-ColouredTie-UpNeckPuffSleeveCottonTop1.jpg",
+      "https://kenh14cdn.com/203336854389633024/2025/5/10/snapins-ai-csu9mvit9wj-2357-4246-1746839965302-1746839965470959453130.jpg",
   },
   {
     parentCategoryId: "women",
@@ -151,7 +151,7 @@ export const homeCategories = [
     categoryId: "women_footwear",
     section: "SHOP_BY_CATEGORIES",
     image:
-      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/28024048/2024/3/5/fca98389-f9d6-4f19-b82a-53c7ee0518ec1709633175836CORSICABlockSandalswithBows1.jpg",
+      "https://tse3.mm.bing.net/th/id/OIP.wz77LoNs5GDSSnGawaC9hAHaHM?w=545&h=530&rs=1&pid=ImgDetMain&o=7&rm=3",
   },
   {
     name: "Topwere",
@@ -160,7 +160,7 @@ export const homeCategories = [
 
     section: "SHOP_BY_CATEGORIES",
     image:
-      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/23029834/2023/9/18/96c015ae-1090-4036-954b-d9c80085b1d71695022844653-HRX-by-Hrithik-Roshan-Men-Jackets-6981695022843934-1.jpg",
+      "https://tse1.explicit.bing.net/th/id/OIP.hVk-xO_VVUlTPHRkQn18QAHaLH?rs=1&pid=ImgDetMain&o=7&rm=3",
   },
   {
     name: "Bottomwere",
@@ -172,22 +172,22 @@ export const homeCategories = [
       "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/20122324/2022/9/22/91c61c45-fe17-4d1d-8e20-0aaaf90186b61663827920015RaymondSlimFitBlueJeansForMen1.jpg",
   },
   {
-    name: "Innerwere And Sleepwere",
-    categoryId: "men_innerwear_and_sleepwear",
-    parentCategoryId: "men",
+    name: "Laptop Gaming",
+    categoryId: "gaming_laptops",
+    parentCategoryId: "laptop",
 
     section: "SHOP_BY_CATEGORIES",
     image:
-      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/24528350/2023/8/17/d9ee03c9-7e15-49e4-8f15-0b6f38e568121692275415567TrackPants1.jpg",
+      "https://hacom.vn/media/lib/10-01-2022/laptopgigabytegamingg5.jpg",
   },
   {
-    name: "Footwere",
+    name: "Footwere Men",
     categoryId: "men_footwear",
     parentCategoryId: "men",
 
     section: "SHOP_BY_CATEGORIES",
     image:
-      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/27107914/2024/1/30/bd09f650-d8a4-4570-8e53-e2cfafc4ea6c1706609911015SparxMenMeshRunningShoes1.jpg",
+      "https://tse2.mm.bing.net/th/id/OIP.99yJcFWOt7o2SX73kQV0cQAAAA?rs=1&pid=ImgDetMain&o=7&rm=3",
   },
   {
     name: "Bed Linen & Furnishing",
@@ -206,12 +206,12 @@ export const homeCategories = [
       "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/27868878/2024/2/25/53b7c07f-24a7-48e2-a791-f63dce4a0c981708844793060SANACARPETMulticolouredFloralAnti-SkidPolyesterCarpet1.jpg",
   },
   {
-    name: "Bath",
-    categoryId: "bath",
+    name: "Apple Mobile",
+    categoryId: "apple_mobile",
 
     section: "SHOP_BY_CATEGORIES",
     image:
-      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/16719378/2024/7/2/97418bad-8216-494f-a863-9b159aec93cf1719897710069JockeyPackof2CottonTerry500GSMUltrasoftandDurableSolidHandTo1.jpg",
+      "https://cdn.nguyenkimmall.com/images/product/829/dien-thoai-iphone-14-pro-max-1tb-tim-1.jpg",
   },
   {
     name: "Lamps & Lighting",
@@ -240,8 +240,8 @@ export const homeCategories = [
   },
 
   {
-    name: "Women Saree",
-    categoryId: "women_sarees",
+    name: "Wedding women",
+    categoryId: "wedding_dress",
     section: "DEALS",
     image: "https://rukminim2.flixcart.com/image/832/832/xif0q/sari/z/a/4/free-saree-new2023-simple-light-weight-saree-chiffon-print-saree-original-imagzyhp2azy7rwz.jpeg?q=70&crop=false",
   },

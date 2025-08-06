@@ -19,7 +19,8 @@ export interface ApiResponse {
 export interface LoginRequest {
     username: string;
     password: string;
-    navigate: (path: string) => void; // rõ ràng hơn so với `any`
+    // navigate: (path: string) => void; // rõ ràng hơn so với `any`
+    navigate: any;
 }
 
 export interface SignupRequest {
