@@ -1,7 +1,7 @@
 export const uploadToCloudinary = async (pics: any) => {
 
-  const cloud_name = "dcn8rcg4j"
-  const upload_preset = "TanPhat"
+  const cloud_name = "dlvimrmui"
+  const upload_preset = "ecommerceMultivendor"
   if (pics) {
 
     const data = new FormData();
