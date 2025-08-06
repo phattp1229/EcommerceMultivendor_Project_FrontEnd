@@ -10,10 +10,12 @@ export const fetchHomePageData = createAsyncThunk<HomeData>(
     try {
       const response = await api.get('/home-page');
       console.log("home page ", response.data)
+      console.log("✅ Deals data:", response.data.deals);
+
       return response.data;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     catch (error: any) {
       // Handle the error and return it to be used in rejected action
       const errorMessage = error.response?.data?.message || error.message || 'Failed to fetch home page data';
@@ -32,7 +34,7 @@ export const createHomeCategories = createAsyncThunk<HomeData, HomeCategory[]>(
       return response.data;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     catch (error: any) {
       // Handle the error and return it to be used in rejected action
       const errorMessage = error.response?.data?.message || error.message || 'Failed to create home categories';

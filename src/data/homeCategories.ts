@@ -224,7 +224,7 @@ export const homeCategories = [
     name: "Men T Shirts",
     categoryId: "men_t_shirts",
     section: "DEALS",
-    image: "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/2024/AUGUST/26/zLmM5KEB_e4781ac0cc0945119e653f4130994bd2.jpg",
+    image: "https://owen.cdn.vccloud.vn/media/catalog/product/cache/d52d7e242fac6dae82288d9a793c0676/t/s/tsn253675._1.jpg",
   },
   {
     name: "Women Skirts",
@@ -243,7 +243,7 @@ export const homeCategories = [
     name: "Wedding women",
     categoryId: "wedding_dress",
     section: "DEALS",
-    image: "https://rukminim2.flixcart.com/image/832/832/xif0q/sari/z/a/4/free-saree-new2023-simple-light-weight-saree-chiffon-print-saree-original-imagzyhp2azy7rwz.jpeg?q=70&crop=false",
+    image: "https://aocuoihoanggia.com/uploads/source/trung-hoa/2-1716886557106228768.jpg",
   },
   {
     name: "Smart Watches",
@@ -253,7 +253,7 @@ export const homeCategories = [
   },
   {
     name: "Men Festive Wear",
-    categoryId: "men_indian_and_festive_wear",
+    categoryId: "men_vietnamese_and_festive_wear",
     section: "DEALS",
     image: "https://rukminim2.flixcart.com/image/612/612/xif0q/ethnic-set/o/n/o/l-02-langit-original-imah4jwwctkjtman.jpeg?q=70",
   },
