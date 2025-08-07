@@ -49,7 +49,7 @@ const CustomerRoutes = () => {
         <Route path='/checkout/address' element={<Address />} />
         <Route path='/account/*' element={<Profile />} />
         <Route path='/login' element={<Auth/>} />
-        <Route path="/payment-success/:paymentOrderId" element={<PaymentSucess/>} /> //Dành cho Stripe
+        <Route path="/payment-success" element={<PaymentSucess/>} /> //Dành cho Stripe
         <Route path='*' element={<NotFound/>} />
       </Routes>
       <Footer />
