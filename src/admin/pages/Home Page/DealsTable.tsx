@@ -2,7 +2,7 @@ import { Box, IconButton, Modal, Paper, styled, Table, TableBody, TableCell, tab
 import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
 import EditIcon from '@mui/icons-material/Edit';
-// import { deleteDeal, getAllDeals } from '../../../Redux Toolkit/Admin/DealSlice';
+import { deleteDeal, getAllDeals } from '../../../Redux Toolkit/Admin/DealSlice';
 import UpdateDealForm from './UpdateDealForm';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -38,7 +38,7 @@ const style = {
   p: 4,
 };
 const DealsTable = () => {
-  // const { homePage,deal } = useAppSelector(store => store)
+  const { homePage,adminDeals } = useAppSelector(store => store)
   const [selectedDealId, setSelectedDealId] = useState<number>();
   const [open, setOpen] = React.useState(false);
   const dispatch = useAppDispatch()
@@ -50,10 +50,10 @@ const DealsTable = () => {
   };
   const handleClose = () => setOpen(false);
   const handleDelete = (id: any) => () => {
-    // dispatch(deleteDeal(id))
+    dispatch(deleteDeal(id))
   }
   useEffect(() => {
-    // dispatch(getAllDeals())
+    dispatch(getAllDeals())
   }, [])
   return (
     <>
@@ -71,34 +71,34 @@ const DealsTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {[1,1,1,1,1].map(
+            {adminDeals.deals.map(
               (deal: any, index) => (
-                <StyledTableRow key={1}>
+                <StyledTableRow key={deal.id}>
                   <StyledTableCell component="th" scope="row">
                     {index + 1}
                   </StyledTableCell>
                   <StyledTableCell component="th" scope="row">
                     <img
                       className="w-20 rounded-md"
-                      src={"https://product.hstatic.net/1000360022/product/7rv03572_b72df192734b44b7b174470460c4adf7_1024x1024.jpg"}
+                      src={deal.category.image}
                       alt=""
                     />
                   </StyledTableCell>
 
                   <StyledTableCell component="th" scope="row">
-                    {"deal.category.categoryId"}
+                    {deal.category.categoryId}
                   </StyledTableCell>
                   <StyledTableCell component="th" scope="row">
-                    {"deal.discount"}%
+                    {deal.discount}%
                   </StyledTableCell>
 
                   <StyledTableCell align="right">
-                    <IconButton onClick={handleOpen(1)}>
+                    <IconButton onClick={handleOpen(deal.id)}>
                       <EditIcon className="text-orange-400 cursor-pointer" />
                     </IconButton>
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    <IconButton onClick={handleDelete(1)}>
+                    <IconButton onClick={handleDelete(deal.id)}>
                       
                       <DeleteIcon className="text-red-600 cursor-pointer" />
                     </IconButton>

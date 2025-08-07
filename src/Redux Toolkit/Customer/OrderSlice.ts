@@ -14,7 +14,7 @@ const initialState: OrderState = {
   paymentOrder: null,
   loading: false,
   error: null,
-  orderCancelled: false,
+  orderCanceled: false,
 };
 
 const API_URL = "/api/orders";
@@ -110,29 +110,34 @@ export const fetchOrderItemById = createAsyncThunk<
   );
 
 
-export const paymentSuccess = createAsyncThunk<
-  ApiResponse,
-  { paymentId: string; jwt: string, paymentLinkId: string },
-  { rejectValue: string }>(
-    "orders/paymentSuccess",
-    async ({ paymentId, jwt, paymentLinkId }, { rejectWithValue }) => {
-      try {
-        const response = await api.get(`/api/payment/${paymentId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${jwt}`,
-            },
-            params: { paymentLinkId }
-          }
-        );
-        console.log("Payment success response:", response.data);
-        return response.data;
-      } catch (error: any) {
-        console.error("Error processing payment success:", error.response);
-        return rejectWithValue(error.response?.data?.error || 'Failed to process payment success');
-      }
+export const paymentSuccessStripe = createAsyncThunk<ApiResponse,
+  { paymentId: string; jwt: string; paymentLinkId: string },
+  { rejectValue: string }
+>('orders/paymentSuccess', async ({ paymentId, jwt }, { rejectWithValue }) => {
+  try {
+    const isStripe = paymentId.startsWith("cs_"); // kiểm tra stripe
+    if (isStripe) {
+      const response = await api.post(
+        `api/payment/stripe/verify`,
+        { sessionId: paymentId },
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      console.log("Stripe payment verified:", response.data);
+      return { message: response.data, status: true }; // chỉnh lại nếu backend trả object khác
     }
-  );
+    else {
+      return rejectWithValue("Invalid payment method");
+    }
+  } catch (error: any) {
+    console.error("Error completing Stripe payment:", error.response);
+    return rejectWithValue(error.response?.data?.error || 'Failed to complete Stripe payment');
+  }
+}
+);
 
 
 export const cancelOrder = createAsyncThunk<Order, any>(
@@ -217,7 +222,7 @@ const orderSlice = createSlice({
       .addCase(fetchCustomerOrderHistory.pending, (state) => {
         state.loading = true;
         state.error = null;
-        state.orderCancelled = false;
+        state.orderCanceled = false;
       })
       .addCase(
         fetchCustomerOrderHistory.fulfilled,
@@ -291,16 +296,16 @@ const orderSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // --- ADDED: Case reducer cho việc hoàn tất Stripe ---
-      .addCase(completeStripePayment.pending, (state) => {
+      // payment success handler for Stripe
+      .addCase(paymentSuccessStripe.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(completeStripePayment.fulfilled, (state, action) => {
+      .addCase(paymentSuccessStripe.fulfilled, (state, action) => {
         state.loading = false;
-        console.log('Stripe payment fulfilled:', action.payload);
+        console.log('Payment successful:', action.payload);
       })
-      .addCase(completeStripePayment.rejected, (state, action) => {
+      .addCase(paymentSuccessStripe.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
@@ -308,14 +313,14 @@ const orderSlice = createSlice({
       .addCase(cancelOrder.pending, (state) => {
         state.loading = true;
         state.error = null;
-        state.orderCancelled = false;
+        state.orderCanceled = false;
       })
       .addCase(cancelOrder.fulfilled, (state, action) => {
         state.loading = false;
         state.orders = state.orders.map((order) =>
           order.id === action.payload.id ? action.payload : order
         );
-        state.orderCancelled = true;
+        state.orderCanceled = true;
         state.currentOrder = action.payload
       })
       .addCase(cancelOrder.rejected, (state, action) => {

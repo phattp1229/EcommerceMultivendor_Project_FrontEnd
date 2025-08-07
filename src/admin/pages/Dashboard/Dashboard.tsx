@@ -9,17 +9,17 @@ import { useAppSelector } from '../../../Redux Toolkit/Store'
 
 const AdminDashboard = () => {
   //@ts-ignore
-  const { adminDeals:deal,admin } = useAppSelector(store => store)
+  const { adminDeals,admin } = useAppSelector(store => store)
   const [snackbarOpen, setOpenSnackbar] = useState(false);
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   }
   useEffect(() => {
-    if (deal.dealCreated || deal.dealUpdated ||deal.error || admin.categoryUpdated) {
+    if (adminDeals.dealCreated || adminDeals.dealUpdated ||adminDeals.error || admin.categoryUpdated) {
       setOpenSnackbar(true)
     }
-  }, [deal.dealCreated, deal.dealUpdated, deal.error,admin.categoryUpdated])
+  }, [adminDeals.dealCreated, adminDeals.dealUpdated, adminDeals.error,admin.categoryUpdated])
   return (
     <>
       <div className="min-h-screen">
@@ -45,7 +45,7 @@ const AdminDashboard = () => {
           variant="filled"
           sx={{ width: '100%' }}
         >
-          {deal.error ? deal.error : deal.dealCreated ? "Deal created successfully" : deal.dealUpdated 
+          {adminDeals.error ? adminDeals.error : adminDeals.dealCreated ? "Deal created successfully" : adminDeals.dealUpdated 
           ? "deal updated successfully" : admin.categoryUpdated?"Category Updated successfully": ""}
           Category Updated Successfully !!!!
         </Alert>

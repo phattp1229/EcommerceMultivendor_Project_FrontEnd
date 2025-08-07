@@ -1,27 +1,58 @@
+import React, { useState, useEffect } from 'react';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { teal } from '@mui/material/colors';
+import { IconButton } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import type { Product } from '../../../../types/productTypes';
 
-const SimilarProductCard = () => {
-  return (
-    <div>
-        <div className='group px-4 relative'>
-            <div className='card'>
-                <img className="card-media oject-top" 
-                src={"https://product.hstatic.net/1000360022/product/ao-so-mi-oxford-nam-tay-dai-blank-color-embroider-form-slim__2__bc173162154a485cb817e55f7a8471e1_1024x1024.jpg"} alt=""/>
+const SimilarProductCard = ({ product }: any) => {
+    const [currentImage, setCurrentImage] = useState(0);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isFavorite, setIsFavorite] = useState(false);
+    const navigate=useNavigate();
+
+    const handleIconClick = () => {
+        setIsFavorite((prev) => !prev);
+    };
+
+
+    return (
+        <div
+         onClick={()=> navigate(
+            `/product-details/${product.category?.categoryId}/${product.title}/${product.id}`
+        )} 
+         className='group '>
+            <div
+                className="relative h-[300px]"
+              
+            >
+                    <img
+                        className="h-full w-full object-cover"
+                        src={product.images[0]}
+                        alt={`product-similar`}
+                        
+                    />
+            
+           
+
             </div>
+            <div className='details pt-3 space-y-1 group-hover-effect  rounded-md '>
+                <div className='name space-y '>
+                    <h1 className='font-semibold text-lg'>{product.seller?.businessDetails.businessName}</h1>
+                    <p className=''>{product.title}</p>
 
-            <div className='details pt-3 space-y-1 group-hover-effect rounded-md'> 
-                <div className='name'>
-                    <h1>Niky</h1>
-                    <p>Blue Skirt</p>
                 </div>
-                <div className='price flex items-center gap-3'>
-                    <span className='font-sans text-gray-800'>450.000 đ</span>
-                    <span className='thin-line-through text-gray-400'>500.000 đ</span>
-                    <span className="text-primary-color font-semibold">-10%</span>
+                <div className='price flex items-center gap-3 '>
+                    <span className='font-semibold text-gray-800'> {product.sellingPrice.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}</span>
+                    <span className='text thin-line-through text-gray-400 '>{product.mrpPrice.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}</span>
+                    <span className='text-[#00927c] font-semibold'>{product.discountPercent}% off</span>
                 </div>
+
+                
+
             </div>
         </div>
-    </div>
-  )
-}
+    );
+};
 
-export default SimilarProductCard
+export default SimilarProductCard;
