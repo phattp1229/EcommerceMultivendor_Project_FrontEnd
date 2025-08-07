@@ -1,9 +1,9 @@
 
-import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store'
+import { useAppSelector } from '../../../Redux Toolkit/Store'
 import WishlistProductCard from './WishlistProductCard';
 
 const Wishlist = () => {
-    const dispatch = useAppDispatch();
+//    const dispatch = useAppDispatch();
     const { wishlist } = useAppSelector(store => store)
 
 
@@ -21,7 +21,7 @@ const Wishlist = () => {
                 </section> :
                 <div className="h-full flex justify-center items-center flex-col">
                     <div className="text-center py-5">
-                        <h1 className="text-lg font-medium">hay its feels so light!</h1>
+                        <h1 className="text-lg font-medium">Hey its feels so light!</h1>
                         <p className="text-gray-500 text-sm">
                             there is nothing in your wishlist, lets add some items
                         </p>

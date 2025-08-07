@@ -1,5 +1,5 @@
 import { Alert, Button, Divider, Snackbar } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import Order from './Order'
 import UserDetails from './UserDetails'
@@ -10,8 +10,8 @@ import { performLogout } from '../../../Redux Toolkit/Customer/AuthSlice'
 import Addresses from './Adresses'
 import {Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle} from "@mui/material";
 const menu = [
-    { name: "orders", path: "/account/orders" },
-    { name: "profile", path: "/account/profile" },
+    { name: "Orders", path: "/account/orders" },
+    { name: "Profile", path: "/account/profile" },
     { name: "Saved Cards", path: "/account/saved-card" },
     { name: "Addresses", path: "/account/addresses" },
     { name: "Logout", path: "/" }

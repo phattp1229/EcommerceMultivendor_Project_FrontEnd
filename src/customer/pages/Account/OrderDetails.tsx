@@ -1,5 +1,5 @@
 import { Box, Button, Divider } from '@mui/material'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import PaymentsIcon from '@mui/icons-material/Payments';
 import OrderStepper from './OrderStepper';
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 const OrderDetails = () => {
   const dispatch = useAppDispatch()
-  const { cart, auth, orders } = useAppSelector(store => store);
+  const { auth, orders } = useAppSelector(store => store);
   const { orderItemId, orderId } = useParams()
   const navigate = useNavigate();
 
@@ -63,7 +63,9 @@ const OrderDetails = () => {
           </div>
 
           <p>
-            {orders.currentOrder?.shippingAddress.street}, {orders.currentOrder?.shippingAddress.city}, {orders.currentOrder?.shippingAddress.state} - {orders.currentOrder?.shippingAddress.postalCode}
+            {orders.currentOrder?.shippingAddress.street}, 
+            {orders.currentOrder?.shippingAddress.city}, 
+            {orders.currentOrder?.shippingAddress.state} - {orders.currentOrder?.shippingAddress.postalCode}
           </p>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React from 'react'
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
-import { Avatar, Button } from '@mui/material';
+import { Avatar } from '@mui/material';
 import { teal } from '@mui/material/colors';
 import { useNavigate } from 'react-router-dom';
 import type { Order, OrderItem } from '../../../types/orderTypes';
