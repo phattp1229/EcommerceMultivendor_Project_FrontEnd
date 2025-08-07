@@ -31,6 +31,7 @@ import Mobile from './data/Products/mobile';
 import CustomerRoutes from './routes/CustomerRoutes';
 import { homeCategories } from './data/homeCategories';
 import { createHomeCategories} from './Redux Toolkit/Customer/Customer/AsyncThunk';
+import Wishlist from './customer/pages/Wishlist/Wishlist';
 
 
 
@@ -70,6 +71,7 @@ const navigate=useNavigate();
     //           <Route path="/reviews/:productId" element={<Reviews />} />
     //           <Route path="/product-details/:categoryId/:name/:productId" element={<ProductDetails />} />
     //           <Route path="/cart" element={<Cart />} />
+    //           <Route path="/wishlist" element={<Wishlist />} />
     //           <Route path="/checkout/address" element={<AddressPage />} />
     //           <Route path="/payment-success/:paymentOrderId" element={<PaymentSucess/>} /> //Dành cho Stripe
     //           <Route path="/payment/paypal/callback:" element={<PaypalCallback />} /> // Dành cho PayPal
@@ -98,7 +100,6 @@ const navigate=useNavigate();
           <Route path='/seller-account-verified' element={<SellerAccountVerified />} />
           <Route path='/become-seller' element={<BecomeSeller />} />
           <Route path='/admin-login' element={<AdminAuth />} />
-
           <Route path='/dummy' element={<Mobile />} />
 
           <Route path='*' element={<CustomerRoutes />} />

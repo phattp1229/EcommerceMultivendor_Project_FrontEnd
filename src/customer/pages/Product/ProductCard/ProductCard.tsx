@@ -2,17 +2,14 @@ import React, { useState, useEffect } from "react";
 import "./ProductCard.css";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { teal } from "@mui/material/colors";
-import { Box, Button, IconButton, Modal } from "@mui/material";
+import { Button} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import type { Product } from "../../../../types/productTypes";
-import {
-    useAppDispatch,
-    useAppSelector,
+import { useAppDispatch, useAppSelector,
 } from "../../../../Redux Toolkit/Store";
-// import { addProductToWishlist } from "../../../../Redux Toolkit/Customer/WishlistSlice";
+import { addProductToWishlist } from "../../../../Redux Toolkit/Customer/WishlistSlice";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-// import { isWishlisted } from "../../../../util/isWishlisted";
-import ModeCommentIcon from '@mui/icons-material/ModeComment';
+import { isWishlisted } from "../../../util/isWishlisted";
 
 
 interface ProductCardProps {
@@ -20,30 +17,30 @@ interface ProductCardProps {
     // categoryId: string | undefined;
     item: Product;
 }
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: "auto",
-    borderRadius: ".5rem",
-    boxShadow: 24,
+//Stype cho chatbot
+// const style = {
+//     position: 'absolute',
+//     top: '50%',
+//     left: '50%',
+//     transform: 'translate(-50%, -50%)',
+//     width: "auto",
+//     borderRadius: ".5rem",
+//     boxShadow: 24,
 
-};
+// };
 
 const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
     const [currentImage, setCurrentImage] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
-    const [isFavorite, setIsFavorite] = useState(false);
-    // const { wishlist } = useAppSelector((store) => store);
+    //const [setIsFavorite] = useState(false);
+    const { wishlist } = useAppSelector((store) => store);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const wishlist = true;
 
-    const handleAddWishlist = (event: MouseEvent) => {
+    const handleAddWishlist = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
-        setIsFavorite((prev) => !prev);
-        // if (item.id) dispatch(addProductToWishlist({ productId: item.id }));
+        //setIsFavorite((prev) => !prev);
+        if (item.id) dispatch(addProductToWishlist({ productId: item.id }));
     };
 
     useEffect(() => {
@@ -72,7 +69,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
                         <img
                             key={index}
                             className="card-media object-w-full h-full object-contain object-center  border-4 border-white hover:border-pink-400 
-                            transition duration-300top absolute inset-0 transition-all duration-500 ease-in-out"
+                            transition duration-300top absolute inset-0 duration-500 ease-in-out"
                             src={image}
                             alt={`product-${index}`}
                             style={{
@@ -93,7 +90,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
                                     />
                                 ))}
                             </div>
-
+                            
+                            <div className="flex gap-3">
+                                {wishlist.wishlist && (
+                                    <Button
+                                        variant="contained" color="secondary" sx={{ zIndex: 10 }}
+                                        className=" z-50" onClick={handleAddWishlist} >
+                                        {isWishlisted(wishlist.wishlist, item) ? (
+                                            <FavoriteIcon sx={{ color: teal[500] }} />
+                                        ) : (
+                                            <FavoriteBorderIcon sx={{ color: "gray" }} />
+                                        )}
+                                    </Button>
+                                )}
+                                
+                            </div>
 
 
                         </div>

@@ -21,6 +21,7 @@ import { getWishlistByUserId } from '../Redux Toolkit/Customer/WishlistSlice'
 import SearchProducts from '../customer/pages/Search/SearchProducts'
 import PaymentSucess from '../customer/pages/Payment/PaymentSuccess'
 import Products from '../customer/pages/Product/Products'
+import PaypalCallback from '../customer/pages/Payment/PaypalPaymentCallBack'
 
 
 
@@ -49,6 +50,7 @@ const CustomerRoutes = () => {
         <Route path='/account/*' element={<Profile />} />
         <Route path='/login' element={<Auth/>} />
         <Route path="/payment-success/:paymentOrderId" element={<PaymentSucess/>} /> //Dành cho Stripe
+        <Route path="/payment/paypal/callback:" element={<PaypalCallback />} />
         <Route path='*' element={<NotFound/>} />
       </Routes>
       <Footer />

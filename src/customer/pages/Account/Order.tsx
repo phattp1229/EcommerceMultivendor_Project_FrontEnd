@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import OrderItemCard from './OrderItemCard'
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
 import { fetchCustomerOrderHistory } from '../../../Redux Toolkit/Customer/OrderSlice';
-import { Button } from '@mui/material';
+
 
 const Order = () => {
   const dispatch = useAppDispatch()
-    const { cart, auth,orders } = useAppSelector(store => store);
+    const { auth,orders } = useAppSelector(store => store);
 
     useEffect(() => {
         dispatch(fetchCustomerOrderHistory(localStorage.getItem("jwt") || ""))

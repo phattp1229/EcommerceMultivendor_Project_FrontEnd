@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
-
 import type { Wishlist, WishlistState } from "../../types/wishlistTypes";
 import { api } from "../../Config/Api";
 

@@ -68,8 +68,8 @@ const handleUpdate = async () => {
 
     await dispatch(updateUserProfile({ jwt: jwt as string, data: payload })).unwrap();
     enqueueSnackbar("Update profile successfully!", { variant: "success" });
-    setIsEditing(false); // 👈 đưa vào đây luôn để đồng bộ
-  } catch (error) {
+    setIsEditing(false); 
+  } catch {
     enqueueSnackbar("Update failed!", { variant: "error" });
     }
   };
