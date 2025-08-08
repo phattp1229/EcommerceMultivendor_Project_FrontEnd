@@ -18,7 +18,7 @@ import { useAppDispatch, useAppSelector } from './Redux Toolkit/Store';
 import { useEffect } from 'react';
 
 import Auth from './customer/pages/Auth/Auth';
-import { fetchUserProfile } from './Redux Toolkit/Customer/UserSlice';
+import { fetchCustomerProfile } from './Redux Toolkit/Customer/CustomerProfileSlice';
 import { SnackbarProvider } from 'notistack';
 import PaymentSucess from './customer/pages/Payment/PaymentSuccess';
 import PaymentSuccess from './customer/pages/Payment/PaymentSuccess';
@@ -37,12 +37,12 @@ import Wishlist from './customer/pages/Wishlist/Wishlist';
 
 function App() {
   const dispatch = useAppDispatch()
-  const { auth, sellerAuth, sellers, user } = useAppSelector(store => store)
+  const { auth, sellerAuth, sellers, customer } = useAppSelector(store => store)
 const navigate=useNavigate();
 
   useEffect(() => {
     if (localStorage.getItem("jwt")) {
-      dispatch(fetchUserProfile({jwt:localStorage.getItem("jwt") || auth.jwt || "",navigate}));
+      dispatch(fetchCustomerProfile({jwt:localStorage.getItem("jwt") || auth.jwt || "",navigate}));
       dispatch(fetchSellerProfile(localStorage.getItem("jwt") || sellerAuth.jwt))
     }
 
@@ -95,7 +95,7 @@ const navigate=useNavigate();
 
         <Routes>
           {sellers.profile && <Route path='/seller/*' element={<SellerDashboard />} />}
-          {user.user?.role === "ROLE_MANAGER" && <Route path='/admin/*' element={<AdminDashboard />} />}
+          {customer.customer?.account?.role === "ROLE_MANAGER" && <Route path='/admin/*' element={<AdminDashboard />} />}
           <Route path='/verify-seller/:otp' element={<SellerAccountVerification />} />
           <Route path='/seller-account-verified' element={<SellerAccountVerified />} />
           <Route path='/become-seller' element={<BecomeSeller />} />

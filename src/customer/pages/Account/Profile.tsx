@@ -2,7 +2,7 @@ import { Alert, Button, Divider, Snackbar } from '@mui/material'
 import { useState } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import Order from './Order'
-import UserDetails from './UserDetails'
+import CustomerDetails from './CustomerDetails'
 import SavedCards from './SavedCards'
 import OrderDetails from './OrderDetails'
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store'
@@ -21,7 +21,7 @@ const Profile = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useAppDispatch()
-    const { user } = useAppSelector(store => store)
+    const { customer } = useAppSelector(store => store)
     const [snackbarOpen, setOpenSnackbar] = useState(false);
 
     // const handleLogout = () => {
@@ -54,7 +54,7 @@ const Profile = () => {
         <div className='px-5 lg:px-52 min-h-screen mt-10 '>
 
             <div>
-                <h1 className='text-xl font-bold pb-5'>{user.user?.fullName}</h1>
+                <h1 className='text-xl font-bold pb-5'>{customer.customer?.fullName}</h1>
             </div>
             <Divider />
             <div className='grid grid-cols-1 lg:grid-cols-3 lg:min-h-[78vh]'>
@@ -72,10 +72,10 @@ const Profile = () => {
                 <div className='lg:col-span-2 lg:pl-5 py-5'>
 
                     <Routes>
-                        <Route path='/' element={<UserDetails />} />
+                        <Route path='/' element={<CustomerDetails />} />
                         <Route path='orders' element={<Order />} />
                         <Route path='orders/:orderId/:orderItemId' element={<OrderDetails />} />
-                        <Route path='profile' element={<UserDetails />} />
+                        <Route path='profile' element={<CustomerDetails />} />
                         <Route path='saved-card' element={<SavedCards />} />
                         <Route path='addresses' element={<Addresses />} />
                     </Routes>
@@ -91,7 +91,7 @@ const Profile = () => {
             >
                 <Alert
                     onClose={handleCloseSnackbar}
-                    severity={user.error ? "error" : "success"}
+                    severity={customer.error ? "error" : "success"}
                     variant="filled"
                     sx={{ width: "100%" }}
                 >

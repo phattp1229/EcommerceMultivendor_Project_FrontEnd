@@ -4,7 +4,7 @@ import sellerSlice from "./Seller/sellerSlice";
 import sellerAuthenticationSlice from "./Seller/sellerAuthenticationSlice";
 import AuthSlice from "./Customer/AuthSlice";
 import CustomerSlice from "./Customer/Customer/CustomerSlice";
-import UserSlice from "./Customer/UserSlice";
+import CustomerProfileSlice from "./Customer/CustomerProfileSlice";
 import sellerProductSlice from "./Seller/sellerProductSlice";
 import ProductSlice from "./Customer/ProductSlice";
 import CartSlice from "./Customer/CartSlice";
@@ -21,7 +21,7 @@ import ReviewSlice from "./Customer/ReviewSlice";
 const rootReducer = combineReducers({
     // customer
     auth: AuthSlice,
-    user: UserSlice,
+    customer: CustomerProfileSlice,
     homePage: CustomerSlice,
     products: ProductSlice,
     cart: CartSlice,

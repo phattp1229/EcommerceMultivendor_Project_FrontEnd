@@ -1,9 +1,9 @@
 import type { Product } from "./productTypes";
-import type { User } from "./userTypes";
+import type { Customer } from "./customerTypes";
 
 export interface Wishlist {
   id: number;
-  user: User;
+  customer: Customer;
   products: Product[];
 }
 

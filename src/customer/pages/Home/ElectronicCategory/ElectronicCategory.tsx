@@ -1,4 +1,4 @@
-import React from "react";
+
 import ElectronicCategoryCard from "./ElectronicCategoryCard";
 import { useMediaQuery } from "@mui/material";
 import { useAppSelector } from "../../../../Redux Toolkit/Store";

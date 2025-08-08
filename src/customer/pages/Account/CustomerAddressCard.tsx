@@ -1,7 +1,7 @@
 
-import type { Address } from '../../../types/userTypes'
+import type { Address } from '../../../types/customerTypes'
 
-const UserAddressCard = ({item}:{item: Address}) => {
+const CustomerAddressCard = ({item}:{item: Address}) => {
   return (
     <div className='p-5 border rounded-md '>
    
@@ -19,4 +19,4 @@ const UserAddressCard = ({item}:{item: Address}) => {
   )
 }
 
-export default UserAddressCard
+export default CustomerAddressCard

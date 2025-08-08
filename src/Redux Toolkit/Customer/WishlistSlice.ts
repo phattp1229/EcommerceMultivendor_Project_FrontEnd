@@ -8,8 +8,8 @@ const initialState: WishlistState = {
   error: null,
 };
 
-export const getWishlistByUserId = createAsyncThunk(
-  "wishlist/getWishlistByUserId",
+export const getWishlistByCustomerId = createAsyncThunk(
+  "wishlist/getWishlistByCustomerId",
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get(`/api/wishlist`, {
@@ -66,20 +66,20 @@ const wishlistSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // getWishlistByUserId
-    builder.addCase(getWishlistByUserId.pending, (state) => {
+    // getWishlistByCustomerId
+    builder.addCase(getWishlistByCustomerId.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
     builder.addCase(
-      getWishlistByUserId.fulfilled,
+      getWishlistByCustomerId.fulfilled,
       (state, action: PayloadAction<Wishlist>) => {
         state.wishlist = action.payload;
         state.loading = false;
       }
     );
     builder.addCase(
-      getWishlistByUserId.rejected,
+      getWishlistByCustomerId.rejected,
       (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;

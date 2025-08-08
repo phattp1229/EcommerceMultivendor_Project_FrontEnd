@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect, MouseEvent } from 'react';
-
+import React, { useState, useRef, useEffect} from 'react';
+import type { MouseEvent } from 'react';
 interface ZoomableImageProps {
   src: string | undefined;
   alt: string;

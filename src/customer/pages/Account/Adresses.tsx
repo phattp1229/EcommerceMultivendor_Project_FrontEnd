@@ -1,15 +1,13 @@
-import React from 'react'
 import { useAppSelector } from '../../../Redux Toolkit/Store'
-import AddressCard from '../Checkout/AddressCard'
-import UserAddressCard from './UserAddressCard'
+import CustomerAddressCard from './CustomerAddressCard'
 
 const Addresses = () => {
-    const { user } = useAppSelector(store => store)
+    const { customer } = useAppSelector(store => store)
     return (
         <>
             <div className='space-y-3'>
-                {user.user?.addresses?.map((item, index) =>
-                    <UserAddressCard
+                {customer.customer?.addresses?.map((item, index) =>
+                    <CustomerAddressCard
                         key={item.id}
                         item={item} />)}
             </div>

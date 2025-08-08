@@ -2,11 +2,11 @@ import { Divider, Button, TextField, MenuItem } from "@mui/material";
 import { useAppSelector, useAppDispatch } from "../../../Redux Toolkit/Store";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import { updateUserProfile } from "../../../Redux Toolkit/Customer/UserSlice";
+import { updateCustomerProfile } from "../../../Redux Toolkit/Customer/CustomerProfileSlice";
 import { useSnackbar } from 'notistack'; 
 
-const UserDetails = () => {
-  const { user } = useAppSelector((store) => store);
+const CustomerDetails = () => {
+  const { customer } = useAppSelector((store) => store);
   const dispatch = useAppDispatch();
   const jwt = useAppSelector((store) => store.auth.jwt);
 
@@ -19,13 +19,13 @@ const UserDetails = () => {
   const { enqueueSnackbar } = useSnackbar(); 
   
   useEffect(() => {
-    if (user.user) {
-      setFullName(user.user.fullName || "");
-      setMobile(user.user.mobile || "");
-      setDob(user.user.dob || "");
-      setGender(user.user.gender || "");
+    if (customer.customer) {
+      setFullName(customer.customer.fullName || "");
+      setMobile(customer.customer.mobile || "");
+      setDob(customer.customer.dob || "");
+      setGender(customer.customer.gender || "");
     }
-  }, [user.user]);
+  }, [customer.customer]);
     const inputStyleProps = {
       InputProps: {
         style: {
@@ -46,7 +46,7 @@ const UserDetails = () => {
       const formattedDob = dayjs(dob).format("DD-MM-YYYY");
   console.log("DOB gửi đi:", formattedDob);
     dispatch(
-      updateUserProfile({
+      updateCustomerProfile({
         jwt: jwt as string,
         data: {
           fullName,
@@ -66,7 +66,7 @@ const handleUpdate = async () => {
     console.log("Payload gửi backend:", payload);
     console.log("JWT gửi đi:", jwt);
 
-    await dispatch(updateUserProfile({ jwt: jwt as string, data: payload })).unwrap();
+    await dispatch(updateCustomerProfile({ jwt: jwt as string, data: payload })).unwrap();
     enqueueSnackbar("Update profile successfully!", { variant: "success" });
     setIsEditing(false); 
   } catch {
@@ -74,11 +74,11 @@ const handleUpdate = async () => {
     }
   };
   const handleCancel = () => {
-    if (user.user) {
-      setFullName(user.user.fullName || "");
-      setMobile(user.user.mobile || "");
-      setDob(user.user.dob || "");
-      setGender(user.user.gender || "");
+    if (customer.customer) {
+      setFullName(customer.customer.fullName || "");
+      setMobile(customer.customer.mobile || "");
+      setDob(customer.customer.dob || "");
+      setGender(customer.customer.gender || "");
     }
     setIsEditing(false);
   };
@@ -109,7 +109,7 @@ const handleUpdate = async () => {
            {...inputStyleProps}
           label="Email"
           fullWidth
-          value={user.user?.email}
+          value={customer.customer?.email}
           disabled
         />
         <Divider />
@@ -152,9 +152,9 @@ const handleUpdate = async () => {
 
         <TextField
          {...inputStyleProps}
-          label="User Type"
+          label="customer Type"
           fullWidth
-          value={user.user?.koc ? "KOC" : "Customer"}
+          value={customer.customer?.koc ? "KOC" : "Customer"}
           disabled
         />
         <Divider />
@@ -174,4 +174,4 @@ const handleUpdate = async () => {
   );
 };
 
-export default UserDetails;
+export default CustomerDetails;

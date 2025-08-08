@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { api } from '../../../Config/Api';
 import type { HomeCategory, HomeData } from '../../../types/homeDataTypes';
 

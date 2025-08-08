@@ -17,7 +17,7 @@ import { fetchCustomerCart } from '../Redux Toolkit/Customer/CartSlice'
 import Reviews from '../customer/pages/Review/Reviews'
 import WriteReviews from '../customer/pages/Review/WriteReview'
 import Wishlist from '../customer/pages/Wishlist/Wishlist'
-import { getWishlistByUserId } from '../Redux Toolkit/Customer/WishlistSlice'
+import { getWishlistByCustomerId } from '../Redux Toolkit/Customer/WishlistSlice'
 import SearchProducts from '../customer/pages/Search/SearchProducts'
 import PaymentSucess from '../customer/pages/Payment/PaymentSuccess'
 import Products from '../customer/pages/Product/Products'
@@ -31,7 +31,7 @@ const CustomerRoutes = () => {
 
     useEffect(() => {
         dispatch(fetchCustomerCart(localStorage.getItem("jwt") || ""))
-        dispatch(getWishlistByUserId())
+        dispatch(getWishlistByCustomerId())
     }, [auth.jwt])
   return (
     <>

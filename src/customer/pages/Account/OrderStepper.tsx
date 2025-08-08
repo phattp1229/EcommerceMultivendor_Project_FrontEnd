@@ -1,7 +1,6 @@
 import { Box, Divider } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import { Description } from "@mui/icons-material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const steps = [
@@ -19,7 +18,7 @@ const canceledStep = [
 
 ];
 
-const currentStep = 0; // Change this value based on the current step
+const currentStep = 1; // Change this value based on the current step
 
 const OrderStepper = ({ orderStatus }: any) => {
 

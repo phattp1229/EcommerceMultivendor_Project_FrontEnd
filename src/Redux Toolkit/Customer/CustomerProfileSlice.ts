@@ -1,25 +1,24 @@
-// src/slices/userSlice.ts
+// src/slices/CustomerSlice.ts
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
 import { api } from "../../Config/Api";
-import type { User, UserState } from "../../types/userTypes";
+import type { Customer, CustomerState } from "../../types/customerTypes";
 import type { RootState } from "../Store";
 
-const initialState: UserState = {
-  user: null,
+const initialState: CustomerState = {
+  customer: null,
   loading: false,
   error: null,
   profileUpdated: false,
 };
 
 // Define the base URL for the API
-const API_URL = "/api/users";
+const API_URL = "/api/customer";
 
-export const fetchUserProfile = createAsyncThunk<
-  User,
+export const fetchCustomerProfile = createAsyncThunk<
+  Customer,
   { jwt: string; navigate: any }
 >(
-  "user/fetchUserProfile",
+  "customer/fetchCustomerProfile",
   async (
     { jwt, navigate }: { jwt: string; navigate: any },
     { rejectWithValue }
@@ -28,23 +27,23 @@ export const fetchUserProfile = createAsyncThunk<
       const response = await api.get(`${API_URL}/profile`, {
         headers: { Authorization: `Bearer ${jwt}` },
       });
-      console.log(" user profile ", response.data);
+      console.log(" customer profile ", response.data);
       if (response.data.role === "ROLE_MANAGER") {
         navigate("/admin");
       }
       return response.data;
     } catch (error: any) {
       console.log("error ", error.response);
-      return rejectWithValue("Failed to fetch user profile");
+      return rejectWithValue("Failed to fetch customer profile");
     }
   }
 );
-export const updateUserProfile = createAsyncThunk<
-  User,
+export const updateCustomerProfile = createAsyncThunk<
+  Customer,
   { jwt: string; data: any },
   { rejectValue: string }
 >(
-  "user/updateUserProfile",
+  "customer/updateCustomerProfile",
   async ({ jwt, data }, { rejectWithValue }) => {
     try {
       const response = await api.patch(`${API_URL}/profile`, data, {
@@ -55,17 +54,17 @@ export const updateUserProfile = createAsyncThunk<
       console.log("Update error", error.response);
       console.log("Payload send backend:", data);
       console.log("JWT send:", jwt);
-      return rejectWithValue("Failed to update user profile");
+      return rejectWithValue("Failed to update customer profile");
     }
   }
 );
 
-const userSlice = createSlice({
-  name: "user",
+const customerProfileSlice = createSlice({
+  name: "customer",
   initialState,
   reducers: {
-    resetUserState: (state) => {
-      state.user = null;
+    resetCustomerState: (state) => {
+      state.customer = null;
       state.loading = false;
       state.error = null;
       state.profileUpdated = false;
@@ -73,32 +72,32 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUserProfile.pending, (state) => {
+      .addCase(fetchCustomerProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(
-        fetchUserProfile.fulfilled,
-        (state, action: PayloadAction<User>) => {
-          state.user = action.payload;
+        fetchCustomerProfile.fulfilled,
+        (state, action: PayloadAction<Customer>) => {
+          state.customer = action.payload;
           state.loading = false;
         }
       )
-      .addCase(fetchUserProfile.rejected, (state, action) => {
+      .addCase(fetchCustomerProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
-      .addCase(updateUserProfile.pending, (state) => {
+      .addCase(updateCustomerProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
         state.profileUpdated = false;
       })
-      .addCase(updateUserProfile.fulfilled, (state, action: PayloadAction<User>) => {
-        state.user = action.payload;
+      .addCase(updateCustomerProfile.fulfilled, (state, action: PayloadAction<Customer>) => {
+        state.customer = action.payload;
         state.loading = false;
         state.profileUpdated = true;
       })
-      .addCase(updateUserProfile.rejected, (state, action) => {
+      .addCase(updateCustomerProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
         state.profileUpdated = false;
@@ -107,10 +106,10 @@ const userSlice = createSlice({
   },
 });
 
-export const { resetUserState } = userSlice.actions;
+export const { resetCustomerState } = customerProfileSlice.actions;
 
-export default userSlice.reducer;
+export default customerProfileSlice.reducer;
 
-export const selectUser = (state: RootState) => state.user.user;
-export const selectUserLoading = (state: RootState) => state.user.loading;
-export const selectUserError = (state: RootState) => state.user.error;
+export const selectCustomer = (state: RootState) => state.customer.customer;
+export const selectCustomerLoading = (state: RootState) => state.customer.loading;
+export const selectCustomerError = (state: RootState) => state.customer.error;

@@ -1,5 +1,5 @@
 import type { Product } from './productTypes';
-import type { Address, User } from './userTypes';
+import type { Address, Customer } from './customerTypes';
 
 export interface OrderState {
     orders: Order[];
@@ -14,7 +14,7 @@ export interface OrderState {
 export interface Order {
     id: number;
     orderId: string;
-    user: User;
+    customer: Customer;
     sellerId: number;
     orderItems: OrderItem[];
     orderDate: string;
@@ -43,5 +43,5 @@ export interface OrderItem {
     quantity: number;
     mrpPrice: number;
     sellingPrice: number;
-    userId: number;
+    customerId: number;
 }

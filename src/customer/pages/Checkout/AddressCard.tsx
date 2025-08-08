@@ -1,6 +1,6 @@
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material'
 import React from 'react'
-import type { Address } from '../../../types/userTypes';
+import type { Address } from '../../../types/customerTypes';
 
 interface AddressCardProps {
     value: number;

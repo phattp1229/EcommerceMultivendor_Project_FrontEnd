@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import {Box, Button, TextField,} from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useAppDispatch } from '../../../Redux Toolkit/Store';
-import type { Address } from '../../../types/userTypes';
+import type { Address } from '../../../types/customerTypes';
 import { createOrder } from '../../../Redux Toolkit/Customer/OrderSlice';
 
 

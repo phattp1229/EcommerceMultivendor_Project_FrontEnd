@@ -13,7 +13,7 @@ interface ProductReviewCardProps {
 
 const ProductReviewCard = ({ item }: ProductReviewCardProps) => {
   const [value, setValue] = React.useState(4.5);
-  const { auth, user } = useAppSelector(store => store);
+  const { auth, customer } = useAppSelector(store => store);
   const dispatch = useAppDispatch()
   const handleDeleteReview = () => {
     dispatch(deleteReview({ reviewId: item.id, jwt: localStorage.getItem("jwt") || "" }))
@@ -26,17 +26,17 @@ const ProductReviewCard = ({ item }: ProductReviewCardProps) => {
             <Avatar
               className="text-white"
               sx={{ width: 56, height: 56, bgcolor: "#9155FD" }}
-              alt={item.user.fullName}
+              alt={item.customer.fullName}
               src=""
             >
-              {item.user.fullName[0].toUpperCase()}
+              {item.customer.fullName[0].toUpperCase()}
             </Avatar>
           </Box>
         </Grid>
         <Grid size={9}>
           <div className="space-y-2">
             <div className="">
-              <p className="font-semibold text-lg">{item.user.fullName}</p>
+              <p className="font-semibold text-lg">{item.customer.fullName}</p>
               <p className="opacity-70">{item.createdAt}</p>
             </div>
             <div>
@@ -60,7 +60,7 @@ const ProductReviewCard = ({ item }: ProductReviewCardProps) => {
           </div>
         </Grid>
       </Grid>
-      {item.user.id === user.user?.id && <div className="">
+      {item.customer.id === customer.customer?.id && <div className="">
         <IconButton onClick={handleDeleteReview}>
           <DeleteIcon sx={{ color: red[700] }} />
         </IconButton>

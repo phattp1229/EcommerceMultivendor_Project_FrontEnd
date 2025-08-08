@@ -49,30 +49,30 @@ export const homeCategories = [
       "https://rukminim2.flixcart.com/image/312/312/jfbfde80/camera/n/r/n/canon-eos-eos-3000d-dslr-original-imaf3t5h9yuyc5zu.jpeg?q=70",
   },
   {
-    categoryId: "women_lehenga_cholis",
+    categoryId: "women_tshirts",
     section: "GRID",
-    name: "women lehenga cholis",
+    name: "Western Wear",
     image:
       "https://images.pexels.com/photos/2916814/pexels-photo-2916814.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   },
   {
-    categoryId: "men_formal_shoes",
+    categoryId: "smart_watches",
     section: "GRID",
-    name: "men formal shoes",
+    name: "Smart Watches",
     image:
       "https://tse1.mm.bing.net/th/id/OIP.hlhC0L07E6Zfiek0L_kcAAHaFj?rs=1&pid=ImgDetMain&o=7&rm=3",
   },
   {
-    categoryId: "women_lehenga_cholis",
+    categoryId: "desktop_pcs",
     section: "GRID",
-    name: "women lehenga cholis",
+    name: "Desktop PCs",
     image:
       "https://promotions.newegg.com/nepro/25-0685/1150x320@2x.jpg",
   },
   {
-    categoryId: "men_sherwanis",
+    categoryId: "men_sweaters",
     section: "GRID",
-    name: "men sherwanis",
+    name: "Men Sweaters",
     image:
       "https://images.pexels.com/photos/1183266/pexels-photo-1183266.jpeg?_gl=1*1yav5io*_ga*MTUwNDI4MjkwMC4xNzUzMjM2NTYw*_ga_8JE65Q40S6*czE3NTMyMzg5NjIkbzIkZzEkdDE3NTMyMzg5NzYkajQ2JGwwJGgw",
   },

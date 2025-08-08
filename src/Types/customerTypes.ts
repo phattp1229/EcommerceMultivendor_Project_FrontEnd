@@ -21,13 +21,13 @@ export interface Account {
     email: string;
     username: string;
     password: string;
+    role: UserRole;
 }
 //customer
-export interface User {
+export interface Customer {
     id?: number;
     fullName: string;
     mobile?: string;
-    role: UserRole;
     account: Account;
     addresses?: Address[];
     koc?: boolean;
@@ -36,8 +36,8 @@ export interface User {
     dob?: string | null; // backend trả kiểu LocalDate → JS nhận là string
 }
 
-export interface UserState {
-    user: User | null;
+export interface CustomerState {
+    customer: Customer | null;
     loading: boolean;
     error: string | null;
     profileUpdated: boolean;

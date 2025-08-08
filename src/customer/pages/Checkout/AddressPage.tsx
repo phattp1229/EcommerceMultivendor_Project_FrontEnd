@@ -33,7 +33,7 @@ const paymentGatwayList = [
 const AddressPage = () => {
     const [value, setValue] = React.useState(0);
     const dispatch = useAppDispatch();
-    const { user } = useAppSelector(store => store)
+    const { customer } = useAppSelector(store => store)
     const [paymentGateway, setPaymentGateway] = useState(paymentGatwayList[0].value);
 
     const [open, setOpen] = React.useState(false);
@@ -47,10 +47,10 @@ const AddressPage = () => {
 
     const handleCreateOrder = () => {
        // Dispatch action to create order
-       if(user.user?.addresses)
+       if(customer.customer?.addresses)
         dispatch(createOrder({
             paymentGateway,
-            address: user.user.addresses[value],
+            address: customer.customer.addresses[value],
             jwt: localStorage.getItem('jwt') || ''
         }))
     }
@@ -73,7 +73,7 @@ const AddressPage = () => {
                     <div className='text-xs font-medium space-y-5'>
                         <p>Saved Addreses</p>
                         <div className='space-y-3'>
-                            {user.user?.addresses?.map((item, index) => <AddressCard
+                            {customer.customer?.addresses?.map((item, index) => <AddressCard
                                 key = {item.id}
                                 item = {item}
                                 selectedValue = {value} 

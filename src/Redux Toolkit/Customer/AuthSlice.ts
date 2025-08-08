@@ -13,8 +13,7 @@ import type {
     AuthState,
 } from '../../types/authTypes';
 import type { RootState } from '../Store';
-import { boolean } from 'yup';
-import { resetUserState } from './UserSlice';
+import { resetCustomerState } from './CustomerProfileSlice';
 import { resetCartState } from './CartSlice';
 const savedJwt = localStorage.getItem("jwt");
 
@@ -236,7 +235,7 @@ export default authSlice.reducer;
 
 export const performLogout = () => async (dispatch: any) => {
     dispatch(logout());
-    dispatch(resetUserState());
+    dispatch(resetCustomerState());
     dispatch(resetCartState());
 };
 

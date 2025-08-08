@@ -1,6 +1,6 @@
 
 import type { Product } from "./productTypes";
-import type { User } from "./userTypes";
+import type { Customer } from "./customerTypes";
 
 export interface CartItem {
     id: number;
@@ -10,13 +10,13 @@ export interface CartItem {
     quantity: number;
     mrpPrice: number;
     sellingPrice: number;
-    userId: number;
+    customerId: number;
 }
 
 
 export interface Cart {
     id: number;
-    user: User;
+    customser: Customer;
     cartItems: CartItem[];
     totalSellingPrice: number;
     totalItem: number;

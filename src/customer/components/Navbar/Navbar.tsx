@@ -29,7 +29,7 @@ const Navbar = () => {
   const theme = useTheme();
   const isLarge = useMediaQuery(theme.breakpoints.up("lg"));
   const dispatch = useAppDispatch();
-  const { user, auth, cart, sellers } = useAppSelector((store) => store);
+  const { customer, auth, cart, sellers } = useAppSelector((store) => store);
   const navigate = useNavigate();
   
 
@@ -99,7 +99,7 @@ const Navbar = () => {
             <SearchIcon className="text-gray-700" sx={{ fontSize: 29 }} />
           </IconButton>
 
-          {user.user ? (
+          {customer.customer ? (
             <Button
               onClick={() => navigate("/account/orders")}
               className="flex items-center gap-2"
@@ -110,7 +110,7 @@ const Navbar = () => {
                 // src="https://www.tanishq.co.in/dw/image/v2/BKCK_PRD/on/demandware.static/-/Library-Sites-TanishqSharedLibrary/default/dwc0abe627/homepage/ShopByGender/Woman.jpg"
               />
               <h1 className="font-semibold hidden lg:block">
-                {user.user?.fullName?.split(" ")[0]}
+                {customer.customer?.fullName?.split(" ")[0]}
               </h1>
             </Button>
           ) : (
