@@ -23,15 +23,21 @@ const AddressCard: React.FC<AddressCardProps> = ({ value, selectedValue, handleC
                 />
             </div>
 
-            <div className='space-y-3 pt-3'>
-                <h1>{item.name}</h1>
-                <p className='w-[320px]'>
-                    {item.street},
-                    {item.locality},
-                    {item.city},
-                    {item.state} - {item.postalCode}</p>
-                <p><strong>Mobile : </strong> {item.mobile}</p>
-            </div>
+           <div className="space-y-2 pt-3">
+                <h1 className="font-semibold text-lg">{item.name}</h1>
+
+                <p className="w-[320px] leading-relaxed">
+                    {item.street}, {item.locality}, {item.state}, {item.city}  - {item.postalCode}
+                </p>
+        <p>
+  <strong>TypeAddress:</strong>{" "}
+  {(item.ownerType ?? "")
+    .charAt(0).toUpperCase() + (item.ownerType ?? "").slice(1).toLowerCase()}
+</p>
+                <p>
+                    <strong>Mobile:</strong> {item.mobile}
+                </p>
+                </div>
         </div>
     )
 }

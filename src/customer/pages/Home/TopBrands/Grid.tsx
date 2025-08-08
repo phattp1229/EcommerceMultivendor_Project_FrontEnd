@@ -57,7 +57,7 @@ const {homePage}=useAppSelector(store=>store)
 
       <div className="col-span-4 row-span-6  text-white  rounded ">
         <img
-          className="w-full h-full object-cover object-top border-fuchsia-800 lg:border-[9px] rounded-md"
+          className="w-full h-full object-cover object-top  border-fuchsia-800 lg:border-[9px] rounded-md"
           src={homePage.homePageData?.grid[2].image}
           alt=""
         />

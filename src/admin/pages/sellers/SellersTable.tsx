@@ -118,7 +118,7 @@ export default function SellersTable() {
                                 <StyledTableCell component="th" scope="row">
                                     {seller.sellerName}
                                 </StyledTableCell>
-                                <StyledTableCell >{seller.account.email}</StyledTableCell>
+                                <StyledTableCell >{seller.account?.email}</StyledTableCell>
                                 <StyledTableCell >{seller.mobile}</StyledTableCell>
                                 <StyledTableCell >{seller.taxCode}</StyledTableCell>
                                 <StyledTableCell >{seller.businessDetails?.businessName}</StyledTableCell>

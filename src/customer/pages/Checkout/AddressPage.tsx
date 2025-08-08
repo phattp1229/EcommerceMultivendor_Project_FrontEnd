@@ -31,9 +31,11 @@ const paymentGatwayList = [
     }
 ]
 const AddressPage = () => {
+
     const [value, setValue] = React.useState(0);
     const dispatch = useAppDispatch();
     const { customer } = useAppSelector(store => store)
+    console.log("Customer data:", customer)
     const [paymentGateway, setPaymentGateway] = useState(paymentGatwayList[0].value);
 
     const [open, setOpen] = React.useState(false);

@@ -52,7 +52,7 @@ const homeCategory=[
     {
       "parentCategoryId":"women",
       "level":2,
-      "name":"western wear",
+      "name":"Western Wear",
       "categoryId": "women_western_wear",
       "section":"SHOP_BY_CATEGORIES",
       image:"https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/22391504/2023/3/17/3259c109-060a-4c39-aba2-e9d32e2068e41679049035856StyleQuotientPeach-ColouredTie-UpNeckPuffSleeveCottonTop1.jpg"

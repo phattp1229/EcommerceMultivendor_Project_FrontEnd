@@ -77,16 +77,16 @@ export const homeCategories = [
       "https://images.pexels.com/photos/1183266/pexels-photo-1183266.jpeg?_gl=1*1yav5io*_ga*MTUwNDI4MjkwMC4xNzUzMjM2NTYw*_ga_8JE65Q40S6*czE3NTMyMzg5NjIkbzIkZzEkdDE3NTMyMzg5NzYkajQ2JGwwJGgw",
   },
   {
-    categoryId: "women_jewellery",
+    categoryId: "asus_mobile",
     section: "GRID",
-    name: "women jewellery",
+    name: "Asus Mobile",
     image:
       "https://dlcdnwebimgs.asus.com/gain/AF782FBE-08C0-48C6-A86D-3B72598F9AD6/fwebp/fwebp",
   },
   {
-    categoryId: "women_footwear",
+    categoryId: "gaming_laptops",
     section: "GRID",
-    name: "women footwear",
+    name: "Gaming Laptop",
     image:
       "https://img.freepik.com/premium-photo/picture-laptop_931878-305748.jpg",
   },
@@ -117,8 +117,7 @@ export const homeCategories = [
       "https://bizweb.dktcdn.net/thumb/1024x1024/100/455/994/products/9l.jpg?v=1704855518180",
   },
   {
-    parentCategoryId: "women",
-
+    parentCategoryId: "televisions",
     name: "Smart TV",
     categoryId: "smart_tv",
     section: "SHOP_BY_CATEGORIES",
@@ -138,7 +137,7 @@ export const homeCategories = [
   {
     parentCategoryId: "women",
 
-    name: "western wear",
+    name: "Western Wear",
     categoryId: "women_western_wear",
     section: "SHOP_BY_CATEGORIES",
     image:
@@ -208,7 +207,6 @@ export const homeCategories = [
   {
     name: "Apple Mobile",
     categoryId: "apple_mobile",
-
     section: "SHOP_BY_CATEGORIES",
     image:
       "https://cdn.nguyenkimmall.com/images/product/829/dien-thoai-iphone-14-pro-max-1tb-tim-1.jpg",

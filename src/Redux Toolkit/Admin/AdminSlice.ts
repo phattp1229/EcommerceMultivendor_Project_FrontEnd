@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import type { HomeCategory } from '../../types/homeDataTypes';
 import { api } from '../../Config/Api';
 
@@ -9,12 +9,12 @@ export const updateHomeCategory = createAsyncThunk<HomeCategory, { id: number; d
   async ({ id, data }, { rejectWithValue }) => {
     try {
       const response = await api.patch(`${API_URL}/home-category/${id}`, data);
-      console.log("category updated ",response)
+      console.log("category updated ", response)
       return response.data;
     } catch (error: any) {
-        console.log("errror ",error)
+      console.log("errror ", error)
       if (error.response && error.response.data) {
-        
+
         return rejectWithValue(error.response.data);  // Return error response data if available
       } else {
         return rejectWithValue('An error occurred while updating the category.');
@@ -28,10 +28,10 @@ export const fetchHomeCategories = createAsyncThunk<HomeCategory[]>(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get(`${API_URL}/home-category`);
-      console.log(" categories ",response.data)
+      console.log(" categories ", response.data)
       return response.data;
-    } catch (error:any) {
-      console.log("error ",error.response)
+    } catch (error: any) {
+      console.log("error ", error.response)
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch categories');
     }
   }
@@ -41,14 +41,14 @@ interface HomeCategoryState {
   categories: HomeCategory[];
   loading: boolean;
   error: string | null;
-  categoryUpdated:boolean;
+  categoryUpdated: boolean;
 }
 
 const initialState: HomeCategoryState = {
   categories: [],
   loading: false,
   error: null,
-  categoryUpdated:false,
+  categoryUpdated: false,
 };
 
 // Create the slice
@@ -89,14 +89,14 @@ const homeCategorySlice = createSlice({
       state.error = null;
       state.categoryUpdated = false;  // Reset categoryUpdated flag to false
     })
-    .addCase(fetchHomeCategories.fulfilled, (state, action) => {
-      state.loading = false;
-      state.categories = action.payload;
-    })
-    .addCase(fetchHomeCategories.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload as string;
-    });
+      .addCase(fetchHomeCategories.fulfilled, (state, action) => {
+        state.loading = false;
+        state.categories = action.payload;
+      })
+      .addCase(fetchHomeCategories.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
   },
 });
 

@@ -20,6 +20,8 @@ import { addItemToCart } from '../../../../Redux Toolkit/Customer/CartSlice';
 import ProductReviewCard from '../../Review/ProductReviewCard';
 import RatingCard from '../../Review/RatingCard';
 import { fetchReviewsByProductId } from '../../../../Redux Toolkit/Customer/ReviewSlice';
+import { enqueueSnackbar, useSnackbar } from 'notistack';
+import { addProductToWishlist } from '../../../../Redux Toolkit/Customer/WishlistSlice';
 
 const style = {
     position: 'absolute' as const,
@@ -44,7 +46,8 @@ const ProductDetails = () => {
     const { productId,categoryId } = useParams()
     const [selectedImage, setSelectedImage] = useState(0);
     const [quantity, setQuantity] = useState(1)
-
+    const { enqueueSnackbar } = useSnackbar();
+    const [addingWl, setAddingWl] = useState(false);
 
     useEffect(() => {
 
@@ -64,7 +67,31 @@ const ProductDetails = () => {
         }))
     }
 
- 
+ const handleAddWishlist = async () => {
+    if (!productId) return;
+    try {
+      const jwt = localStorage.getItem('jwt');
+      if (!jwt) {
+        enqueueSnackbar('You need to log in to add to wishlist', { variant: 'warning' });
+        navigate('/login');
+        return;
+      }
+      if (addingWl) return; // prevent spam clicks
+      setAddingWl(true);
+
+      await dispatch(addProductToWishlist({ productId: Number(productId) })).unwrap();
+
+      enqueueSnackbar('Added to wishlist successfully', { variant: 'success' });
+    } catch (err: any) {
+      enqueueSnackbar(
+        typeof err === 'string' ? err : 'Failed to add to wishlist',
+        { variant: 'error' }
+      );
+    } finally {
+      setAddingWl(false);
+    }
+};
+
 
 
     return (
@@ -170,9 +197,10 @@ const ProductDetails = () => {
                             Add To Bag
                         </Button>
                         <Button
+                        onClick={handleAddWishlist}
                             sx={{ py: "1rem" }}
                             variant='outlined' fullWidth startIcon={<FavoriteBorderIcon />}>
-                            Whishlist
+                            Add Wishlist
                         </Button>
 
                     </div>

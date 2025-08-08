@@ -134,7 +134,7 @@ const Cart = () => {
               </section>
 
               <div className="border rounded-md px-5 py-4 flex justify-between items-center cursor-pointer">
-                <span>Add From Whishlist</span>
+                <span>Add From Wishlist</span>
                 <FavoriteIcon sx={{ color: teal[600], fontSize: "21px" }} />
               </div>
             </div>

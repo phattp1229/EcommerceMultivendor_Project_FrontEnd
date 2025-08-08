@@ -1,9 +1,8 @@
 import { Divider, Button, TextField, MenuItem } from "@mui/material";
 import { useAppSelector, useAppDispatch } from "../../../Redux Toolkit/Store";
 import { useState, useEffect } from "react";
-import dayjs from "dayjs";
 import { updateCustomerProfile } from "../../../Redux Toolkit/Customer/CustomerProfileSlice";
-import { useSnackbar } from 'notistack'; 
+import { useSnackbar } from "notistack";
 
 const CustomerDetails = () => {
   const { customer } = useAppSelector((store) => store);
@@ -14,78 +13,78 @@ const CustomerDetails = () => {
 
   const [fullName, setFullName] = useState("");
   const [mobile, setMobile] = useState("");
-  const [dob, setDob] = useState("");
+  const [dob, setDob] = useState(""); // giữ ISO: YYYY-MM-DD
   const [gender, setGender] = useState("");
-  const { enqueueSnackbar } = useSnackbar(); 
-  
+  const { enqueueSnackbar } = useSnackbar();
+
   useEffect(() => {
     if (customer.customer) {
       setFullName(customer.customer.fullName || "");
       setMobile(customer.customer.mobile || "");
-      setDob(customer.customer.dob || "");
       setGender(customer.customer.gender || "");
+
+      const raw = customer.customer.dob || "";
+      if (/^\d{2}-\d{2}-\d{4}$/.test(raw)) {
+        // Nếu dữ liệu cũ DD-MM-YYYY -> đổi sang ISO cho input date
+        const [dd, mm, yyyy] = raw.split("-");
+        setDob(`${yyyy}-${mm}-${dd}`);
+      } else {
+        // Đã là ISO hoặc rỗng
+        setDob(raw);
+      }
     }
   }, [customer.customer]);
-    const inputStyleProps = {
-      InputProps: {
-        style: {
-          fontWeight: "bold",
-          color: "#000",
-        },
-      },
-      InputLabelProps: {
-        style: {
-          fontWeight: "bold",
-          color: "#333",
-        },
-      },
-    };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-      const formattedDob = dayjs(dob).format("DD-MM-YYYY");
-  console.log("DOB gửi đi:", formattedDob);
-    dispatch(
-      updateCustomerProfile({
-        jwt: jwt as string,
-        data: {
-          fullName,
-          mobile,
-          gender,
-          dob: dayjs(dob).format("DD-MM-YYYY"),
-          
-        },
-      })
-    );
-    setIsEditing(false);
+  const inputStyleProps = {
+    InputProps: {
+      style: { fontWeight: "bold", color: "#000" },
+    },
+    InputLabelProps: {
+      style: { fontWeight: "bold", color: "#333" },
+    },
   };
-const handleUpdate = async () => {
-    try {
-       const formattedDob = dayjs(dob).format("DD-MM-YYYY");
-    const payload = { fullName, mobile, gender, dob: formattedDob };
-    console.log("Payload gửi backend:", payload);
-    console.log("JWT gửi đi:", jwt);
 
-    await dispatch(updateCustomerProfile({ jwt: jwt as string, data: payload })).unwrap();
-    enqueueSnackbar("Update profile successfully!", { variant: "success" });
-    setIsEditing(false); 
-  } catch {
-    enqueueSnackbar("Update failed!", { variant: "error" });
+  const handleUpdate = async () => {
+    try {
+      const payload = {
+        fullName,
+        mobile,
+        gender,
+        dob: dob?.trim() ? dob : null, // gửi ISO hoặc null cho LocalDate
+      };
+
+      console.log("Payload gửi backend:", payload);
+      console.log("JWT gửi đi:", jwt);
+
+      await dispatch(updateCustomerProfile({ jwt: jwt as string, data: payload })).unwrap();
+      enqueueSnackbar("Update profile successfully!", { variant: "success" });
+      setIsEditing(false);
+    } catch {
+      enqueueSnackbar("Update failed!", { variant: "error" });
     }
   };
+
   const handleCancel = () => {
     if (customer.customer) {
       setFullName(customer.customer.fullName || "");
       setMobile(customer.customer.mobile || "");
-      setDob(customer.customer.dob || "");
       setGender(customer.customer.gender || "");
+
+      const raw = customer.customer.dob || "";
+      if (/^\d{2}-\d{2}-\d{4}$/.test(raw)) {
+        const [dd, mm, yyyy] = raw.split("-");
+        setDob(`${yyyy}-${mm}-${dd}`);
+      } else {
+        setDob(raw);
+      }
     }
     setIsEditing(false);
   };
 
   return (
     <div className="flex justify-center py-10">
-      <form onSubmit={handleSubmit} className="w-full lg:w-[70%] space-y-5">
+      {/* KHÔNG dùng onSubmit để tránh double-submit */}
+      <form className="w-full lg:w-[70%] space-y-5">
         <div className="flex items-center pb-3 justify-between">
           <h1 className="text-2xl font-bold text-gray-600">Personal Details</h1>
           {!isEditing && (
@@ -96,7 +95,7 @@ const handleUpdate = async () => {
         </div>
 
         <TextField
-           {...inputStyleProps}
+          {...inputStyleProps}
           label="Full Name"
           fullWidth
           value={fullName}
@@ -106,16 +105,16 @@ const handleUpdate = async () => {
         <Divider />
 
         <TextField
-           {...inputStyleProps}
+          {...inputStyleProps}
           label="Email"
           fullWidth
-          value={customer.customer?.email}
+          value={customer.customer?.email || ""}
           disabled
         />
         <Divider />
 
         <TextField
-         {...inputStyleProps}
+          {...inputStyleProps}
           label="Mobile"
           fullWidth
           value={mobile}
@@ -126,17 +125,17 @@ const handleUpdate = async () => {
 
         <TextField
           label="Date of Birth"
-          fullWidth
           type="date"
-          {...inputStyleProps}
-          value={dayjs(dob).format("YYYY-MM-DD")}
+          fullWidth
+          value={dob} // ISO: YYYY-MM-DD
           onChange={(e) => setDob(e.target.value)}
           disabled={!isEditing}
+          InputLabelProps={{ shrink: true }}
         />
         <Divider />
 
         <TextField
-         {...inputStyleProps}
+          {...inputStyleProps}
           label="Gender"
           fullWidth
           select
@@ -151,8 +150,8 @@ const handleUpdate = async () => {
         <Divider />
 
         <TextField
-         {...inputStyleProps}
-          label="customer Type"
+          {...inputStyleProps}
+          label="Customer Type"
           fullWidth
           value={customer.customer?.koc ? "KOC" : "Customer"}
           disabled
@@ -161,7 +160,8 @@ const handleUpdate = async () => {
 
         {isEditing && (
           <div className="flex gap-3">
-            <Button onClick={handleUpdate} type="submit" variant="contained" color="primary">
+            {/* type="button" để không submit form */}
+            <Button onClick={handleUpdate} type="button" variant="contained" color="primary">
               Save
             </Button>
             <Button variant="outlined" color="secondary" onClick={handleCancel}>

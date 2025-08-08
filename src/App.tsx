@@ -32,18 +32,20 @@ import CustomerRoutes from './routes/CustomerRoutes';
 import { homeCategories } from './data/homeCategories';
 import { createHomeCategories} from './Redux Toolkit/Customer/Customer/AsyncThunk';
 import Wishlist from './customer/pages/Wishlist/Wishlist';
+import { fetchUserProfile } from './Redux Toolkit/Admin/UserSlice';
 
 
 
 function App() {
   const dispatch = useAppDispatch()
-  const { auth, sellerAuth, sellers, customer } = useAppSelector(store => store)
+  const { auth, sellerAuth, sellers, customer ,user} = useAppSelector(store => store)
 const navigate=useNavigate();
 
   useEffect(() => {
     if (localStorage.getItem("jwt")) {
       dispatch(fetchCustomerProfile({jwt:localStorage.getItem("jwt") || auth.jwt || "",navigate}));
-      dispatch(fetchSellerProfile(localStorage.getItem("jwt") || sellerAuth.jwt))
+      dispatch(fetchSellerProfile(localStorage.getItem("jwt") || sellerAuth.jwt));
+      dispatch(fetchUserProfile({jwt:localStorage.getItem("jwt") || auth.jwt || "",navigate}));
     }
 
   }, [auth.jwt, sellerAuth.jwt])
@@ -85,17 +87,17 @@ const navigate=useNavigate();
     //     </ThemeProvider>
     // </div>
         <ThemeProvider theme={customeTheme}>
-          {/* <SnackbarProvider
+          <SnackbarProvider
       maxSnack={3}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       autoHideDuration={3000}
-        > */}
+        >
       <div className='App' >
 
 
         <Routes>
           {sellers.profile && <Route path='/seller/*' element={<SellerDashboard />} />}
-          {customer.customer?.account?.role === "ROLE_MANAGER" && <Route path='/admin/*' element={<AdminDashboard />} />}
+          {user.user?.account?.role?.name === "ROLE_MANAGER" && <Route path='/admin/*' element={<AdminDashboard />} />}
           <Route path='/verify-seller/:otp' element={<SellerAccountVerification />} />
           <Route path='/seller-account-verified' element={<SellerAccountVerified />} />
           <Route path='/become-seller' element={<BecomeSeller />} />
@@ -108,8 +110,8 @@ const navigate=useNavigate();
         {/* <Footer/> */}
       </div>
 
-{/* 
-    </SnackbarProvider> */}
+
+    </SnackbarProvider>
     </ThemeProvider>
   )
 }export default App;

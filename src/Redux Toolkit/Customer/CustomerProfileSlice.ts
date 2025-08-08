@@ -3,6 +3,9 @@ import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/tool
 import { api } from "../../Config/Api";
 import type { Customer, CustomerState } from "../../types/customerTypes";
 import type { RootState } from "../Store";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
 const initialState: CustomerState = {
   customer: null,

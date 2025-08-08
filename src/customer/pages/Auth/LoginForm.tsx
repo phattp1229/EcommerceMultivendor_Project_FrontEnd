@@ -45,11 +45,11 @@ const LoginForm = () => {
         formik.handleSubmit()
     }
 
-    // useEffect(() => {
-    //     if (auth.isLoggedIn) {
-    //         enqueueSnackbar("Login Succesfully !", { variant: "success" });
-    //     }
-    // }, [auth.isLoggedIn, dispatch]);
+    useEffect(() => {
+        if (auth.isLoggedIn) {
+            enqueueSnackbar("Login Succesfully !", { variant: "success" });
+        }
+    }, [auth.isLoggedIn, dispatch]);
 
 
 

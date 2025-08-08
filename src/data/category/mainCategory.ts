@@ -68,7 +68,7 @@ export const mainCategory = [
       {
         "parentCategoryId": "women",
         "level": 2,
-        "name": "western wear",
+        "name": "Western Wear",
         "categoryId": "women_western_wear"
       },
       {

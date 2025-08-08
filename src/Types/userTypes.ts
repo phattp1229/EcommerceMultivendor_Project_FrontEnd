@@ -11,12 +11,11 @@ export interface Address {
     ownerType?: string; // hoặc AddressOwnerType enum
     ownerId?: number;
 }
-//@ts-expect-error
-export enum UserRole {
-    ROLE_CUSTOMER = 'ROLE_CUSTOMER',
-    ROLE_MANAGER = 'ROLE_MANAGER',
-    ROLE_SELLER = 'ROLE_SELLER',
-    ROLE_KOC = 'ROLE_KOC'
+
+export interface UserRole {
+    id?: number;
+    name: string;
+
 }
 export interface Account {
     id?: number;
@@ -25,21 +24,21 @@ export interface Account {
     password: string;
     role: UserRole;
 }
-//customer
-export interface Customer {
+//manager or shipper
+export interface User {
     id?: number;
     fullName: string;
     mobile?: string;
     account: Account;
+    cccd?: string;
     addresses?: Address[];
-    koc?: boolean;
     email: string;
     gender?: "MALE" | "FEMALE" | "OTHER" | null; // hoặc string nếu backend để dạng chuỗi
     dob?: string | null; // backend trả kiểu LocalDate → JS nhận là string
 }
 
-export interface CustomerState {
-    customer: Customer | null;
+export interface UserState {
+    user: User | null;
     loading: boolean;
     error: string | null;
     profileUpdated: boolean;

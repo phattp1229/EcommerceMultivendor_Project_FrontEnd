@@ -1,5 +1,5 @@
 import { Alert, Button, Divider, Snackbar } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import Order from './Order'
 import CustomerDetails from './CustomerDetails'
@@ -21,7 +21,7 @@ const Profile = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useAppDispatch()
-    const { customer } = useAppSelector(store => store)
+    const { customer ,orders} = useAppSelector(store => store)
     const [snackbarOpen, setOpenSnackbar] = useState(false);
 
     // const handleLogout = () => {
@@ -49,9 +49,13 @@ const Profile = () => {
         setOpenSnackbar(false);
     };
 
-
+    useEffect(() => {
+        if (customer.profileUpdated || orders.orderCanceled ||customer.error) {
+            setOpenSnackbar(true);
+        }
+    }, [customer.profileUpdated,orders.orderCanceled]);
     return (
-        <div className='px-5 lg:px-52 min-h-screen mt-10 '>
+          <div className='px-5 lg:px-52 min-h-screen mt-10 '>
 
             <div>
                 <h1 className='text-xl font-bold pb-5'>{customer.customer?.fullName}</h1>
@@ -63,8 +67,7 @@ const Profile = () => {
 
                     {menu.map((item, index) => <div
                         onClick={() => handleClick(item)}
-                        className={`${menu.length - 1 !== index ? "border-b" : ""} ${item.path == location.pathname ? 
-                        "bg-primary-color text-white" : ""} px-5 py-3 rounded-md hover:bg-teal-500 hover:text-white cursor-pointer `}>
+                        className={`${menu.length - 1 !== index ? "border-b" : ""} ${item.path == location.pathname ? "bg-primary-color text-white" : ""} px-5 py-3 rounded-md hover:bg-teal-500 hover:text-white cursor-pointer `}>
                         <p>{item.name}</p>
                     </div>)}
 
@@ -73,14 +76,15 @@ const Profile = () => {
 
                     <Routes>
                         <Route path='/' element={<CustomerDetails />} />
-                        <Route path='orders' element={<Order />} />
-                        <Route path='orders/:orderId/:orderItemId' element={<OrderDetails />} />
-                        <Route path='profile' element={<CustomerDetails />} />
-                        <Route path='saved-card' element={<SavedCards />} />
-                        <Route path='addresses' element={<Addresses />} />
+                        <Route path='/orders' element={<Order />} />
+                        <Route path='/orders/:orderId/:orderItemId' element={<OrderDetails />} />
+                        <Route path='/profile' element={<CustomerDetails />} />
+                        <Route path='/saved-card' element={<SavedCards />} />
+                        <Route path='/addresses' element={<Addresses />} />
+                        {/* addresses */}
                     </Routes>
 
-                </div>  
+                </div>
 
             </div>
             <Snackbar
@@ -95,28 +99,26 @@ const Profile = () => {
                     variant="filled"
                     sx={{ width: "100%" }}
                 >
-                    {"order canceled successfully"}
+                    {customer.error ? customer.error : orders.orderCanceled?"order canceled successfully": "success"}
                 </Alert>
             </Snackbar>
-            <Dialog
+             <Dialog
                 open={openLogoutDialog}
                 onClose={cancelLogout}
-                >
+            >
                 <DialogTitle>Confirm Logout</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                   Are you sure you want to log out of your account?
+                        Are you sure you want to log out?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={cancelLogout} color="primary">
-                    Cancel
-                    </Button>
-                    <Button onClick={confirmLogout} color="error" autoFocus>
-                    Logout
+                    <Button onClick={cancelLogout}>Cancel</Button>
+                    <Button onClick={confirmLogout} autoFocus>
+                        Logout
                     </Button>
                 </DialogActions>
-                </Dialog>
+            </Dialog>
         </div>
     )
 }
