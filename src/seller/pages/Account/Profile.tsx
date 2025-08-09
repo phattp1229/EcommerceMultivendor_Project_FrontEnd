@@ -88,7 +88,7 @@ const Profile = () => {
             <Divider />
             <ProfileFildCard
               keys={"Seller Email"}
-              value={sellers.profile?.account.email}
+              value={sellers.profile?.email}
             />
             <Divider />
             <ProfileFildCard

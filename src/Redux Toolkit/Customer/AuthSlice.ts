@@ -92,7 +92,7 @@ export const loginAdmin = createAsyncThunk<AuthResponse, LoginAdminRequest>(
             const response = await api.post<AuthResponse>(`${API_URL}/admin/login`, loginRequest);
             console.log("login successful", response.data)
             localStorage.setItem("jwt", response.data.jwt)
-            loginRequest.navigate("/");
+            loginRequest.navigate("/admin");
             return response.data;
         }
 

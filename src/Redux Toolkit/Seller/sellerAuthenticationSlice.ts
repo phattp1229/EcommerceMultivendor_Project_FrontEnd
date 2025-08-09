@@ -59,9 +59,13 @@ export const verifyLogin = createAsyncThunk('otp/verifyLogin',
             localStorage.setItem("jwt", response.data.jwt);
             data.navigate("/seller");
             return response.data;
-        } catch (error: any) {
-            console.log("error", error.response?.data);
-            return rejectWithValue(error.response?.data?.message || 'Failed to login');
+        } catch (err: any) {
+            const apiMsg =
+                err?.response?.data?.error ||
+                err?.response?.data?.message ||
+                err?.message ||
+                'Failed to login';
+            return rejectWithValue(apiMsg);
         }
     }
 );

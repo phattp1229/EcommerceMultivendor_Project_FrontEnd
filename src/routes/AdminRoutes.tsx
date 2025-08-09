@@ -6,12 +6,14 @@ import GridTable from '../admin/pages/Home Page/GridTable'
 import ElectronicsTable from '../admin/pages/Home Page/ElectronicsTable'
 import ShopByCategoryTable from '../admin/pages/Home Page/ShopByCategoryTable'
 import Deal from '../admin/pages/Home Page/Deal'
+import ListKocTable from '../admin/pages/Koc/ListKocTable'
 
 const AdminRoutes = () => {
   return (
     <div>
     <Routes>
     <Route path='/' element={<SellersTable/>}/>
+    <Route path='/list-koc' element={<ListKocTable/>}/> 
     <Route path='/coupon' element={<Coupon/>}/>
     <Route path='/add-coupon' element={<CouponForm/>}/>
     <Route path='/home-grid' element={<GridTable/>}/>

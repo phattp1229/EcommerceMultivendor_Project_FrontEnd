@@ -37,8 +37,9 @@ export interface Seller {
     bankDetails: BankDetails;
     sellerName: string;
     businessDetails: BusinessDetails;
-    account: Account;
+    email?: string;
     accountStatus?: string;
+    account?: Account;
 }
 
 

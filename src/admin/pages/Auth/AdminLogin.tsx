@@ -150,8 +150,9 @@ const AdminLoginForm = () => {
                             fullWidth
                             name="password"
                             label="Password"
+                            margin="normal"
                             type="password"
-                            sx={{ mt: 2 }}
+                            sx={{ mt: 2 , mb: 2}}
                             value={formik.values.password}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -166,6 +167,7 @@ const AdminLoginForm = () => {
                 {!auth.otpSent && <Button
                 disabled={auth.loading}
                     fullWidth
+                    
                     variant='contained'
                     onClick={handleSentOtp}
                     sx={{ py: "11px" }}>{

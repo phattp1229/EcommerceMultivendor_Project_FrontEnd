@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useEffect} from 'react'
-import { enqueueSnackbar } from 'notistack';
+import { enqueueSnackbar, useSnackbar } from 'notistack';
 import { verifyLogin } from '../../../Redux Toolkit/Seller/sellerAuthenticationSlice';
 
 //validate
@@ -18,33 +18,32 @@ const SellerLoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { auth } = useAppSelector(store => store)
-
+  const { enqueueSnackbar } = useSnackbar(); 
   const formik = useFormik({
     initialValues: {
       username: '',
       password: ''
     },
      validationSchema: validationSchema,
-    onSubmit: (values) => {
-      dispatch(verifyLogin({
-        username: values.username, 
-        password: values.password,
-        navigate
-      }))
-      console.log('Form data:', values);
-    }
-  });
+    onSubmit: async(values) => {
+      try {
+        await dispatch(
+          verifyLogin({
+            username: values.username,
+            password: values.password,
+            navigate, // nếu thunk tự navigate, toast vẫn kịp bắn vì nằm trước await (hoặc sau unwrap)
+          })
+        ).unwrap();
 
-    // useEffect(() => {
-    //     if (auth.isLoggedIn) {
-    //         enqueueSnackbar("Welcome Seller !", { variant: "success" });
-    //     }
-    // }, [auth.isLoggedIn, dispatch]);
-    // useEffect(() => {
-    //   if (auth.error) {
-    //     enqueueSnackbar(auth.error, { variant: "error" }); 
-    //   }
-    // }, [auth.error]);
+        enqueueSnackbar('Welcome Seller!', { variant: 'success' }); // 👈 toast ngay khi thành công
+      } catch (err: any) {
+        enqueueSnackbar(
+          typeof err === 'string' ? err : (auth.error || 'Login failed'),
+          { variant: 'error' }
+        );
+      }
+    },
+  });
   return (
     <div>
       <h1 className='text-center font-bold text-xl text-primary-color pb-5'>Login As Seller</h1>

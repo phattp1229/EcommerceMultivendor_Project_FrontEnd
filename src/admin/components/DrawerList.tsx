@@ -12,8 +12,14 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 const menu = [
     {
-        name: "Dashboard",
+        name: "Dashboard Seller",
         path: "/admin",
+        icon: <DashboardIcon className="text-primary-color" />,
+        activeIcon: <DashboardIcon className="text-white" />,
+    },
+    {
+        name: "Dashboard Koc",
+        path: "/admin/list-koc",
         icon: <DashboardIcon className="text-primary-color" />,
         activeIcon: <DashboardIcon className="text-white" />,
     },
@@ -60,7 +66,7 @@ const menu2 = [
 
     {
         name: "Account",
-        path: "/seller/account",
+        path: "/admin/account",
         icon: <AccountBoxIcon className="text-primary-color" />,
         activeIcon: <AccountBoxIcon className="text-white" />,
     },
