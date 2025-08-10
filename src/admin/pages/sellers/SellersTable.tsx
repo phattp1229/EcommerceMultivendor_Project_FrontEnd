@@ -65,12 +65,14 @@ export default function SellersTable() {
     setAnchorEl(prev => ({ ...prev, [sellerId]: null }));
 
   const handleUpdateSellerAccountStatus = (id: number, status: string) => {
-    dispatch(updateSellerAccountStatus({ id, status }))
-      .unwrap()
-      .then(() => {
-        // refetch theo trang hiện tại
-        dispatch(fetchSellers({ status: accountStatus, page, size: rowsPerPage, sort }));
-      });
+    const restoreProducts = status === "ACTIVE"; // chỉ bật lại khi ACTIVE
+
+  dispatch(updateSellerAccountStatus({ id, status, restoreProducts }))
+    .unwrap()
+    .then(() => {
+      // refetch theo trang hiện tại
+      dispatch(fetchSellers({ status: accountStatus, page, size: rowsPerPage, sort }));
+    });
   };
 
   const rows = pageData?.content ?? [];

@@ -28,6 +28,7 @@ const initialState: SellerState = {
   report: null,
   profileUpdated: false,
 };
+type SellerStatus = "ACTIVE" | "CLOSED";
 
 // Define the base URL for the API
 const API_URL = "/sellers";
@@ -174,15 +175,15 @@ export const updateSeller = createAsyncThunk<
 
 export const updateSellerAccountStatus = createAsyncThunk<
   Seller,
-  { id: number; status: string }
+  { id: number; status: string; restoreProducts?: boolean }
 >(
   "sellers/updateSellerAccountStatus",
   async (
-    { id, status }: { id: number; status: string },
+    { id, status, restoreProducts = false },
     { rejectWithValue }
   ) => {
     try {
-      const response = await api.patch(`/admin/seller/${id}/status/${status}`);
+      const response = await api.patch(`/admin/seller/${id}/status/${status}`, null, { params: { restoreProducts } });
       console.log("update  seller status: ", response.data);
       return response.data;
     } catch (error: any) {
