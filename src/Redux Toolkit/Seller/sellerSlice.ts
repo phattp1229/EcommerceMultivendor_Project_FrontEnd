@@ -2,12 +2,13 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { api } from "../../Config/Api";
-import type { Seller, SellerReport } from "../../types/sellerTypes";
+import type { Seller, SellerReport, Page } from "../../types/sellerTypes";
 import type { RootState } from "../Store";
 
 // Define the initial state type
 interface SellerState {
-  sellers: Seller[];
+  sellers: Seller[];                      // optional: tiện cho nơi cần mảng phẳng
+  sellersPage: Page<Seller> | null;       // <-- thêm trường này
   selectedSeller: Seller | null;
   profile: Seller | null;
   loading: boolean;
@@ -19,6 +20,7 @@ interface SellerState {
 // Define the initial state
 const initialState: SellerState = {
   sellers: [],
+  sellersPage: null,                      // <-- init
   selectedSeller: null,
   loading: false,
   error: null,
@@ -65,39 +67,27 @@ export const fetchSellerProfile = createAsyncThunk<Seller, any>(
   }
 );
 
-export const fetchSellers = createAsyncThunk<Seller[], string>(
+export const fetchSellers = createAsyncThunk<
+  Page<Seller>,
+  { status?: string; page?: number; size?: number; sort?: string }
+>(
   "sellers/fetchSellers",
-  async (status: string, { rejectWithValue }) => {
+  async ({ status, page = 0, size = 10, sort = "id,desc" }, { rejectWithValue }) => {
+    console.log("fetchSellers params ->", { status, page, size, sort }); // <-- thêm log
     try {
-      const response = await api.get<Seller[]>(API_URL, {
-        params: {
-          status,
-        },
+      const response = await api.get<Page<Seller>>("/sellers", {
+        params: { status, page, size, sort: sort ?? "id,desc" }, // fallback an toàn
       });
-      console.log("fetch sellers", response.data);
       return response.data;
     } catch (error: any) {
-      if (axios.isAxiosError(error) && error.response) {
-        console.error(
-          "Fetch sellers error response data:",
-          error.response.data
-        );
-        console.error(
-          "Fetch sellers error response status:",
-          error.response.status
-        );
-        console.error(
-          "Fetch sellers error response headers:",
-          error.response.headers
-        );
-        return rejectWithValue(error.message);
-      } else {
-        console.error("Fetch sellers error message:", error.message);
-        return rejectWithValue("Failed to fetch sellers");
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data || error.message);
       }
+      return rejectWithValue("Failed to fetch sellers");
     }
   }
 );
+
 
 export const fetchSellerReport = createAsyncThunk<
   SellerReport,
@@ -218,7 +208,7 @@ export const verifySellerEmail = createAsyncThunk<
   "sellers/verifySellerEmail",
   async ({ otp, navigate }, { rejectWithValue }) => {
     try {
-      const response = await api.patch(`${API_URL}/verify/${otp}`);
+      const response = await api.patch(`${API_URL}/verify/${encodeURIComponent(otp)}`);
       navigate("/seller-account-verified");
       console.log("verifiy seller email ", response.data);
       return response.data;
@@ -296,13 +286,11 @@ const sellerSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(
-        fetchSellers.fulfilled,
-        (state, action: PayloadAction<Seller[]>) => {
-          state.sellers = action.payload;
-          state.loading = false;
-        }
-      )
+      .addCase(fetchSellers.fulfilled, (state, action: PayloadAction<Page<Seller>>) => {
+        state.loading = false;
+        state.sellersPage = action.payload;
+        state.sellers = action.payload.content; // optional: giữ mảng phẳng cho tương thích
+      })
       .addCase(fetchSellers.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as string) || "Failed to fetch sellers";

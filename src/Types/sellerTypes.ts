@@ -39,7 +39,6 @@ export interface Seller {
     businessDetails: BusinessDetails;
     email?: string;
     accountStatus?: string;
-    account?: Account;
 }
 
 
@@ -55,3 +54,14 @@ export interface SellerReport {
     canceledOrders: number;
     totalTransactions: number;
 }
+// src/types/seller.ts
+export type Page<T> = {
+    content: T[];
+    number: number;       // 0-based
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    first: boolean;
+    last: boolean;
+};
+
