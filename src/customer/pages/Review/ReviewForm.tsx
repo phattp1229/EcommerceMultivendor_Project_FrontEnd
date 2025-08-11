@@ -15,9 +15,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { uploadToCloudinary } from '../../../util/uploadToCloudnary';
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { useAppDispatch } from '../../../Redux Toolkit/Store';
-
-import { useNavigate, useParams } from 'react-router-dom';
 import { createReview } from '../../../Redux Toolkit/Customer/ReviewSlice';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface CreateReviewRequest {
     reviewText: string;

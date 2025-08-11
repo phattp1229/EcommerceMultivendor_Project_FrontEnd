@@ -157,7 +157,7 @@ const reviewSlice = createSlice({
       .addCase(
         createReview.fulfilled,
         (state, action: PayloadAction<Review>) => {
-          state.reviews.push(action.payload);
+          state.reviews = [action.payload, ...state.reviews];
           state.loading = false;
           state.reviewCreated = true;
         }

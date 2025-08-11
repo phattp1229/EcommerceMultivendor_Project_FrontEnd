@@ -50,6 +50,7 @@ export const updateProduct = createAsyncThunk<
       const response = await api.patch(`${API_URL}/${productId}`, product, {
         headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
       });
+
       console.log("product updated ", response.data);
       return response.data;
     } catch (error: any) {
@@ -83,12 +84,15 @@ export const deleteProduct = createAsyncThunk<void, number>(
   "sellerProduct/deleteProduct",
   async (productId, { rejectWithValue }) => {
     try {
-      await api.delete(`${API_URL}/${productId}`);
+      await api.delete(`${API_URL}/${productId}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+      });
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error?.response?.data || "Failed to delete product");
     }
   }
 );
+
 
 interface SellerProductState {
   products: Product[];

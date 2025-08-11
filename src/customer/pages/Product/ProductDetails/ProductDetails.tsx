@@ -93,14 +93,15 @@ const ProductDetails = () => {
 };
 
 
-
+console.log('PD -> review.reviews length:', review.reviews.length, review.reviews);
     return (
         <div className='px-5 lg:px-20 pt-10 '>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
 
                 <section className='flex flex-col lg:flex-row gap-5'>
                     <div className='w-full lg:w-[15%] flex flex-wrap lg:flex-col gap-3'>
-                        {products.product?.images.map((item, index) => <img onClick={() => setSelectedImage(index)} className='lg:w-full w-[50px] cursor-pointer rounded-md' src={item} alt="" />)}
+                        {products.product?.images.map((item, index) => <img onClick={() => setSelectedImage(index)} 
+                        className='lg:w-full w-[50px] cursor-pointer rounded-md' src={item} alt="" />)}
                     </div>
                     <div className='w-full lg:w-[85%]'>
                         <img onClick={handleOpen} className='w-full rounded-md cursor-zoom-out' src={products.product?.images[selectedImage]} alt="" />
@@ -214,7 +215,8 @@ const ProductDetails = () => {
                             Review & Ratings
                         </h1>
 
-                        <RatingCard totalReview={review.reviews.length} />
+                 <RatingCard />
+
                         <div className='mt-10'>
                             <div className="space-y-5">
                                 {review.reviews.map((item, i) => (

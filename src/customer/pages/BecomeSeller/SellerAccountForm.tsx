@@ -56,10 +56,10 @@ const SellerAccountForm = () => {
       },
       sellerName: "",
       businessDetails: {
-        businessLicenseUrl:"",
         businessName: "",
         businessEmail:"",
         businessMobile:"",
+        businessLicenseUrl:"",
         logo:"",
         banner:"",
         businessAddress:""

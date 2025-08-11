@@ -30,7 +30,7 @@ import AdminAuth from './admin/pages/Auth/AdminAuth';
 import Mobile from './data/Products/mobile';
 import CustomerRoutes from './routes/CustomerRoutes';
 import { homeCategories } from './data/homeCategories';
-import { createHomeCategories} from './Redux Toolkit/Customer/Customer/AsyncThunk';
+import { createHomeCategories, fetchHomePageData} from './Redux Toolkit/Customer/Customer/AsyncThunk';
 import Wishlist from './customer/pages/Wishlist/Wishlist';
 import { fetchUserProfile } from './Redux Toolkit/Admin/UserSlice';
 
@@ -51,8 +51,8 @@ const navigate=useNavigate();
   }, [auth.jwt, sellerAuth.jwt])
 
   useEffect(() => {
-    dispatch(createHomeCategories(homeCategories))
-    // dispatch(fetchHomePageData())
+    // dispatch(createHomeCategories(homeCategories))
+    dispatch(fetchHomePageData())
   }, [dispatch])
 
   return (

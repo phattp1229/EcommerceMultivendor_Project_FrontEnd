@@ -5,29 +5,66 @@ import OrderStepper from './OrderStepper';
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
 import { cancelOrder, fetchOrderById, fetchOrderItemById } from '../../../Redux Toolkit/Customer/OrderSlice';
 import { useNavigate, useParams } from 'react-router-dom';
+import { fetchReviewsByProductId } from "../../../Redux Toolkit/Customer/ReviewSlice";
+import { OrderStatus } from "../../../types/orderTypes";
 
 const OrderDetails = () => {
   const dispatch = useAppDispatch()
-  const { auth, orders } = useAppSelector(store => store);
+  const { auth, orders, review, customer } = useAppSelector(store => store);
   const { orderItemId, orderId } = useParams()
   const navigate = useNavigate();
 
+
+  // 1) Polling cho ORDER (có fetch ngay lần đầu)
+useEffect(() => {
+  const jwt = localStorage.getItem("jwt") || "";
+  if (!orderId) return;
+
+  const idNum = Number(orderId);
+  if (Number.isNaN(idNum)) return;
+
+  // fetch ngay lần đầu
+  dispatch(fetchOrderById({ orderId: idNum, jwt }));
+
+  // rồi mới setInterval
+  const timer = setInterval(() => {
+    dispatch(fetchOrderById({ orderId: idNum, jwt }));
+  }, 10000);
+
+  return () => clearInterval(timer);
+}, [orderId, dispatch]);
+
+// 2) Fetch ORDER ITEM (một phát là đủ; nếu muốn cũng có thể poll tương tự)
+useEffect(() => {
+  const jwt = localStorage.getItem("jwt") || "";
+  if (!orderItemId) return;
+
+  const idNum = Number(orderItemId);
+  if (Number.isNaN(idNum)) return;
+
+  dispatch(fetchOrderItemById({ orderItemId: idNum, jwt }));
+}, [orderItemId, dispatch]);
+
+  // Load reviews for the product in the order item
   useEffect(() => {
-    dispatch(fetchOrderItemById({
-      orderItemId: Number(orderItemId),
-      jwt: localStorage.getItem("jwt") || ""
-    }))
-    dispatch(fetchOrderById({
-      orderId: Number(orderId),
-      jwt: localStorage.getItem("jwt") || ""
-    }))
-  }, [auth.jwt])
+  const pid = orders.orderItem?.product?.id;
+  if (pid) dispatch(fetchReviewsByProductId({ productId: pid }));
+  }, [orders.orderItem?.product?.id, dispatch]);
 
   if (!orders.orders || !orders.orderItem) {
     return <div className='h-[80vh] flex justify-center items-center'>
       No order found
     </div>;
   }
+const pid = orders.orderItem?.product?.id;
+const uid = customer.customer?.id;
+
+const isDelivered = orders.currentOrder?.orderStatus === OrderStatus.DELIVERED;
+
+const alreadyReviewed =
+  !!(pid && uid && review.reviews?.some(r => r.product?.id === pid && r.customer?.id === uid));
+
+const canWriteReview = !!pid && isDelivered && !alreadyReviewed;
 
   const handleCancelOrder = () => {
     dispatch(cancelOrder(orderId))
@@ -45,13 +82,19 @@ const OrderDetails = () => {
           <p><strong>Size:</strong>M</p>
         </div>
         <div>
-          <Button onClick={() => navigate(`/reviews/${orders.orderItem?.product.id}/create`)}>Write Review</Button>
+          {canWriteReview && (
+          <Button onClick={() => navigate(`/reviews/${pid}/create`)}>
+            Write Review
+          </Button>
+)}
         </div>
       </section>
 
       <section className='border p-5'>
-        <OrderStepper orderStatus={orders.currentOrder?.orderStatus} />
-
+        {/* <OrderStepper orderStatus={orders.currentOrder?.orderStatus} /> */}
+        <OrderStepper orderStatus={orders.currentOrder?.orderStatus} // BE: PLACE/PLACED/CONFIRMED/SHIPPED/DELIVERED/CANCELLED
+          orderDate={orders.currentOrder?.orderDate}
+          deliverDate={orders.currentOrder?.deliverDate}/>
       </section>
       <div className='border p-5'>
         <h1 className='font-bold pb-3'>Delivery Address</h1>

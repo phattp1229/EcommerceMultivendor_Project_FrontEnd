@@ -26,10 +26,13 @@ export interface Order {
     orderStatus: OrderStatus;
     totalItem: number;
     deliverDate: string;
+    packedDate?: string;
 }
 //@ts-ignore
 export enum OrderStatus {
     PENDING = 'PENDING',
+    PLACE = 'PLACED',
+    CONFIRMED = 'CONFIRMED',
     SHIPPED = 'SHIPPED',
     DELIVERED = 'DELIVERED',
     CANCELLED = 'CANCELLED'

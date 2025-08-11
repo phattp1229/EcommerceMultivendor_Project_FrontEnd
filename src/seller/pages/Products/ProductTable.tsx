@@ -6,12 +6,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button, IconButton, styled } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, styled, Tooltip } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
-import { fetchSellerProducts, updateProductStock } from '../../../Redux Toolkit/Seller/sellerProductSlice';
+import { fetchSellerProducts, updateProductStock,deleteProduct } from '../../../Redux Toolkit/Seller/sellerProductSlice';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
-
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { useSnackbar } from 'notistack';
 
 
 
@@ -42,9 +43,10 @@ export default function ProductTable() {
   const { sellerProduct } = useAppSelector(store => store);
   const dispatch = useAppDispatch();
   const navigate=useNavigate();
-
-
-
+const { enqueueSnackbar } = useSnackbar();
+const [deletingId, setDeletingId] = React.useState<number | null>(null);
+  const [confirmOpen, setConfirmOpen] = React.useState(false);
+  const [target, setTarget] = React.useState<{ id: number; title: string } | null>(null);
 
   React.useEffect(() => {
     dispatch(fetchSellerProducts(localStorage.getItem("jwt")))
@@ -54,6 +56,26 @@ export default function ProductTable() {
     dispatch(updateProductStock(id))
   }
 
+  // mở dialog xác nhận
+  const askDelete = (id?: number, title?: string) => {
+    if (!id) return;
+    setTarget({ id, title: title ?? '' });
+    setConfirmOpen(true);
+  };
+const handleDelete = async () => {
+    if (!target) return;
+    try {
+      setDeletingId(target.id);
+      await dispatch(deleteProduct(target.id)).unwrap();
+      enqueueSnackbar('Delete product successfully!', { variant: 'success' });
+    } catch (err: any) {
+      enqueueSnackbar(typeof err === 'string' ? err : 'Delete product failed', { variant: 'error' });
+    } finally {
+      setDeletingId(null);
+      setConfirmOpen(false);
+      setTarget(null);
+    }
+  };
   return (
     <>
       <h1 className='pb-5 font-bold text-xl'>Products</h1>
@@ -70,6 +92,7 @@ export default function ProductTable() {
               <StyledTableCell align="right">Quantity</StyledTableCell>
               <StyledTableCell align="right">Update Stock</StyledTableCell>
               <StyledTableCell align="right">Update</StyledTableCell>
+               <StyledTableCell align="right">Delete</StyledTableCell> {/* 👈 thêm cột */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -92,11 +115,39 @@ export default function ProductTable() {
                     <EditIcon />
                   </IconButton>
                 </StyledTableCell>
+                <StyledTableCell align="right">
+                  <Tooltip title="Delete">
+                    <span>
+                      <IconButton
+                        onClick={() =>  askDelete(item.id, item.title)}
+                        color="error"
+                        disabled={deletingId === item.id}
+                      >
+                        <DeleteOutlineIcon/>
+                      </IconButton>
+                    </span>
+                  </Tooltip>
+                </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+      {/* Confirm dialog (thay cho window.confirm) */}
+      <Dialog open={confirmOpen} onClose={() => setConfirmOpen(false)}>
+        <DialogTitle>Delete Product</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {`Delete "${target?.title ?? ''}"? This action cannot be undone.`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmOpen(false)}>Cancel</Button>
+          <Button onClick={handleDelete} color="error" variant="contained" disabled={!!deletingId}>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
 
   );

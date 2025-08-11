@@ -44,14 +44,14 @@ const BecomeSellerFormStep1 = ({ formik, handleOtpChange }: any) => {
                 />
 
                 <div>
-                <label htmlFor="business-license">
+                <label htmlFor="businessLicenseUrl">
                     <Button variant="contained" component="span">
                     Upload Business License
                     </Button>
                 </label>
                 <input
                     accept=".pdf,.jpg,.jpeg,.png"
-                    id="business-license"
+                    id="businessLicenseUrl"
                     name="businessLicenseUrl"
                     type="file"
                     onChange={async (event) => {

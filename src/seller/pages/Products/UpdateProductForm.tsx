@@ -33,6 +33,7 @@ import { furnitureLevelThree } from "../../../data/category/level three/furnitur
 import { useParams } from "react-router-dom";
 import { fetchProductById } from "../../../Redux Toolkit/Customer/ProductSlice";
 import type { Seller } from "../../../types/sellerTypes";
+import { useSnackbar } from "notistack";
 
 const categoryTwo: { [key: string]: any[] } = {
     men: menLevelTwo,
@@ -53,28 +54,28 @@ const categoryThree: { [key: string]: any[] } = {
 };
 
 const validationSchema = Yup.object({
-    title: Yup.string()
-        .min(5, "Title should be at least 5 characters long")
-        .required("Title is required"),
-    description: Yup.string()
-        .min(10, "Description should be at least 10 characters long")
-        .required("Description is required"),
-    price: Yup.number()
-        .positive("Price should be greater than zero")
-        .required("Price is required"),
-    discountedPrice: Yup.number()
-        .positive("Discounted Price should be greater than zero")
-        .required("Discounted Price is required"),
-    discountPercent: Yup.number()
-        .positive("Discount Percent should be greater than zero")
-        .required("Discount Percent is required"),
-    quantity: Yup.number()
-        .positive("Quantity should be greater than zero")
-        .required("Quantity is required"),
-    color: Yup.string().required("Color is required"),
-    category: Yup.string().required("Category is required"),
-    sizes: Yup.string().required("Sizes are required"),
-})
+  title: Yup.string()
+    .min(5, "Title should be at least 5 characters long")
+    .required("Title is required"),
+  description: Yup.string()
+    .min(10, "Description should be at least 10 characters long")
+    .required("Description is required"),
+  mrpPrice: Yup.number()
+    .positive("MRP Price should be greater than zero")
+    .required("MRP Price is required"),
+  sellingPrice: Yup.number()
+    .positive("Selling Price should be greater than zero")
+    .required("Selling Price is required")
+    .test("is-less-than-mrp", "Selling Price must be less than or equal to MRP", function (value) {
+      const { mrpPrice } = this.parent;
+      return value <= mrpPrice;
+    }),
+  quantity: Yup.number()
+    .positive("Quantity should be greater than zero")
+    .required("Quantity is required"),
+  color: Yup.string().required("Color is required"),
+  sizes: Yup.string().required("Sizes are required"),
+});
 
 interface FormValues {
     title: string;
@@ -98,6 +99,7 @@ const UpdateProductForm = () => {
     const { productId } = useParams();
 
     const [snackbarOpen, setOpenSnackbar] = useState(false);
+    const { enqueueSnackbar } = useSnackbar();
 
     const formik = useFormik<FormValues>({
         initialValues:
@@ -116,11 +118,15 @@ const UpdateProductForm = () => {
             numRatings:0,
             in_stock: true,
         },
-        // validationSchema: validationSchema,
-        onSubmit: (values) => {
-            dispatch(updateProduct({ productId:Number(productId),product:values}))
-            console.log(values);
-        },
+        validationSchema: validationSchema,
+        onSubmit: async (values) => {
+            try {
+                await dispatch(updateProduct({ productId: Number(productId), product: values })).unwrap(); // ✅ await
+                enqueueSnackbar('Update product successfully! 🎉', { variant: 'success' });
+            } catch (error: any) {
+                enqueueSnackbar(error?.message || 'Update failed', { variant: 'error' });
+            }
+            },
     });
 
     const handleImageChange = async (event: any) => {
@@ -241,7 +247,7 @@ const UpdateProductForm = () => {
                             onChange={formik.handleChange}
                             error={formik.touched.title && Boolean(formik.errors.title)}
                             helperText={formik.touched.title && formik.errors.title}
-                            required
+                            // required
                         />
                     </Grid>
                     <Grid size={12}>
@@ -258,7 +264,7 @@ const UpdateProductForm = () => {
                                 formik.touched.description && Boolean(formik.errors.description)
                             }
                             helperText={formik.touched.description && formik.errors.description}
-                            required
+                            // required
                         />
                     </Grid>
                     <Grid size={{ xs: 12,sm: 6}}>
@@ -272,7 +278,7 @@ const UpdateProductForm = () => {
                             onChange={formik.handleChange}
                             error={formik.touched.mrpPrice && Boolean(formik.errors.mrpPrice)}
                             helperText={formik.touched.mrpPrice && formik.errors.mrpPrice}
-                            required
+                            // required
                         />
                     </Grid>
                     <Grid size={{ xs: 12,sm: 6}}>
@@ -291,7 +297,7 @@ const UpdateProductForm = () => {
                             helperText={
                                 formik.touched.sellingPrice && formik.errors.sellingPrice
                             }
-                            required
+                            // required
                         />
                     </Grid>
 
@@ -299,7 +305,7 @@ const UpdateProductForm = () => {
                         <FormControl
                             fullWidth
                             error={formik.touched.color && Boolean(formik.errors.color)}
-                            required
+                            // required
                         >
                             <InputLabel id="color-label">Color</InputLabel>
                             <Select
@@ -330,7 +336,7 @@ const UpdateProductForm = () => {
                         <FormControl
                             fullWidth
                             error={formik.touched.sizes && Boolean(formik.errors.sizes)}
-                            required
+                            // required
                         >
                             <InputLabel id="sizes-label">Sizes</InputLabel>
                             <Select
@@ -355,7 +361,25 @@ const UpdateProductForm = () => {
                             )}
                         </FormControl>
                     </Grid>
-                  
+                  <Grid size={{ xs: 12,sm: 4}}>
+                    <TextField
+                    fullWidth
+                    id="quantity"
+                    name="quantity"
+                    label="Quantity"
+                    type="number"
+                    value={formik.values.quantity}
+                    onChange={formik.handleChange}
+                    error={
+                        formik.touched.quantity &&
+                        Boolean(formik.errors.quantity)
+                    }
+                    helperText={
+                        formik.touched.quantity && formik.errors.quantity
+                    }
+                    // required
+                    />
+                </Grid>
                
                     <Grid size={{ xs: 12}}>
                         <Button
