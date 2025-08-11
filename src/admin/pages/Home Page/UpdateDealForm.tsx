@@ -9,8 +9,8 @@ import {
     Typography,
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../../Redux Toolkit/Store";
-// import { fetchHomeCategories } from "../../../Redux Toolkit/Admin/AdminSlice";
-// import { updateDeal } from "../../../Redux Toolkit/Admin/DealSlice";
+import { fetchHomeCategories } from "../../../Redux Toolkit/Admin/AdminSlice";
+import { updateDeal } from "../../../Redux Toolkit/Admin/DealSlice";
 
 // Validation schema using Yup
 const validationSchema = Yup.object({
@@ -30,28 +30,28 @@ const initialValues = {
 };
 
 const UpdateDealForm = ({ id }: { id: number }) => {
-    // const { admin } = useAppSelector((store) => store);
+    const { admin } = useAppSelector((store) => store);
     const dispatch = useAppDispatch();
     const formik = useFormik({
         initialValues,
         validationSchema,
         onSubmit: (values) => {
             console.log("Deal submit", values);
-            // dispatch(
-            //     updateDeal(
-            //         {
-            //             id,
-            //             deal: {
-            //                 discount: values.discount,
-            //                 category: { id: Number(values.category) },
-            //             }
-            //         })
-            // );
+            dispatch(
+                updateDeal(
+                    {
+                        id,
+                        deal: {
+                            discount: values.discount,
+                            category: { id: Number(values.category) },
+                        }
+                    })
+            );
         },
     });
 
     useEffect(() => {
-        // dispatch(fetchHomeCategories());
+        dispatch(fetchHomeCategories());
     }, []);
 
     return (

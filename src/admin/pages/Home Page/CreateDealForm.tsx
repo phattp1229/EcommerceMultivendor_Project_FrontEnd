@@ -2,7 +2,7 @@ import { Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, Select,
 import { useFormik } from 'formik';
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
-// import { createDeal } from '../../../Redux Toolkit/Admin/DealSlice';
+import { createDeal } from '../../../Redux Toolkit/Admin/DealSlice';
 
 const CreateDealForm = () => {
   const { homePage } = useAppSelector(store => store);
@@ -16,11 +16,11 @@ const CreateDealForm = () => {
     onSubmit: (values) => {
 
       // console.log("Form Data -- :", values);
-      // dispatch(createDeal({
-      //   discount: values.discount, category: {
-      //     id: values.category
-      //   }
-      // }))
+      dispatch(createDeal({
+        discount: values.discount, category: {
+          id: values.category
+        }
+      }))
 
     },
   });

@@ -22,7 +22,7 @@ import { electronicsLevelThree } from "../../../data/category/level three/electr
 import { furnitureLevelTwo } from "../../../data/category/level two/furnitureLevleTwo";
 import { electronicsLevelTwo } from "../../../data/category/level two/electronicsLavelTwo";
 import { useAppDispatch } from "../../../Redux Toolkit/Store";
-// import { updateHomeCategory } from "../../../Redux Toolkit/Admin/AdminSlice";
+import { updateHomeCategory } from "../../../Redux Toolkit/Admin/AdminSlice";
 import type { HomeCategory } from "../../../types/homeDataTypes";
 
 // Define validation schema using Yup
@@ -66,12 +66,12 @@ const UpdateHomeCategoryForm = ({
       // const data =
       console.log("Form Data:", values, category);
       if (category?.id) {
-        // dispatch(
-        //   updateHomeCategory({
-        //     id: category.id,
-        //     data: { image: values.image, categoryId: values.category3 },
-        //   })
-        // );
+        dispatch(
+          updateHomeCategory({
+            id: category.id,
+            data: { image: values.image, categoryId: values.category3 },
+          })
+        );
       }
       handleClose()
     },

@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import { Box, IconButton, Modal, styled } from "@mui/material";
 import type { HomeCategory } from "../../../types/homeDataTypes";
 import EditIcon from "@mui/icons-material/Edit";
-// import UpdateHomeCategoryForm from "./UpdateHomeCategoryForm";
+import UpdateHomeCategoryForm from "./UpdateHomeCategoryForm";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -61,8 +61,8 @@ function HomeCategoryTable({categories}:{categories:HomeCategory[] | undefined})
             <TableRow>
               <StyledTableCell>No</StyledTableCell>
               <StyledTableCell>Id</StyledTableCell>
-              <StyledTableCell>Image</StyledTableCell>
-              <StyledTableCell align="right">Category</StyledTableCell>
+              <StyledTableCell>image</StyledTableCell>
+              <StyledTableCell align="right">category</StyledTableCell>
               <StyledTableCell align="right">Name</StyledTableCell>
             </TableRow>
           </TableHead>
@@ -105,10 +105,10 @@ function HomeCategoryTable({categories}:{categories:HomeCategory[] | undefined})
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          {/* <UpdateHomeCategoryForm
+          <UpdateHomeCategoryForm
             category={selectedCategory}
             handleClose={handleClose}
-          /> */}
+          />
         </Box>
       </Modal>
     </>
