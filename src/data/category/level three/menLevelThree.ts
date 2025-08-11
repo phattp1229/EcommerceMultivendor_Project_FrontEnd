@@ -66,8 +66,8 @@ export const menLevelThree = [
     "parentCategoryId": "men_topwear"
   },
   {
-    "name": "Men Sherwanis",
-    "categoryId": "men_sherwanis",
+    "name": "Men Polo",
+    "categoryId": "men_polo",
     "parentCategoryName": "Topwear",
     "parentCategoryId": "men_topwear"
   },

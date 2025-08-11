@@ -6,6 +6,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Box, Chip } from '@mui/material';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
 import { fetchTransactionsBySeller } from '../../../Redux Toolkit/Seller/transactionSlice';
 import type { Transaction } from '../../../types/Transaction';
@@ -30,36 +32,49 @@ export default function TransactionTable() {
 
   return (
     <>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ borderRadius: 4, boxShadow: 6, mt: 3, background: 'linear-gradient(135deg, #f8fafc 60%, #e0f7fa 100%)' }}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
-            <TableRow>
-              <TableCell>Date</TableCell>
-              <TableCell>Customer Details</TableCell>
-              <TableCell>Order</TableCell>
-              <TableCell align="right">Amount</TableCell>
+            <TableRow sx={{ background: 'linear-gradient(90deg, #1976d2 60%, #64b5f6 100%)' }}>
+              <TableCell sx={{ color: '#fff', fontWeight: 700, fontSize: 18, letterSpacing: 1 }}>Date</TableCell>
+              <TableCell sx={{ color: '#fff', fontWeight: 700, fontSize: 18, letterSpacing: 1 }}>Customer Details</TableCell>
+              <TableCell sx={{ color: '#fff', fontWeight: 700, fontSize: 18, letterSpacing: 1 }}>Order</TableCell>
+              <TableCell align="right" sx={{ color: '#fff', fontWeight: 700, fontSize: 18, letterSpacing: 1 }}>Amount</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {transaction.transactions.map((item: Transaction) => (
-              <TableRow key={item.id}>
-                <TableCell align="left"><div className='space-y-1'>
-                  <h1 className='font-medium'>{redableDateTime(item.date).split("at")[0]}</h1>
-                  <h1 className='text-xs text-gray-600 font-semibold'>{redableDateTime(item.date).split("at")[1]}</h1>
-                  </div></TableCell>
+            {transaction.transactions.map((item: Transaction, idx: number) => (
+              <TableRow
+                key={item.id}
+                sx={{
+                  background: idx % 2 === 0 ? '#f5fafd' : '#e3f2fd',
+                  transition: 'background 0.2s',
+                  '&:hover': { background: '#ffe0b2' }
+                }}
+              >
+                <TableCell align="left">
+                  <Box>
+                    <Box fontWeight={600} fontSize={16}>{redableDateTime(item.date).split("at")[0]}</Box>
+                    <Box fontSize={13} color="#888" fontWeight={500}>{redableDateTime(item.date).split("at")[1]}</Box>
+                  </Box>
+                </TableCell>
                 <TableCell component="th" scope="row">
-                  <div className='space-y-2'>
-                    <h1>{item.customer.fullName}</h1>
-                    <h1 className='font-semibold'>{item.customer.email}</h1>
-                    <h1 className='font-bold text-gray-600'>{item.customer.mobile}</h1>
-                  </div>
+                  <Box>
+                    <Box fontWeight={700} fontSize={16}>{item.customer.fullName}</Box>
+                    <Box fontSize={14} color="#1976d2" fontWeight={600}>{item.customer.email}</Box>
+                    <Box fontWeight={600} color="#555" fontSize={14}>{item.customer.mobile}</Box>
+                  </Box>
                 </TableCell>
                 <TableCell>
-                  Order Id : <strong> {item.order.id} </strong> 
+                  <Chip label={`Order Id: ${item.order.id}`} sx={{ bgcolor: '#ff9800', color: '#fff', fontWeight: 700, fontSize: 15, px: 1.5, borderRadius: 2 }} />
                 </TableCell>
-                <TableCell
-                  align="right">
-                  {item.order.totalSellingPrice?.toLocaleString("vi-VN")}đ
+                <TableCell align="right">
+                  <Box display="flex" alignItems="center" justifyContent="flex-end" gap={1}>
+                    <MonetizationOnIcon sx={{ color: '#43a047', fontSize: 22 }} />
+                    <Box fontWeight={700} fontSize={17} color="#43a047">
+                      {item.order.totalSellingPrice?.toLocaleString("vi-VN")}đ
+                    </Box>
+                  </Box>
                 </TableCell>
               </TableRow>
             ))}

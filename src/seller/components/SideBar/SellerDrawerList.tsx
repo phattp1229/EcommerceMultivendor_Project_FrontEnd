@@ -9,7 +9,8 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import AddIcon from '@mui/icons-material/Add';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import DrawerList from "../../../admin seller/components/drawerList/DrawerList";
-
+import CampaignIcon from "@mui/icons-material/Campaign";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 
 const menu = [
   {
@@ -48,12 +49,24 @@ const menu = [
     icon: <ReceiptIcon className="text-primary-color" />,
     activeIcon: <ReceiptIcon className="text-white" />,
   },
-  // {
-  //   name: "Inventory",
-  //   path: "/seller/inventory",
-  //   icon: <MailIcon className="text-primary-color" />,
-  //   activeIcon: <MailIcon className="text-white" />,
-  // },
+  // 👇 Affiliate
+{ name: "Campaigns", 
+  path: "/seller/campaigns",
+  icon: <CampaignIcon className="text-primary-color" />, 
+  activeIcon: <CampaignIcon className="text-white" /> 
+},
+
+{ name: "New Campaign", 
+  path: "/seller/campaigns/new", 
+  icon: <AddIcon className="text-primary-color" />, 
+  activeIcon: <AddIcon className="text-white" /> 
+},
+
+{ name: "KOC Approvals", 
+  path: "/seller/campaigns/approvals", 
+  icon: <HowToRegIcon className="text-primary-color" />, 
+  activeIcon: <HowToRegIcon className="text-white" /> 
+},
 ];
 
 const menu2 = [

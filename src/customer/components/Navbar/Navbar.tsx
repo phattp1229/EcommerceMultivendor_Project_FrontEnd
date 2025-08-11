@@ -106,7 +106,8 @@ const Navbar = () => {
             >
               <Avatar
                 sx={{ width: 29, height: 29 }}
-                src="https://cdn.pixabay.com/photo/2015/04/15/09/28/head-723540_640.jpg"
+                // src="https://cdn.pixabay.com/photo/2015/04/15/09/28/head-723540_640.jpg"
+                src="https://tse1.mm.bing.net/th/id/OIP.rmGR4zNkDAGEdoKC3-PsigHaHa?w=1920&h=1920&rs=1&pid=ImgDetMain&o=7&rm=3"
                 // src="https://www.tanishq.co.in/dw/image/v2/BKCK_PRD/on/demandware.static/-/Library-Sites-TanishqSharedLibrary/default/dwc0abe627/homepage/ShopByGender/Woman.jpg"
               />
               <h1 className="font-semibold hidden lg:block">

@@ -20,6 +20,7 @@ import WishlistSlice from "./Customer/WishlistSlice";
 import ReviewSlice from "./Customer/ReviewSlice";
 import UserSlice from "./Admin/UserSlice";
 import KocSlice from "./Customer/Koc/KocSlice";
+import sellerCampaignSlice from "./Seller/sellerCampaignSlice";
 const rootReducer = combineReducers({
     // customer
     auth: AuthSlice,
@@ -40,6 +41,7 @@ const rootReducer = combineReducers({
     sellerOrder: sellerOrderSlice,
     transaction: transactionSlice,
     revenueChart: revenueChartSlice,
+    sellerCampaign: sellerCampaignSlice,
     // admin
     user: UserSlice,
     adminCoupon: AdminCouponSlice,
