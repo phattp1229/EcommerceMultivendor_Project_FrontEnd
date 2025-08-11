@@ -10,13 +10,17 @@ import { performLogout } from '../../../Redux Toolkit/Customer/AuthSlice'
 import Addresses from './Adresses'
 import {Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle} from "@mui/material";
 import KocSignupButton from '../BecomeKoc/KocSignup'
-const menu = [
-    { name: "Orders", path: "/account/orders" },
-    { name: "Profile", path: "/account/profile" },
-    { name: "Saved Cards", path: "/account/saved-card" },
-    { name: "Addresses", path: "/account/addresses" },
-    { name: "Logout", path: "/" }
+import KocDashboard from '../Koc/KocDashboard'
+
+
+const baseMenu = [
+  { name: "Orders", path: "/account/orders" },
+  { name: "Profile", path: "/account/profile" },
+  { name: "Saved Cards", path: "/account/saved-card" },
+  { name: "Addresses", path: "/account/addresses" },
+  { name: "Logout", path: "/" }
 ]
+
 const Profile = () => {
     const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
     const navigate = useNavigate();
@@ -38,6 +42,11 @@ const Profile = () => {
     const cancelLogout = () => {
     setOpenLogoutDialog(false);
     };
+    
+  const menu = [
+    ...(customer.customer?.koc ? [{ name: "KOC Dashboard", path: "/account/koc-dashboard" }] : []),
+    ...baseMenu
+  ];
 
         const handleClick = (item: any) => {
         if (item.name === "Logout") {
@@ -88,6 +97,7 @@ const Profile = () => {
                         <Route path='/saved-card' element={<SavedCards />} />
                         <Route path='/addresses' element={<Addresses />} />
                         {/* addresses */}
+                         <Route path='/koc-dashboard/*' element={<KocDashboard />} />
                     </Routes>
 
                 </div>
