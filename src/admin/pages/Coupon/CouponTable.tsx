@@ -12,24 +12,28 @@ import type { Coupon } from '../../../types/couponTypes';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { deleteCoupon } from '../../../Redux Toolkit/Admin/AdminCouponSlice';
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
+        background: '#fef3c7', // vàng nhạt
+        color: '#b45309',
+        fontWeight: 700,
+        fontSize: 16,
+        letterSpacing: 1,
+        borderTopLeftRadius: 8,
+        borderTopRightRadius: 8,
     },
     [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
+        fontSize: 15,
+        background: '#fff',
+        color: '#333',
+        borderBottom: '1px solid #f5f5f5',
     },
 }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
+const StyledTableRow = styled(TableRow)(() => ({
+    '&:nth-of-type(odd)': { backgroundColor: '#fafaf9' },
+    '&:hover': { backgroundColor: '#f1f5f9' },
+    '&:last-child td, &:last-child th': { border: 0 },
 }));
 
 const accountStatuses = [
@@ -55,14 +59,25 @@ export default function CouponTable() {
                     value={status}
                     color='primary'
                     className='text-primary-color'
+                    sx={{
+                        background: '#fff8e1',
+                        borderRadius: 2,
+                        fontWeight: 600,
+                        color: '#b45309',
+                        '& .MuiSelect-icon': { color: '#fbbf24' },
+                    }}
                 >
                     {accountStatuses.map((status) =>
                         <MenuItem value={status.status}>{status.title}</MenuItem>)}
                 </Select>
             </div>
 
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableContainer component={Paper} sx={{
+                borderRadius: 3,
+                boxShadow: '0 4px 24px 0 rgba(251,191,36,0.10)',
+                border: '1px solid #fef3c7',
+            }}>
+                <Table sx={{ minWidth: 700, background: '#fff' }} aria-label="customized table">
                     <TableHead>
                         <TableRow>
                             <StyledTableCell>Coupon Code</StyledTableCell>
@@ -84,7 +99,20 @@ export default function CouponTable() {
                                 <StyledTableCell >{coupon.validityEndDate}</StyledTableCell>
                                 <StyledTableCell >{coupon.minimumOrderValue}</StyledTableCell>
                                 <StyledTableCell >{coupon.discountPercentage}</StyledTableCell>
-                                <StyledTableCell align="right">{coupon.active ? "Active" : "Deactive"}</StyledTableCell>
+                                <StyledTableCell align="right">
+                                    <span style={{
+                                        display: 'inline-block',
+                                        padding: '2px 14px',
+                                        borderRadius: 12,
+                                        fontWeight: 700,
+                                        fontSize: 13,
+                                        letterSpacing: 1,
+                                        background: coupon.active ? '#d1fae5' : '#fee2e2',
+                                        color: coupon.active ? '#047857' : '#b91c1c',
+                                    }}>
+                                        {coupon.active ? "Active" : "Inactive"}
+                                    </span>
+                                </StyledTableCell>
                                 <StyledTableCell align="right">
                                     <IconButton onClick={() => handleDeleteCoupon(coupon.id)}>
                                         <DeleteOutlineIcon className='text-red-700 cursor-pointer' />

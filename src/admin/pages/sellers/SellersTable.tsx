@@ -9,12 +9,30 @@ import { tableCellClasses } from '@mui/material/TableCell';
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
 import { fetchSellers, updateSellerAccountStatus } from '../../../Redux Toolkit/Seller/sellerSlice';
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: { backgroundColor: theme.palette.common.black, color: theme.palette.common.white },
-  [`&.${tableCellClasses.body}`]: { fontSize: 14 },
+const StyledTableCell = styled(TableCell)(() => ({
+  [`&.${tableCellClasses.head}`]: {
+    background: '#ffe0b2', // cam nhạt
+    color: '#ff5722',
+    fontWeight: 700,
+    fontSize: 16,
+    letterSpacing: 1,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    boxShadow: 'none',
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 15,
+    background: '#fff',
+    color: '#333',
+    borderBottom: '1px solid #f5f5f5',
+  },
 }));
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': { backgroundColor: theme.palette.action.hover },
+const StyledTableRow = styled(TableRow)(() => ({
+  '&:nth-of-type(odd)': { backgroundColor: '#fff8f1' },
+  '&:hover': { backgroundColor: '#ffe0b2' },
+  '& td, & th': {
+    borderBottom: '3px solid #fef3c7', // line kẻ vàng nhạt như bên coupon
+  },
   '&:last-child td, &:last-child th': { border: 0 },
 }));
 
@@ -86,6 +104,13 @@ export default function SellersTable() {
             value={accountStatus}
             onChange={handleAccountStatusChange}
             className="text-primary-color"
+            sx={{
+              background: '#fff3e0',
+              borderRadius: 2,
+              fontWeight: 600,
+              color: '#ff5722',
+              '& .MuiSelect-icon': { color: '#ff9800' },
+            }}
           >
             {accountStatuses.map(s => (
               <MenuItem key={s.status} value={s.status}>{s.title}</MenuItem>
@@ -94,8 +119,15 @@ export default function SellersTable() {
         </FormControl>
       </div>
 
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+      <TableContainer
+        component={Paper}
+        sx={{
+          borderRadius: 3,
+          boxShadow: '0 4px 24px 0 rgba(255,152,0,0.15)',
+          border: '1px solid #ffe0b2',
+        }}
+      >
+        <Table sx={{ minWidth: 700, background: '#fff' }} aria-label="customized table">
           <TableHead>
             <TableRow>
               <StyledTableCell>Seller Name</StyledTableCell>
@@ -116,29 +148,72 @@ export default function SellersTable() {
                 <StyledTableCell>{seller.taxCode}</StyledTableCell>
                 <StyledTableCell>{seller.businessDetails?.businessName}</StyledTableCell>
                 <StyledTableCell align="right">
-                <Chip
-                  label={seller.accountStatus}
-                  size="small"
-                  variant="outlined"
-                  color={
-                    seller.accountStatus === "ACTIVE"
-                      ? "success"
-                      : seller.accountStatus === "SUSPENDED"
-                      ? "error"
-                      : "warning"
-                  }
-                  sx={{ fontWeight: 600 }}
-                />
-              </StyledTableCell>
+                  <Chip
+                    label={seller.accountStatus}
+                    size="small"
+                    variant="filled"
+                    sx={{
+                      fontWeight: 700,
+                      fontSize: 13,
+                      letterSpacing: 1,
+                      bgcolor:
+                        seller.accountStatus === "ACTIVE"
+                          ? "#43a047"
+                          : seller.accountStatus === "SUSPENDED"
+                          ? "#e53935"
+                          : seller.accountStatus === "BANNED"
+                          ? "#d84315"
+                          : seller.accountStatus === "PENDING_VERIFICATION"
+                          ? "#ffb300"
+                          : "#757575",
+                      color: "#fff",
+                      borderRadius: 2,
+                    }}
+                  />
+                </StyledTableCell>
                 <StyledTableCell align="right">
-                  <Button onClick={(e) => handleClick(e, seller.id!)}>Change Status</Button>
+                  <Button
+                    onClick={(e) => handleClick(e, seller.id!)}
+                    sx={{
+                      color: "#ff5722",
+                      background: "#ffe0b2",
+                      borderRadius: 2,
+                      fontWeight: 700,
+                      px: 2,
+                      boxShadow: '0 2px 8px 0 rgba(255,152,0,0.08)',
+                      border: '1px solid #ffcc80',
+                      transition: 'background 0.2s',
+                      '&:hover': {
+                        background: "#ffd180",
+                        color: "#ff9800",
+                        boxShadow: '0 4px 16px 0 rgba(255,152,0,0.13)',
+                      },
+                    }}
+                  >
+                    Change Status
+                  </Button>
                   <Menu
                     anchorEl={anchorEl[seller.id!]}
                     open={Boolean(anchorEl[seller.id!])}
                     onClose={() => handleClose(seller.id!)}
+                    PaperProps={{
+                      sx: {
+                        borderRadius: 2,
+                        minWidth: 180,
+                        boxShadow: '0 4px 16px 0 rgba(255,152,0,0.15)',
+                      }
+                    }}
                   >
                     {accountStatuses.map(st => (
-                      <MenuItem key={st.status} onClick={() => handleUpdateSellerAccountStatus(seller.id!, st.status)}>
+                      <MenuItem
+                        key={st.status}
+                        onClick={() => handleUpdateSellerAccountStatus(seller.id!, st.status)}
+                        sx={{
+                          fontWeight: 600,
+                          color: "#ff5722",
+                          '&:hover': { background: "#fff3e0", color: "#ff9800" }
+                        }}
+                      >
                         {st.title}
                       </MenuItem>
                     ))}
@@ -149,7 +224,7 @@ export default function SellersTable() {
 
             {rows.length === 0 && !loading && (
               <TableRow>
-                <TableCell colSpan={7} align="center">Không có dữ liệu</TableCell>
+                <TableCell colSpan={7} align="center">No Data</TableCell>
               </TableRow>
             )}
           </TableBody>
@@ -163,6 +238,13 @@ export default function SellersTable() {
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           rowsPerPageOptions={[5, 10, 20, 50]}
+          sx={{
+            background: "#fff8f1",
+            borderBottomLeftRadius: 12,
+            borderBottomRightRadius: 12,
+            color: "#ff9800",
+            '.MuiTablePagination-actions': { color: "#ff9800" }
+          }}
         />
       </TableContainer>
     </>
