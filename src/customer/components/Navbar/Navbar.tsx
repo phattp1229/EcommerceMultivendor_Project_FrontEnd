@@ -23,6 +23,7 @@ import { useAppDispatch, useAppSelector } from "../../../Redux Toolkit/Store";
 import { FavoriteBorder } from "@mui/icons-material";
 
 
+
 const Navbar = () => {
   const [showSheet, setShowSheet] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("men");
@@ -72,13 +73,12 @@ const Navbar = () => {
 
           {isLarge && (
             <ul
-              className="flex it
-          ems-center font-medium text-gray-800 "
+              className="flex items-center font-medium text-gray-800 "
             >
               {mainCategory.map((item) => (
                 <li
+                  key={item.categoryId}
                   onMouseLeave={() => {
-                    //  setSelectedCategory("")
                     setShowSheet(false);
                   }}
                   onMouseEnter={() => {
@@ -90,6 +90,17 @@ const Navbar = () => {
                   {item.name}
                 </li>
               ))}
+              {/* KOC Dashboard button */}
+              {customer.customer?.koc && (
+                <li
+                  key="koc-dashboard"
+                  onClick={() => navigate("/account/koc-dashboard")}
+                  className="mainCategory hover:text-[#00927c] cursor-pointer hover:border-b-2 h-[70px] px-4 border-[#00927c] flex items-center"
+                  style={{ fontWeight: 600 }}
+                >
+                  KOC Dashboard
+                </li>
+              )}
             </ul>
           )}
         </div>

@@ -12,6 +12,7 @@ import LinkIcon from "@mui/icons-material/Link";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import CampaignIcon from "@mui/icons-material/Campaign";
 import { useAppSelector } from "../../../Redux Toolkit/Store";
+import KocCampaignSection from "./KocDashboard/KocCampaignSection";
 import {
   ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip,
   AreaChart, Area
@@ -93,7 +94,6 @@ const KocDashboard: React.FC = () => {
   const [snack, setSnack] = useState<{ open: boolean; msg: string; type: "success" | "info" }>({
     open: false, msg: "", type: "success"
   });
-  const [openRegister, setOpenRegister] = useState(false);
 
   const kocCode = customer.customer?.id;
   const baseUrl = typeof window !== "undefined" ? window.location.origin : "http://localhost:5173";
@@ -198,14 +198,17 @@ const KocDashboard: React.FC = () => {
       </Grid>
 
       {/* HÀNG RIÊNG: AFFILIATE CAMPAIGN */}
-      <Card
-        sx={{
-          borderRadius: 2,
-          overflow: "hidden",
-          bgcolor: brand.light,
-          border: `1px solid ${brand.primary}22`,
-        }}
-      >
+  {/* Quản lý đăng ký chiến dịch KOC */}
+<Card
+  sx={{
+    borderRadius: 2,
+    overflow: "hidden",
+    bgcolor: brand.light,
+    border: `1px solid ${brand.primary}22`,
+  }}
+>
+  {/* Quản lý đăng ký chiến dịch KOC */}
+  <KocCampaignSection />
         <Box
           sx={{
             px: 3,
@@ -223,7 +226,7 @@ const KocDashboard: React.FC = () => {
           <Typography variant="body2" color="text.secondary" mb={2}>
             Đăng ký chiến dịch để nhận hoa hồng cao hơn trong khung thời gian cụ thể.
           </Typography>
-          <Stack direction={{ xs: "column", sm: "row" }} spacing={1}>
+          {/* <Stack direction={{ xs: "column", sm: "row" }} spacing={1}>
             <Button
               variant="contained"
               onClick={() => setOpenRegister(true)}
@@ -234,7 +237,7 @@ const KocDashboard: React.FC = () => {
             <Button variant="outlined" onClick={() => setSnack({ open: true, msg: "Open My Campaigns (TODO)", type: "info" })}>
               My Campaigns
             </Button>
-          </Stack>
+          </Stack> */}
         </CardContent>
       </Card>
 
@@ -316,7 +319,7 @@ const KocDashboard: React.FC = () => {
       </Card>
 
       {/* ĐĂNG KÝ CHIẾN DỊCH - MODAL */}
-      <Dialog open={openRegister} onClose={() => setOpenRegister(false)} fullWidth maxWidth="sm">
+      {/* <Dialog open={openRegister} onClose={() => setOpenRegister(false)} fullWidth maxWidth="sm">
         <DialogTitle>Register Campaign</DialogTitle>
         <DialogContent>
           <Stack spacing={2} mt={1}>
@@ -329,15 +332,27 @@ const KocDashboard: React.FC = () => {
           <Button
             variant="contained"
             sx={{ bgcolor: brand.primary, "&:hover": { bgcolor: "#d73f20" } }}
-            onClick={() => {
-              setOpenRegister(false);
-              setSnack({ open: true, msg: "Registered (mock) — nối API sau", type: "success" });
+            disabled={registering}
+            onClick={async () => {
+              setRegistering(true);
+              // Giả sử campaignId là 1, bạn thay bằng id thực tế lấy từ input
+              const campaignId = 1;
+              try {
+                await dispatch(registerKocCampaign(campaignId)).unwrap();
+                setSnack({ open: true, msg: "Đăng ký thành công!", type: "success" });
+                dispatch(fetchKocRegistrations()).unwrap().then(setRegistrations);
+                setOpenRegister(false);
+              } catch (e: any) {
+                setSnack({ open: true, msg: e?.message || "Đăng ký thất bại", type: "info" });
+              } finally {
+                setRegistering(false);
+              }
             }}
           >
-            Submit
+            {registering ? "Đang đăng ký..." : "Submit"}
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
 
       <Snackbar
         open={snack.open}

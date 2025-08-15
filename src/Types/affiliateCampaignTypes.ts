@@ -17,3 +17,10 @@ export interface CreateAffiliateCampaignRequest {
     expiredAt: string;   // yyyy-MM-dd hoặc ISO (backend parse)
     active?: boolean;    // default true nếu không gửi
 }
+export interface AffiliateRegistrationResponse {
+    id: number;
+    campaignId: number;
+    campaignTitle: string;
+    registeredAt: string;
+    status: "PENDING" | "APPROVED" | "REJECTED";
+}

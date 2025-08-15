@@ -10,7 +10,7 @@ import { performLogout } from '../../../Redux Toolkit/Customer/AuthSlice'
 import Addresses from './Adresses'
 import {Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle} from "@mui/material";
 import KocSignupButton from '../BecomeKoc/KocSignup'
-import KocDashboard from '../Koc/KocDashboard'
+import KocDashboard from '../Koc/KocDashboard/KocDashboard'
 
 
 const baseMenu = [
@@ -43,10 +43,9 @@ const Profile = () => {
     setOpenLogoutDialog(false);
     };
     
-  const menu = [
-    ...(customer.customer?.koc ? [{ name: "KOC Dashboard", path: "/account/koc-dashboard" }] : []),
-    ...baseMenu
-  ];
+    const menu = [
+        ...baseMenu
+    ];
 
         const handleClick = (item: any) => {
         if (item.name === "Logout") {
@@ -97,7 +96,7 @@ const Profile = () => {
                         <Route path='/saved-card' element={<SavedCards />} />
                         <Route path='/addresses' element={<Addresses />} />
                         {/* addresses */}
-                         <Route path='/koc-dashboard/*' element={<KocDashboard />} />
+
                     </Routes>
 
                 </div>

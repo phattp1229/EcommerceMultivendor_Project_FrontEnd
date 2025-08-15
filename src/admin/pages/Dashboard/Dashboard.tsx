@@ -47,7 +47,6 @@ const AdminDashboard = () => {
         >
           {adminDeals.error ? adminDeals.error : adminDeals.dealCreated ? "Deal created successfully" : adminDeals.dealUpdated 
           ? "deal updated successfully" : admin.categoryUpdated?"Category Updated successfully": ""}
-          Category Updated Successfully !!!!
         </Alert>
       </Snackbar>
     </>

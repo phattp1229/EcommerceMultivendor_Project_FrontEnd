@@ -70,6 +70,44 @@ const initialState: KocState = {
     },
 };
 
+/** ================= KOC Affiliate Registration Thunks ================== **/
+import type { AffiliateRegistrationResponse } from '../../../types/affiliateCampaignTypes';
+import axios from 'axios';
+
+// Lấy danh sách đăng ký của KOC
+export const fetchKocRegistrations = createAsyncThunk<
+    AffiliateRegistrationResponse[],
+    void,
+    { state: RootState }
+>("koc/fetchRegistrations", async (_, { getState, rejectWithValue }) => {
+    try {
+        const jwt = getState().auth.jwt;
+        const res = await axios.get("/api/affiliate-registration/my-registrations", {
+            headers: { Authorization: `Bearer ${jwt}` },
+        });
+        return res.data;
+    } catch (e: any) {
+        return rejectWithValue(e?.response?.data || e?.message || "Failed to fetch registrations");
+    }
+});
+
+// Đăng ký chiến dịch
+export const registerKocCampaign = createAsyncThunk<
+    any,
+    number,
+    { state: RootState }
+>("koc/registerCampaign", async (campaignId, { getState, rejectWithValue }) => {
+    try {
+        const jwt = getState().auth.jwt;
+        const res = await axios.post(`/api/affiliate-registration/register-campaign/${campaignId}`, {}, {
+            headers: { Authorization: `Bearer ${jwt}` },
+        });
+        return res.data;
+    } catch (e: any) {
+        return rejectWithValue(e?.response?.data || e?.message || "Failed to register campaign");
+    }
+});
+
 /** ================= Thunks ================== **/
 
 // Customer: sign up KOC

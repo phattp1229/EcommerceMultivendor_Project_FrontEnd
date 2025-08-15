@@ -5,7 +5,7 @@ import type { RootState } from '../../../Redux Toolkit/Store';
 import { fetchSellerCampaigns, updateSellerCampaign } from '../../../Redux Toolkit/Seller/sellerCampaignSlice';
 import { fetchSellerProducts } from '../../../Redux Toolkit/Seller/sellerProductSlice';
 import type { AffiliateCampaign } from '../../../types/affiliateCampaignTypes';
-import { Grid, TextField, Button, Typography, Paper, FormControlLabel, Switch, Box, Chip } from '@mui/material';
+import { Grid, TextField, Button, Typography, Paper, FormControlLabel, Switch, Box, Chip, Snackbar, Alert } from '@mui/material';
 
 const UpdateCampaignForm: React.FC = () => {
   const { campaignId } = useParams<{ campaignId: string }>();
@@ -16,6 +16,8 @@ const UpdateCampaignForm: React.FC = () => {
   const [form, setForm] = useState<Partial<AffiliateCampaign>>({});
   // Product selection not used in update form
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  // Snackbar state
+  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({ open: false, message: '', severity: 'success' });
 
   useEffect(() => {
     dispatch<any>(fetchSellerCampaigns(localStorage.getItem('jwt') || undefined));
@@ -55,114 +57,125 @@ const UpdateCampaignForm: React.FC = () => {
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate() || !campaignId) return;
-    console.log('Update campaign payload:', form);
-    await dispatch<any>(updateSellerCampaign({
-      id: Number(campaignId),
-      updates: {
-        ...form,
-      },
-    }));
-    navigate('/seller/campaigns');
+    try {
+      await dispatch<any>(updateSellerCampaign({
+        id: Number(campaignId),
+        updates: {
+          ...form,
+        },
+      })).unwrap();
+      setSnackbar({ open: true, message: 'Update successfully', severity: 'success' });
+      setTimeout(() => navigate('/seller/campaigns'), 1200);
+    } catch {
+      setSnackbar({ open: true, message: 'Update failed', severity: 'error' });
+    }
   };
 
   return (
-    <Paper sx={{ p: 4, maxWidth: 600, margin: 'auto', mt: 6, borderRadius: 4, boxShadow: 6, background: 'linear-gradient(135deg, #f8fafc 60%, #e0f7fa 100%)' }}>
-      <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-        <Typography variant="h4" fontWeight={700} color="#222" sx={{ letterSpacing: 1 }}>
-          Update Campaign
-        </Typography>
-        {form.active !== undefined && (
-          <Chip
-            label={form.active ? 'ACTIVE' : 'INACTIVE'}
-            color={form.active ? 'success' : 'default'}
-            sx={{ fontWeight: 700, fontSize: 18, px: 2, py: 1, bgcolor: form.active ? '#43a047' : '#bdbdbd', color: '#fff', borderRadius: 2, ml: 2 }}
-          />
-        )}
-      </Box>
-      <form onSubmit={handleUpdate}>
-        <Grid container spacing={3}>
-          <Grid size={12}>
-            <TextField
-              label="Campaign Name"
-              name="name"
-              value={form.name || ''}
-              onChange={handleChange}
-              fullWidth
-              error={!!errors.name}
-              helperText={errors.name}
+    <>
+      <Paper sx={{ p: 4, maxWidth: 600, margin: 'auto', mt: 6, borderRadius: 4, boxShadow: 6, background: 'linear-gradient(135deg, #f8fafc 60%, #e0f7fa 100%)' }}>
+        <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+          <Typography variant="h4" fontWeight={700} color="#222" sx={{ letterSpacing: 1 }}>
+            Update Campaign
+          </Typography>
+          {form.active !== undefined && (
+            <Chip
+              label={form.active ? 'ACTIVE' : 'INACTIVE'}
+              color={form.active ? 'success' : 'default'}
+              sx={{ fontWeight: 700, fontSize: 18, px: 2, py: 1, bgcolor: form.active ? '#43a047' : '#bdbdbd', color: '#fff', borderRadius: 2, ml: 2 }}
             />
+          )}
+        </Box>
+        <form onSubmit={handleUpdate}>
+          <Grid container spacing={3}>
+            <Grid size={12}>
+              <TextField
+                label="Campaign Name"
+                name="name"
+                value={form.name || ''}
+                onChange={handleChange}
+                fullWidth
+                error={!!errors.name}
+                helperText={errors.name}
+              />
+            </Grid>
+            <Grid size={12}>
+              <TextField
+                label="Commission (%)"
+                name="commissionPercent"
+                type="number"
+                value={form.commissionPercent ?? ''}
+                onChange={handleChange}
+                fullWidth
+                error={!!errors.commissionPercent}
+                helperText={errors.commissionPercent}
+              />
+            </Grid>
+            <Grid size={12}>
+              <TextField
+                label="Expired At"
+                name="expiredAt"
+                type="date"
+                value={form.expiredAt ? String(form.expiredAt).slice(0, 10) : ''}
+                onChange={handleChange}
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                error={!!errors.expiredAt}
+                helperText={errors.expiredAt}
+              />
+            </Grid>
+            <Grid size={12}>
+              <TextField
+                label="Description"
+                name="description"
+                value={form.description || ''}
+                onChange={handleChange}
+                fullWidth
+                multiline
+                minRows={2}
+              />
+            </Grid>
+            <Grid size={12}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={!!form.active}
+                    onChange={(_, checked) => setForm(prev => ({ ...prev, active: checked }))}
+                    color="primary"
+                  />
+                }
+                label={form.active ? 'Active' : 'Inactive'}
+              />
+            </Grid>
+            <Grid size={12}>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                sx={{
+                  background: 'linear-gradient(90deg, #ff5722 0%, #ff9800 100%)',
+                  color: '#fff',
+                  fontWeight: 700,
+                  fontSize: 18,
+                  py: 1.5,
+                  borderRadius: 2,
+                  boxShadow: 2,
+                  mt: 2,
+                  '&:hover': { background: 'linear-gradient(90deg, #ff7043 0%, #ffa726 100%)' }
+                }}
+              >
+                UPDATE CAMPAIGN
+              </Button>
+            </Grid>
           </Grid>
-          <Grid size={12}>
-            <TextField
-              label="Commission (%)"
-              name="commissionPercent"
-              type="number"
-              value={form.commissionPercent ?? ''}
-              onChange={handleChange}
-              fullWidth
-              error={!!errors.commissionPercent}
-              helperText={errors.commissionPercent}
-            />
-          </Grid>
-          <Grid size={12}>
-            <TextField
-              label="Expired At"
-              name="expiredAt"
-              type="date"
-              value={form.expiredAt ? String(form.expiredAt).slice(0, 10) : ''}
-              onChange={handleChange}
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              error={!!errors.expiredAt}
-              helperText={errors.expiredAt}
-            />
-          </Grid>
-          <Grid size={12}>
-            <TextField
-              label="Description"
-              name="description"
-              value={form.description || ''}
-              onChange={handleChange}
-              fullWidth
-              multiline
-              minRows={2}
-            />
-          </Grid>
-          <Grid size={12}>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={!!form.active}
-                  onChange={(_, checked) => setForm(prev => ({ ...prev, active: checked }))}
-                  color="primary"
-                />
-              }
-              label={form.active ? 'Active' : 'Inactive'}
-            />
-          </Grid>
-          <Grid size={12}>
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              sx={{
-                background: 'linear-gradient(90deg, #ff5722 0%, #ff9800 100%)',
-                color: '#fff',
-                fontWeight: 700,
-                fontSize: 18,
-                py: 1.5,
-                borderRadius: 2,
-                boxShadow: 2,
-                mt: 2,
-                '&:hover': { background: 'linear-gradient(90deg, #ff7043 0%, #ffa726 100%)' }
-              }}
-            >
-              UPDATE CAMPAIGN
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
-    </Paper>
+        </form>
+      </Paper>
+      <Snackbar open={snackbar.open} autoHideDuration={2000} onClose={() => setSnackbar(s => ({ ...s, open: false }))} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+        <Alert onClose={() => setSnackbar(s => ({ ...s, open: false }))} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

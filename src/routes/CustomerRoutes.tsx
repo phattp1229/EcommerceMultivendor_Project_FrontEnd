@@ -6,6 +6,8 @@ import ProductDetails from '../customer/pages/Product/ProductDetails/ProductDeta
 import Cart from '../customer/pages/Cart/Cart'
 import Address from '../customer/pages/Checkout/AddressPage'
 import Profile from '../customer/pages/Account/Profile'
+import KocDashboard from '../customer/pages/Koc/KocDashboard/KocDashboard'
+import AffiliateCampaignPage from '../customer/pages/Koc/AffiliateCampaignPage';
 import BecomeSeller from '../customer/pages/BecomeSeller/BecomeSeller'
 import Footer from '../customer/components/Footer/Footer'
 import Navbar from '../customer/components/Navbar/Navbar'
@@ -47,7 +49,9 @@ const CustomerRoutes = () => {
         <Route path='/cart' element={<Cart />} />
         <Route path='/wishlist' element={<Wishlist />} />
         <Route path='/checkout/address' element={<Address />} />
-        <Route path='/account/*' element={<Profile />} />
+  <Route path='/account/koc-dashboard/*' element={<KocDashboard />} />
+  <Route path='/account/affiliate-campaign' element={<AffiliateCampaignPage />} />
+  <Route path='/account/*' element={<Profile />} />
         <Route path='/login' element={<Auth/>} />
         <Route path="/payment/paypal/callback:" element={<PaypalCallback />} /> // Dành cho PayPal
         <Route path="/payment-success" element={<PaymentSucess/>} /> //Dành cho Stripe
