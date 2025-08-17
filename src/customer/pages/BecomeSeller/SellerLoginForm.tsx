@@ -35,7 +35,7 @@ const SellerLoginForm = () => {
           })
         ).unwrap();
 
-        enqueueSnackbar('Welcome Seller!', { variant: 'success' }); // 👈 toast ngay khi thành công
+        enqueueSnackbar('Welcome Shop!', { variant: 'success' }); // 👈 toast ngay khi thành công
       } catch (err: any) {
         enqueueSnackbar(
           typeof err === 'string' ? err : (auth.error || 'Login failed'),
@@ -46,7 +46,7 @@ const SellerLoginForm = () => {
   });
   return (
     <div>
-      <h1 className='text-center font-bold text-xl text-primary-color pb-5'>Login As Seller</h1>
+      <h1 className='text-center font-bold text-xl text-primary-color pb-5'>Login As Shop</h1>
       <form className="space-y-5" onSubmit={formik.handleSubmit}>
         <TextField
           fullWidth

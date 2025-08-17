@@ -1,4 +1,5 @@
-import { Button, CircularProgress, Step, StepLabel, Stepper } from "@mui/material";
+import { Button, CircularProgress, Step, StepLabel, Stepper, Snackbar, Alert } from "@mui/material";
+
 import React, { useState } from "react";
 import BecomeSellerFormStep1 from "./BecomeSellerFormStep1";
 import BecomeSellerFormStep3 from "./BecomeSellerFormStep3";
@@ -15,7 +16,7 @@ const steps = [
     "Tax Details & Mobile",
     "Pickup Address",
     "Bank Details",
-    "Supplier Details",
+    "Shop Details",
   ];
 
 

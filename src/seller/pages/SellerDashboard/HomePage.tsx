@@ -15,8 +15,8 @@ import {
 const Chart = [
   { name: "Today", value: "today" },
   { name: "Last 7 days", value: "daily" },
-  { name: "Last 1 Month", value: "monthly" },
-  { name: "Last 12 Month", value: "monthly" },
+  { name: "Last 1 Month", value: "monthly_1" },
+  { name: "Last 12 Month", value: "monthly_12" },
 ];
 
 const HomePage = () => {
@@ -41,13 +41,7 @@ const HomePage = () => {
             title={"Total Earnings"}
           />
         </div>
-        <div className="col-span-4 md:col-span-2 lg:col-span-1">
-          <ReportCard
-            icon={<AccountBalanceIcon />}
-            value={sellers.report?.totalSales}
-            title={"Total Sales"}
-          />
-        </div>
+
         <div className="col-span-4 md:col-span-2 lg:col-span-1">
           <ReportCard
             icon={<AccountBalanceIcon />}
@@ -68,6 +62,13 @@ const HomePage = () => {
             icon={<AccountBalanceIcon />}
             value={sellers.report?.totalOrders}
             title={"Total Orders"}
+          />
+        </div>
+                <div className="col-span-4 md:col-span-2 lg:col-span-1">
+          <ReportCard
+            icon={<AccountBalanceIcon />}
+            value={sellers.report?.totalSales}
+            title={"Total Product Sales"}
           />
         </div>
       </section>

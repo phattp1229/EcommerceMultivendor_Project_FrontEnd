@@ -6,6 +6,8 @@ import AddressCard from './AddressCard'
 import AddIcon from '@mui/icons-material/Add';
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store'
 import { createOrder } from '../../../Redux Toolkit/Customer/OrderSlice'
+import { toast } from 'react-toastify'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 const style = {
     position: 'absolute' as const,
@@ -37,25 +39,43 @@ const AddressPage = () => {
     const { customer } = useAppSelector(store => store)
     console.log("Customer data:", customer)
     const [paymentGateway, setPaymentGateway] = useState(paymentGatwayList[0].value);
-
+    const { loading } = useAppSelector((s) => s.orders); // nếu muốn disable nút khi đang gọi API
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const navigate = useNavigate();
 
     const handleChange = (event: any) => {
         console.log("-----", event.target.value)
         setValue(event.target.value);
     };
 
-    const handleCreateOrder = () => {
-       // Dispatch action to create order
-       if(customer.customer?.addresses)
-        dispatch(createOrder({
-            paymentGateway,
-            address: customer.customer.addresses[value],
-            jwt: localStorage.getItem('jwt') || ''
-        }))
+    const handleCreateOrder = async () => {
+  if (!customer.customer?.addresses?.length) {
+    toast.error("Please add shipping address");
+    return;
+  }
+
+  try {
+    const res = await dispatch(
+      createOrder({
+        paymentGateway,
+        address: customer.customer.addresses[value],
+        jwt: localStorage.getItem("jwt") || "",
+      })
+    ).unwrap();
+
+    if (paymentGateway === "COD" || !res?.payment_link_url) {
+      toast.success("COD order successful! Pay on delivery.");
+
+      navigate("/"); 
     }
+
+  } catch (err: any) {
+    toast.error(err || "Order creation failed");
+  }
+};
+
 
     const handlePaymentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPaymentGateway((event.target as HTMLInputElement).value);
@@ -91,7 +111,7 @@ const AddressPage = () => {
                 </div>
                 <div className="col-span-1 text-sm space-y-3 ">
                     <section className='space-y-3 border p-5 rounded-md'>
-                        <h1 className='text-primary-color font-medium pb-2 text-center'>Choose Payment Gatway</h1>
+                        <h1 className='text-primary-color font-medium pb-2 text-center'>Choose Payment Gateway</h1>
 
                         <RadioGroup
                             row
@@ -112,14 +132,35 @@ const AddressPage = () => {
                                 />
                             </div>} />)}
                         </RadioGroup>
-
+    {/* Nút COD riêng */}
+<Button
+    onClick={() => setPaymentGateway("COD")}
+    variant="outlined"
+    fullWidth
+    sx={{
+         mt: 2,
+    ml: -1.4,    
+        justifyContent: "flex-start",   // 👈 căn nội dung về bên trái
+        borderColor: paymentGateway === "COD" ? "primary.main" : "grey.400",
+        backgroundColor: paymentGateway === "COD" ? "rgba(0, 128, 0, 0.1)" : "transparent",
+        fontWeight: "bold"
+    }}
+>
+    Cash on Delivery(COD)
+</Button>
                     </section>
                     <section className='border rounded-md'>
                         <PricingCard />
                         <div className='p-5'>
-                            <Button
-                                onClick={handleCreateOrder} sx={{ py: "11px" }}
-                                variant='contained' fullWidth>Checkout</Button>
+                           <Button
+                        onClick={handleCreateOrder}
+                        sx={{ py: "11px" }}
+                        variant="contained"
+                        fullWidth
+                        disabled={loading}
+                        >
+                        {loading ? "Processing..." : "Checkout"}
+                        </Button>
                         </div>
                     </section>
 

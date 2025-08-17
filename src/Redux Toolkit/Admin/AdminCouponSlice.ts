@@ -119,6 +119,7 @@ const couponSlice = createSlice({
         (state, action: PayloadAction<Coupon[]>) => {
           state.loading = false;
           state.coupons = action.payload;
+
         }
       )
       .addCase(

@@ -19,14 +19,15 @@ export interface Order {
     orderItems: OrderItem[];
     orderDate: string;
     shippingAddress: Address;
-    paymentDetails: any;
+    paymentDetails: PaymentDetails;
+    paymentStatus: PaymentStatus;
     totalMrpPrice: number;
     totalSellingPrice?: number; // Optional field
     discount?: number; // Optional field
     orderStatus: OrderStatus;
     totalItem: number;
-    deliverDate: string;
-    packedDate?: string;
+    packedDate?: string | null;  // có thể null tới khi PACKED
+    deliverDate?: string | null; // có thể null tới khi DELIVERED
 }
 //@ts-ignore
 export enum OrderStatus {
@@ -37,7 +38,23 @@ export enum OrderStatus {
     DELIVERED = 'DELIVERED',
     CANCELLED = 'CANCELLED'
 }
-
+// embed giống @Embeddable PaymentDetails của BE
+export interface PaymentDetails {
+    paymentMethod: PaymentMethod;
+}
+//@ts-ignore
+export enum PaymentMethod {
+    COD = 'COD',
+    STRIPE = 'STRIPE',
+    PAYPAL = 'PAYPAL',
+}
+//@ts-ignore
+export enum PaymentStatus {
+    PENDING = 'PENDING',
+    PROCESSING = 'PROCESSING',
+    COMPLETED = 'COMPLETED',
+    FAILED = 'FAILED',
+}
 export interface OrderItem {
     id: number;
     order: Order;

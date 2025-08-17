@@ -22,5 +22,7 @@ export interface Cart {
     totalItem: number;
     totalMrpPrice: number;
     discount: number;
+
     couponCode: string | null;
+    couponPrice: number | null;
 }

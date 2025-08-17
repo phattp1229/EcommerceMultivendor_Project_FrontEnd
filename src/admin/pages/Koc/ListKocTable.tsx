@@ -117,7 +117,7 @@ export default function KocListTable() {
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 80, headerAlign: "center", align: "center", headerClassName: "col-id" },
     { field: "name", headerName: "Name", flex: 1, minWidth: 220, headerClassName: "col-id" },
-    { field: "kocId", headerName: "Koc ID", width: 140, headerAlign: "center", align: "center", headerClassName: "col-id" },
+    { field: "kocId", headerName: "Koc Code", width: 140, headerAlign: "center", align: "center", headerClassName: "col-id" },
     { field: "email", headerName: "Email", flex: 1, minWidth: 260, headerClassName: "col-id" },
     {
       field: "accountStatus",

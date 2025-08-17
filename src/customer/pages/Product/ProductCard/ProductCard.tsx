@@ -123,6 +123,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
 
                 {/* Giá sản phẩm */}
                 <div className="flex items-center gap-2 pt-1">
+                 
                     <span className="text-lg font-bold text-pink-600">
                     {item.sellingPrice.toLocaleString("vi-VN")} đ
                     </span>

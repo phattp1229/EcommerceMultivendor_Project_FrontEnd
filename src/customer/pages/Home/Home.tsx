@@ -56,7 +56,7 @@ const Home = () => {
                             startIcon={<StorefrontIcon />}
                             variant="contained"
                         >
-                            Become Seller
+                            Open Shop
                         </Button>
                     </div>
 

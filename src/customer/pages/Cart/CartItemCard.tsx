@@ -1,4 +1,4 @@
-import { Button, Divider, IconButton } from '@mui/material'
+import { Button, Divider, IconButton, Typography } from '@mui/material'
 import React from 'react'
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
@@ -35,14 +35,18 @@ const CartItemCard : React.FC<CartItemProps> = ({ item }) => {
                 </div>
                 <div className="space-y-1.5">
                 <h1 className="font-semibold text-base text-gray-800">{item.product.title}</h1>
+            <p className="text-sm text-gray-600">
+  <span className="font-medium text-red-700">Sold by: </span>{" "}
+  <span className="text-lg font-bold">
+    {item.product?.seller?.businessDetails.businessName}
+  </span>
+</p>
 
                 <p className="text-sm text-black-600">
                     <span className="font-medium">Size:</span> {item.product.sizes} — <span className="font-medium">Color:</span> {item.product.color}
                 </p>
 
-                <p className="text-sm text-gray-600">
-                    <span className="font-medium text-red-700">Sold by:</span> {item.product?.seller?.businessDetails.businessName}
-                </p>
+          
 
                 <p className="text-sm text-gray-500">
                     <span className="font-medium text-teal-600">7 days replacement </span> available
@@ -56,26 +60,27 @@ const CartItemCard : React.FC<CartItemProps> = ({ item }) => {
             </div>
             <Divider />
             <div className='px-5 py-2 flex justify-between items-center'>
+  <div className='flex items-center gap-2 w-[140px] justify-between'>
+    <Button size='small' disabled={item.quantity == 1} onClick={() => handleUpdateQuantity(-1)} >
+      <RemoveIcon />
+    </Button>
+    <span className='px-3 font-semibold'>{item.quantity}</span>
+    <Button size='small' onClick={() => handleUpdateQuantity(1)} >
+      <AddIcon />
+    </Button>
+  </div>
 
-                <div className=' flex items-center gap-2  w-[140px] justify-between'>
+  {/* Giá hiển thị giống Shopee */}
+  <div className="flex flex-col items-end">
+    <p className="text-sm text-gray-400 line-through">
+      {item.mrpPrice.toLocaleString("vi-VN")}đ
+    </p>
+    <p className="text-lg font-bold text-red-600">
+      {item.sellingPrice.toLocaleString("vi-VN")}đ
+    </p>
+  </div>
+</div>
 
-                    <Button size='small' disabled={item.quantity == 1} onClick={() => handleUpdateQuantity(-1)} >
-                        <RemoveIcon />
-                    </Button>
-                    <span className='px-3  font-semibold'>
-                        {item.quantity}
-                    </span>
-                    <Button size='small' onClick={() => handleUpdateQuantity(1)} >
-                        <AddIcon />
-                    </Button>
-
-                </div>
-                <div>
-                    <p className='text-gray-700 font-medium'>{item.sellingPrice.toLocaleString("vi-VN")}đ</p>
-                </div>
-
-
-            </div>
             <div className='absolute top-1 right-1'>
                 <IconButton onClick={handleRemoveCartItem} color='primary' >
                     <CloseIcon />

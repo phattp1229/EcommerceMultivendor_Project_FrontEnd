@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, styled, Tooltip } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, styled, Tooltip, Chip } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
 import { fetchSellerProducts, updateProductStock,deleteProduct } from '../../../Redux Toolkit/Seller/sellerProductSlice';
 import EditIcon from '@mui/icons-material/Edit';
@@ -76,6 +76,8 @@ const handleDelete = async () => {
       setTarget(null);
     }
   };
+  // đặt helper nhỏ ở trên file (tuỳ)
+const fmtVND = (v:number) => `${v.toLocaleString("vi-VN")}\u00A0đ`;
   return (
     <>
       <h1 className='pb-5 font-bold text-xl'>Products</h1>
@@ -85,12 +87,13 @@ const handleDelete = async () => {
           <TableHead>
             <TableRow>
               <StyledTableCell>Images</StyledTableCell>
-              <StyledTableCell align="right">Title</StyledTableCell>
+              <StyledTableCell align="center">Title</StyledTableCell>
               <StyledTableCell align="right">MRP</StyledTableCell>
               <StyledTableCell align="right">Selling Price</StyledTableCell>
               <StyledTableCell align="right">Color</StyledTableCell>
+              <StyledTableCell align="right">Size</StyledTableCell>
               <StyledTableCell align="right">Quantity</StyledTableCell>
-              <StyledTableCell align="right">Update Stock</StyledTableCell>
+              <StyledTableCell align="right">Status</StyledTableCell>
               <StyledTableCell align="right">Update</StyledTableCell>
                <StyledTableCell align="right">Delete</StyledTableCell> {/* 👈 thêm cột */}
             </TableRow>
@@ -104,12 +107,23 @@ const handleDelete = async () => {
 
                   </div>
                 </StyledTableCell>
-                <StyledTableCell align="right">{item.title}</StyledTableCell>
-                <StyledTableCell align="right">  {item.mrpPrice.toLocaleString("vi-VN")} đ</StyledTableCell>
-                <StyledTableCell align="right"> {item.sellingPrice.toLocaleString("vi-VN")} đ</StyledTableCell>
+                <StyledTableCell align="left">{item.title}</StyledTableCell>
+                <StyledTableCell align="right">  {fmtVND(item.mrpPrice)}</StyledTableCell>
+                <StyledTableCell align="right"> {fmtVND(item.sellingPrice)}</StyledTableCell>
                 <StyledTableCell align="right">{item.color}</StyledTableCell>
+                 <StyledTableCell align="right">{item.sizes}</StyledTableCell>
                 <StyledTableCell align="right">{item.quantity}</StyledTableCell>
-                <StyledTableCell align="right"> <Button onClick={handleUpdateStack(item.id)} size='small'>{item.in_stock?"in_stock":"out_stock"}</Button></StyledTableCell>
+                <StyledTableCell align="right">
+                <Chip
+                 label={item.in_stock ? "active" : "hidden"}
+               color={item.in_stock ? "success" : "default"}
+              variant={item.in_stock ? "filled" : "outlined"}
+               size="small"
+                 clickable
+                 onClick={handleUpdateStack(item.id)}   // giữ y nguyên logic của bạn
+                    sx={
+                      item.in_stock
+                      ? {}: { bgcolor: "grey.100", color: "text.secondary", borderColor: "grey.300" }} /> </StyledTableCell>
                 <StyledTableCell align="right">
                   <IconButton onClick={(()=>navigate("/seller/update-product/"+item.id))} color='primary' className='bg-primary-color'>
                     <EditIcon />

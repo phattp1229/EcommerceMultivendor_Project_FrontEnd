@@ -11,7 +11,7 @@ const BecomeSellerFormStep4 = ({ formik }: BecomeSellerFormStep2Props) => {
       <TextField
         fullWidth
         name="businessDetails.businessName"
-        label="Business Name"
+        label="Shop Name"
         value={formik.values.businessDetails.businessName}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
@@ -21,19 +21,19 @@ const BecomeSellerFormStep4 = ({ formik }: BecomeSellerFormStep2Props) => {
 
       <TextField
         fullWidth
-        name="sellerName"
-        label="Seller Name"
-        value={formik.values.sellerName}
+        name="businessAddress"
+        label="Shop Address"
+        value={formik.values.businessAddress}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        error={formik.touched.sellerName && Boolean(formik.errors.sellerName)}
-        helperText={formik.touched.sellerName && formik.errors.sellerName}
+        error={formik.touched.businessAddress && Boolean(formik.errors.businessAddress)}
+        helperText={formik.touched.businessAddress && formik.errors.businessAddress}
       />
 
      <TextField
       fullWidth
       name="account.email"
-      label="Email"
+      label="Shop Email"
       value={formik.values.account.email}
       onChange={formik.handleChange}
       onBlur={formik.handleBlur}

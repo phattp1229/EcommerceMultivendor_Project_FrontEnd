@@ -13,6 +13,7 @@ export interface Coupon {
 
 export interface CouponState {
     coupons: Coupon[];
+
     cart: Cart | null;
     loading: boolean;
     error: string | null;

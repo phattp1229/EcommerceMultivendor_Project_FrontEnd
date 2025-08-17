@@ -14,14 +14,14 @@ const BankDetailsForm = ({ onClose }: UpdateDetailsFormProps) => {
     initialValues: {
       accountHolderName: "",
       accountNumber: "",
-      ifscCode: "",
+      bankName: "",
     },
     validationSchema: Yup.object({
       accountHolderName: Yup.string().required(
         "Account Holder Name is required"
       ),
       accountNumber: Yup.string().required("Account Number is required"),
-      ifscCode: Yup.string().required("IFSC Code is required"),
+      bankName: Yup.string().required("bankName Code is required"),
     }),
     onSubmit: (values) => {
       console.log(values);
@@ -40,7 +40,7 @@ const BankDetailsForm = ({ onClose }: UpdateDetailsFormProps) => {
       formik.setValues({
         accountHolderName: sellers.profile.bankDetails?.accountHolderName || "",
         accountNumber: sellers.profile.bankDetails?.accountNumber || "",
-        ifscCode: sellers.profile.bankDetails?.bankName|| "",
+        bankName: sellers.profile.bankDetails?.bankName|| "",
       });
     }
   }, [sellers.profile]);
@@ -82,13 +82,13 @@ const BankDetailsForm = ({ onClose }: UpdateDetailsFormProps) => {
         />
         <TextField
           fullWidth
-          id="ifscCode"
-          name="ifscCode"
-          label="IFSC Code"
-          value={formik.values.ifscCode}
+          id="bankName"
+          name="bankName"
+          label="Bank Name"
+          value={formik.values.bankName}
           onChange={formik.handleChange}
-          error={formik.touched.ifscCode && Boolean(formik.errors.ifscCode)}
-          helperText={formik.touched.ifscCode && formik.errors.ifscCode}
+          error={formik.touched.bankName && Boolean(formik.errors.bankName)}
+          helperText={formik.touched.bankName && formik.errors.bankName}
         />
         <Button
           sx={{ py: ".9rem" }}

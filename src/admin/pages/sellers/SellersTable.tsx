@@ -130,11 +130,11 @@ export default function SellersTable() {
         <Table sx={{ minWidth: 700, background: '#fff' }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Seller Name</StyledTableCell>
+              <StyledTableCell>Business Name</StyledTableCell>
               <StyledTableCell>Email</StyledTableCell>
               <StyledTableCell>Mobile</StyledTableCell>
               <StyledTableCell>TaxCode</StyledTableCell>
-              <StyledTableCell>Bussiness Name</StyledTableCell>
+              <StyledTableCell>Business License</StyledTableCell>
               <StyledTableCell align="right">Account Status</StyledTableCell>
               <StyledTableCell align="right">Change Status</StyledTableCell>
             </TableRow>
@@ -142,11 +142,11 @@ export default function SellersTable() {
           <TableBody>
             {rows.map(seller => (
               <StyledTableRow key={seller.id}>
-                <StyledTableCell>{seller.sellerName}</StyledTableCell>
+                <StyledTableCell>{seller.businessDetails?.businessName}</StyledTableCell>
                 <StyledTableCell>{seller.email}</StyledTableCell>
                 <StyledTableCell>{seller.mobile}</StyledTableCell>
                 <StyledTableCell>{seller.taxCode}</StyledTableCell>
-                <StyledTableCell>{seller.businessDetails?.businessName}</StyledTableCell>
+                <StyledTableCell>{seller.businessDetails?.businessLicenseUrl}</StyledTableCell>
                 <StyledTableCell align="right">
                   <Chip
                     label={seller.accountStatus}

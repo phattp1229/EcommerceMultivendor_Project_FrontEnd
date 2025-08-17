@@ -85,7 +85,7 @@ const BecomeSellerFormStep2: React.FC<BecomeSellerFormStep2Props> = ({ formik })
           <TextField
             fullWidth
             name="pickupAddress.state"
-            label="State"
+            label="District"
             value={formik.values.pickupAddress.state}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

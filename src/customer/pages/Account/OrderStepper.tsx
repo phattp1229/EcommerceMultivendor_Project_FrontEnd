@@ -4,7 +4,7 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 type RawStatus =
-  | "PENDING" | "PLACE" | "PLACED"
+  | "PENDING"  | "PLACED"
   | "CONFIRMED" | "SHIPPED" | "DELIVERED" | "CANCELLED"
   | undefined;
 
@@ -19,7 +19,6 @@ type Props = {
 
 const RAW_TO_STEP = {
   PENDING: "PENDING",
-  PLACE: "PLACED",
   PLACED: "PLACED",
   CONFIRMED: "CONFIRMED",
   SHIPPED: "SHIPPED",
@@ -27,7 +26,7 @@ const RAW_TO_STEP = {
   CANCELLED: "CANCELLED",
 } as const;
 
-const STEP_ORDER = ["PLACED", "CONFIRMED", "SHIPPED", "DELIVERED"] as const;
+const STEP_ORDER = ["PENDING","PLACED", "CONFIRMED", "SHIPPED", "DELIVERED"] as const;
 
 const fmt = (iso?: string) => {
   if (!iso) return "";
@@ -39,11 +38,18 @@ const OrderStepper: React.FC<Props> = ({
   orderStatus,
   orderDate,
   deliverDate,
-    packedDate,
+  packedDate,
   etaFrom,
   etaTo,
 }) => {
   const norm = orderStatus ? RAW_TO_STEP[orderStatus] ?? "PLACED" : "PLACED";
+const fmt = (iso?: string) => {
+  if (!iso) return "";
+  // Cắt phần mili giây xuống 3 chữ số
+  const safeIso = iso.replace(/(\.\d{3})\d+/, "$1");
+  const d = new Date(safeIso);
+  return isNaN(d.getTime()) ? safeIso : d.toLocaleString("vi-VN");
+};
 
   const steps =
     norm === "CANCELLED"
@@ -52,10 +58,10 @@ const OrderStepper: React.FC<Props> = ({
           { name: "Order Canceled", value: "CANCELLED", desc: "" },
         ]
       : [
-          { name: "Order Placed", value: "PLACED", desc: orderDate ? `on ${fmt(orderDate)}` : "" },
-          { name: "Packed",       value: "CONFIRMED", desc: packedDate ? `on ${fmt(packedDate)}` : "" },
+        { name: "Order Placed", value: "PENDING", desc: orderDate ? `on ${fmt(orderDate)}` : "" },
+          { name: "Seller has accepted the order", value: "PLACED", desc: "" },
+          { name: "Order Packed",       value: "CONFIRMED", desc: packedDate ? `on ${fmt(packedDate)}` : "" },
           { name: "Shipped",      value: "SHIPPED",   desc: "" },
-          { name: "Arriving",     value: "ARRIVING",  desc: (etaFrom || etaTo) ? `by ${etaFrom ?? ""}${etaFrom && etaTo ? " - " : ""}${etaTo ?? ""}` : "" },
           { name: "Arrived",      value: "DELIVERED", desc: deliverDate ? `on ${fmt(deliverDate)}` : "" },
         ];
 

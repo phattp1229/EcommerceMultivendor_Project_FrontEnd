@@ -81,18 +81,22 @@ const Profile = () => {
             src="https://cdn.pixabay.com/photo/2014/11/29/19/33/bald-eagle-550804_640.jpg"
           />
           <div>
-            <ProfileFildCard
+            {/* <ProfileFildCard
               keys={"Seller Name"}
               value={sellers.profile?.sellerName}
-            />
+            /> */}
+     <ProfileFildCard
+            keys={"Shop Name / Brand Name"}
+            value={sellers.profile?.businessDetails?.businessName}
+          />
             <Divider />
             <ProfileFildCard
-              keys={"Seller Email"}
+              keys={"Shop Email"}
               value={sellers.profile?.email}
             />
             <Divider />
             <ProfileFildCard
-              keys={"Seller Mobile"}
+              keys={"Shop Mobile"}
               value={sellers.profile?.mobile}
             />
           </div>
@@ -117,10 +121,7 @@ const Profile = () => {
         </div>
 
         <div className=" ">
-          <ProfileFildCard
-            keys={"Business Name/Brand Name"}
-            value={sellers.profile?.businessDetails?.businessName}
-          />
+     
           <Divider />
           <ProfileFildCard
             keys={"TaxCode"}

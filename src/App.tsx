@@ -16,7 +16,8 @@ import AdminDashboard from './admin/pages/Dashboard/Dashboard';
 import { fetchSellerProfile } from './Redux Toolkit/Seller/sellerSlice';
 import { useAppDispatch, useAppSelector } from './Redux Toolkit/Store';
 import { useEffect } from 'react';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Auth from './customer/pages/Auth/Auth';
 import { fetchCustomerProfile } from './Redux Toolkit/Customer/CustomerProfileSlice';
 import { SnackbarProvider } from 'notistack';
@@ -56,36 +57,7 @@ const navigate=useNavigate();
   }, [dispatch])
 
   return (
-    //   <div className="">
-    //     <ThemeProvider theme={customeTheme}>
-    //   <SnackbarProvider
-    //   maxSnack={3}
-    //   anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-    //   autoHideDuration={3000}
-    //     >
-    //       <div>
-    //         <Navbar/>
-    //         <Routes>
-    //           <Route path="/" element={<Home />} />
-    //           <Route path="/login" element={<Auth />} />
-    //            <Route path="/seller/login" element={<SellerLoginForm />} />
-    //           <Route path="/products/:category" element={<Product />} />
-    //           <Route path="/reviews/:productId" element={<Reviews />} />
-    //           <Route path="/product-details/:categoryId/:name/:productId" element={<ProductDetails />} />
-    //           <Route path="/cart" element={<Cart />} />
-    //           <Route path="/wishlist" element={<Wishlist />} />
-    //           <Route path="/checkout/address" element={<AddressPage />} />
-    //           <Route path="/payment-success/:paymentOrderId" element={<PaymentSucess/>} /> //Dành cho Stripe
-    //           <Route path="/payment/paypal/callback:" element={<PaypalCallback />} /> // Dành cho PayPal
-    //           <Route path="/become-seller" element={<BecomeSeller />} />
-    //           <Route path="/account/*" element={<Profile />} />
-    //           <Route path="/seller/*" element={<SellerDashboard />} />
-    //           <Route path="/admin/*" element={<AdminDashboard />} />
-    //         </Routes>
-    //       </div>
-    //       </SnackbarProvider>
-    //     </ThemeProvider>
-    // </div>
+
         <ThemeProvider theme={customeTheme}>
           <SnackbarProvider
       maxSnack={3}
@@ -108,6 +80,7 @@ const navigate=useNavigate();
 
         </Routes>
         {/* <Footer/> */}
+         {/* <ToastContainer position="top-right" autoClose={2500} newestOnTop /> */}
       </div>
 
 

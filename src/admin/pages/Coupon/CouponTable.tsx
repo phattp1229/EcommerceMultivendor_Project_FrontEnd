@@ -11,7 +11,8 @@ import { useAppDispatch, useAppSelector } from '../../../Redux Toolkit/Store';
 import type { Coupon } from '../../../types/couponTypes';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { deleteCoupon } from '../../../Redux Toolkit/Admin/AdminCouponSlice';
-
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import  { useState } from "react";
 const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
         background: '#fef3c7', // vàng nhạt
@@ -46,6 +47,25 @@ export default function CouponTable() {
     const [status, setStatus] = React.useState(accountStatuses[0].status)
     const { sellers, adminCoupon } = useAppSelector(store => store)
     const dispatch = useAppDispatch();
+ // state confirm
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+   const handleOpenConfirm = (id:number) => {
+    setSelectedId(id);
+    setOpenDialog(true);
+  };
+
+  const handleCloseConfirm = () => {
+    setOpenDialog(false);
+    setSelectedId(null);
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedId !== null) {
+      dispatch(deleteCoupon({ id: selectedId, jwt: localStorage.getItem("jwt") || "" }));
+    }
+    handleCloseConfirm();
+  };
 
     const handleDeleteCoupon = (id:number) => {
         dispatch(deleteCoupon({ id, jwt: localStorage.getItem("jwt") || "" }))
@@ -114,15 +134,32 @@ export default function CouponTable() {
                                     </span>
                                 </StyledTableCell>
                                 <StyledTableCell align="right">
-                                    <IconButton onClick={() => handleDeleteCoupon(coupon.id)}>
-                                        <DeleteOutlineIcon className='text-red-700 cursor-pointer' />
-                                    </IconButton>
+                                    <IconButton onClick={() => handleOpenConfirm(coupon.id)}>
+                    <DeleteOutlineIcon className='text-red-700 cursor-pointer' />
+                  </IconButton>
                                 </StyledTableCell>
                             </StyledTableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
+             <Dialog
+        open={openDialog}
+        onClose={handleCloseConfirm}
+      >
+        <DialogTitle>{"Confirm Delete"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this coupon? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirm}>Cancel</Button>
+          <Button onClick={handleConfirmDelete} color="error" variant="contained">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
         </>
     );
 }

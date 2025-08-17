@@ -47,7 +47,12 @@ const orderStatusColor = {
   DELIVERED: { color: '#32CD32', label: 'DELIVERED' }, // LimeGreen
   CANCELLED: { color: '#FF0000', label: 'CANCELLED' } // Red
 };
-
+ const paymentStatusColor = {
+  PENDING:   { color: '#FFA500', label: 'PENDING' },   // Orange
+  PROCESSING:    { color: '#DC143C', label: 'PROCESSING' },    // Crimson
+  COMPLETED: { color: '#2E8B57', label: 'COMPLETED' }, // SeaGreen
+  FAILED:  { color: '#6A5ACD', label: 'FAILED' },  // SlateBlue
+} ;
 export default function OrderTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -88,6 +93,7 @@ export default function OrderTable() {
               <StyledTableCell>Order Id</StyledTableCell>
               <StyledTableCell align='left' sx={{ pl: 6 }}>Products</StyledTableCell>
               <StyledTableCell >Shipping Address</StyledTableCell>
+               <StyledTableCell align="center">Payment Status</StyledTableCell>
               <StyledTableCell align="center">Order Status</StyledTableCell>
               <StyledTableCell align="right">Update</StyledTableCell>
             </TableRow>
@@ -159,6 +165,13 @@ export default function OrderTable() {
                       </p>
                   </div>
                 </StyledTableCell>
+                <StyledTableCell 
+                 sx={{color:paymentStatusColor[item.paymentStatus].color}} 
+                 align="center">
+                   <Box sx={{borderColor:paymentStatusColor[item.paymentStatus].color}}  
+                   className={`border px-2 py-1 rounded-full text-xs`}>
+                  {item.paymentStatus}</Box> 
+                 </StyledTableCell>
                 <StyledTableCell 
                  sx={{color:orderStatusColor[item.orderStatus].color}} 
                  align="center">

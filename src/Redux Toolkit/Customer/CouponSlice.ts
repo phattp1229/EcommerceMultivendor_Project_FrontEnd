@@ -1,9 +1,8 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Cart } from "../../types/cartTypes";
 import { api } from "../../Config/Api";
-import type { CouponState } from "../../types/couponTypes";
+import type { Coupon, CouponState } from "../../types/couponTypes";
 
-// Initial state
 const initialState: CouponState = {
   coupons: [],
   cart: null,
@@ -11,11 +10,28 @@ const initialState: CouponState = {
   error: null,
   couponCreated: false,
   couponApplied: false,
-
 };
 
 const API_URL = "api/coupons";
 
+// ✅ Fetch tất cả coupons
+export const fetchAllCoupons = createAsyncThunk<
+  Coupon[],
+  string,
+  { rejectValue: string }
+>("coupon/fetchAllCoupons", async (jwt, { rejectWithValue }) => {
+  try {
+    const response = await api.get(`${API_URL}/admin/all`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    });
+    console.log("Fetched coupons: ", response.data);
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.response?.data || "Failed to fetch coupons");
+  }
+});
+
+// ✅ Apply coupon
 export const applyCoupon = createAsyncThunk<
   Cart,
   {
@@ -40,19 +56,37 @@ export const applyCoupon = createAsyncThunk<
       return response.data;
     } catch (error: any) {
       console.error("Error applying coupon:", error.response);
-      return rejectWithValue(error.response?.data?.error || 'Failed to apply coupon');
+      return rejectWithValue(
+        error.response?.data?.error || "Failed to apply coupon"
+      );
     }
   }
 );
 
-
-// Slice
 const couponSlice = createSlice({
   name: "coupon",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // fetchAllCoupons
+      .addCase(fetchAllCoupons.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllCoupons.fulfilled, (state, action) => {
+        state.loading = false;
+        state.coupons = action.payload;
+      })
+      .addCase(
+        fetchAllCoupons.rejected,
+        (state, action: PayloadAction<string | undefined>) => {
+          state.loading = false;
+          state.error = action.payload || "Failed to fetch coupons";
+        }
+      )
+
+      // applyCoupon
       .addCase(applyCoupon.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -61,11 +95,9 @@ const couponSlice = createSlice({
       .addCase(applyCoupon.fulfilled, (state, action) => {
         state.loading = false;
         state.cart = action.payload;
-
         if (action.meta.arg.apply == "true") {
-          state.couponApplied = true
+          state.couponApplied = true;
         }
-
       })
       .addCase(
         applyCoupon.rejected,

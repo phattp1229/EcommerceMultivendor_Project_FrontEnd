@@ -18,7 +18,7 @@ const PersonalDetailsForm = ({ onClose }: UpdateDetailsFormProps) => {
         },
         validationSchema: Yup.object({
             sellerName: Yup.string().required("Seller Name is required"),
-            email: Yup.string().email("Invalid email address").required("Email is required"),
+            // email: Yup.string().email("Invalid email address").required("Email is required"),
             mobile: Yup.string().required("Mobile number is required"),
         }),
         onSubmit: (values) => {
@@ -33,8 +33,8 @@ const PersonalDetailsForm = ({ onClose }: UpdateDetailsFormProps) => {
 
         if (sellers.profile) {
             formik.setValues({
-                sellerName: sellers.profile?.sellerName,
-                email: sellers.profile?.account.email,
+                sellerName: sellers.profile?.sellerName?? "",
+                email: sellers.profile.email ?? "",
                 mobile: sellers.profile?.mobile,
 
             })
@@ -48,7 +48,7 @@ const PersonalDetailsForm = ({ onClose }: UpdateDetailsFormProps) => {
                 Personal Details
             </h1>
             <form className="space-y-5" onSubmit={formik.handleSubmit}>
-                <TextField
+                {/* <TextField
                     fullWidth
                     id="sellerName"
                     name="sellerName"
@@ -57,8 +57,8 @@ const PersonalDetailsForm = ({ onClose }: UpdateDetailsFormProps) => {
                     onChange={formik.handleChange}
                     error={formik.touched.sellerName && Boolean(formik.errors.sellerName)}
                     helperText={formik.touched.sellerName && formik.errors.sellerName}
-                />
-                <TextField
+                /> */}
+                {/* <TextField
                     fullWidth
                     id="email"
                     name="email"
@@ -67,12 +67,12 @@ const PersonalDetailsForm = ({ onClose }: UpdateDetailsFormProps) => {
                     onChange={formik.handleChange}
                     error={formik.touched.email && Boolean(formik.errors.email)}
                     helperText={formik.touched.email && formik.errors.email}
-                />
+                /> */}
                 <TextField
                     fullWidth
                     id="mobile"
                     name="mobile"
-                    label="Seller Mobile"
+                    label="Shop Mobile"
                     value={formik.values.mobile}
                     onChange={formik.handleChange}
                     error={formik.touched.mobile && Boolean(formik.errors.mobile)}

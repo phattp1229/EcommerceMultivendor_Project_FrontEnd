@@ -15,7 +15,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import { useAppDispatch, useAppSelector } from "../../../Redux Toolkit/Store";
-// import { createCoupon } from "../../../Redux Toolkit/Admin/AdminCouponSlice";
+import { createCoupon } from "../../../Redux Toolkit/Admin/AdminCouponSlice";
 
 interface CouponFormValues {
   code: string;
@@ -27,7 +27,7 @@ interface CouponFormValues {
 
 const CouponForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  // const { coupone,adminCoupon } = useAppSelector((store) => store);
+  const { coupon,adminCoupon } = useAppSelector((store) => store);
   const [snackbarOpen, setOpenSnackbar] = useState(false);
 
   const formik = useFormik<CouponFormValues>({
@@ -48,17 +48,24 @@ const CouponForm: React.FC = () => {
         .min(1, "Discount should be at least 1%")
         .max(100, "Discount cannot exceed 100%"),
       validityStartDate: Yup.date()
-        .nullable()
-        .required("Start date is required")
-        .typeError("Invalid date"),
-      validityEndDate: Yup.date()
-        .nullable()
-        .required("End date is required")
-        .typeError("Invalid date")
-        .min(
-          Yup.ref("validityStartDate"),
-          "End date cannot be before start date"
-        ),
+  .nullable()
+  .transform((value, originalValue) =>
+    originalValue ? dayjs(originalValue).toDate() : null
+  )
+  .required("Start date is required")
+  .typeError("Invalid date"),
+
+validityEndDate: Yup.date()
+  .nullable()
+  .transform((value, originalValue) =>
+    originalValue ? dayjs(originalValue).toDate() : null
+  )
+  .required("End date is required")
+  .typeError("Invalid date")
+  .min(
+    Yup.ref("validityStartDate"),
+    "End date cannot be before start date"
+  ),
       minimumOrderValue: Yup.number()
         .required("Minimum order value is required")
         .min(1, "Minimum order value should be at least 1"),
@@ -74,12 +81,12 @@ const CouponForm: React.FC = () => {
           : null,
       };
       console.log("Form Values:", formattedValues);
-      // dispatch(
-      //   createCoupon({
-      //     coupon: formattedValues,
-      //     jwt: localStorage.getItem("jwt") || "",
-      //   })
-      // );
+      dispatch(
+        createCoupon({
+          coupon: formattedValues,
+          jwt: localStorage.getItem("jwt") || "",
+        })
+      );
       // Submit form values to the backend
     },
   });
@@ -88,18 +95,18 @@ const CouponForm: React.FC = () => {
     setOpenSnackbar(false);
   };
 
-  // useEffect(() => {
-  //   if (adminCoupon.couponCreated) {
-  //     setOpenSnackbar(true);
-  //   }
-  // }, [adminCoupon.couponCreated]);
+  useEffect(() => {
+    if (adminCoupon.couponCreated) {
+      setOpenSnackbar(true);
+    }
+  }, [adminCoupon.couponCreated]);
 
   return (
     <div className="max-w-3xl">
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            <Grid size={{xs:12,sm:6}}>
+            <Grid size = {{xs:12 , sm: 6}}>
               <TextField
                 fullWidth
                 id="code"
@@ -113,7 +120,7 @@ const CouponForm: React.FC = () => {
                 margin="normal"
               />
             </Grid>
-            <Grid size={{xs:12,sm:6}}>
+            <Grid size = {{xs:12 , sm: 6}}>
               <TextField
                 fullWidth
                 id="discountPercentage"
@@ -134,26 +141,44 @@ const CouponForm: React.FC = () => {
                 margin="normal"
               />
             </Grid>
-            <Grid size={{xs:12,sm:6}}>
-              <DatePicker
-                sx={{ width: "100%" }}
-                label="Validity Start Date"
-                value={formik.values.validityStartDate}
-                onChange={(date) =>
-                  formik.setFieldValue("validityStartDate", date)
-                }
-              />
-            </Grid>
-            <Grid size={{xs:12,sm:6}}>
-              <DatePicker
-                sx={{ width: "100%" }}
-                label="Validity End Date"
-                value={formik.values.validityEndDate}
-                onChange={(date) =>
-                  formik.setFieldValue("validityEndDate", date)
-                }
-              />
-            </Grid>
+<Grid size={{ xs: 12, sm: 6 }}>
+  <DatePicker
+    sx={{ width: "100%" }}
+    label="Validity Start Date"
+    value={formik.values.validityStartDate}
+    onChange={(date) => formik.setFieldValue("validityStartDate", date)}
+    slotProps={{
+      textField: {
+        onBlur: () => formik.setFieldTouched("validityStartDate", true),
+        error:
+          formik.touched.validityStartDate &&
+          Boolean(formik.errors.validityStartDate),
+        helperText:
+          formik.touched.validityStartDate &&
+          formik.errors.validityStartDate,
+      },
+    }}
+  />
+</Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+          <DatePicker
+            sx={{ width: "100%" }}
+            label="Validity End Date"
+            value={formik.values.validityEndDate}
+            onChange={(date) => formik.setFieldValue("validityEndDate", date)}
+            slotProps={{
+              textField: {
+                onBlur: () => formik.setFieldTouched("validityEndDate", true),
+                error:
+                  formik.touched.validityEndDate &&
+                  Boolean(formik.errors.validityEndDate),
+                helperText:
+                  formik.touched.validityEndDate && formik.errors.validityEndDate,
+              },
+            }}
+          />
+          </Grid>
+  
             <Grid size={12}>
               <TextField
                 fullWidth
@@ -182,23 +207,16 @@ const CouponForm: React.FC = () => {
                 type="submit"
                 sx={{ mt: 2 }}
                 fullWidth
-                // disabled={adminCoupon.loading}
+                disabled={adminCoupon.loading}
               >
-                {/* {adminCoupon.loading == true ? (
+                {adminCoupon.loading ? (
                   <CircularProgress
                     size="small"
                     sx={{ width: "27px", height: "27px" }}
                   />
                 ) : (
                   "create coupon"
-                )} */}
-
-                {/*note*/}
-                <CircularProgress
-                    size="small"
-                    sx={{ width: "27px", height: "27px" }}
-                  />
-                  create coupon
+                )}
               </Button>
             </Grid>
           </Grid>
@@ -212,11 +230,11 @@ const CouponForm: React.FC = () => {
       >
         <Alert
           onClose={handleCloseSnackbar}
-          severity={"success"}
+          severity={adminCoupon.error ? "error" : "success"}
           variant="filled"
           sx={{ width: "100%" }}
         >
-          { "Coupon created successfully"}
+          {adminCoupon.error ? adminCoupon.error : "Coupon created successfully"}
         </Alert>
       </Snackbar>
     </div>

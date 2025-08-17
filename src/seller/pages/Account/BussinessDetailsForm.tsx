@@ -18,9 +18,9 @@ const BusinessDetailsForm = ({ onClose }: UpdateDetailsFormProps) => {
       accountStatus: "",
     },
     validationSchema: Yup.object({
-      businessName: Yup.string().required("Business Name is required"),
+      // businessName: Yup.string().required("Business Name is required"),
       taxCode: Yup.string().required("taxCode is required"),
-      accountStatus: Yup.string().required("Account Status is required"),
+      // accountStatus: Yup.string().required("Account Status is required"),
     }),
     onSubmit: (values) => {
       console.log(values);
@@ -50,7 +50,7 @@ const BusinessDetailsForm = ({ onClose }: UpdateDetailsFormProps) => {
         Business Details
       </h1>
       <form className="space-y-5" onSubmit={formik.handleSubmit}>
-        <TextField
+        {/* <TextField
           fullWidth
           id="businessName"
           name="businessName"
@@ -61,7 +61,7 @@ const BusinessDetailsForm = ({ onClose }: UpdateDetailsFormProps) => {
             formik.touched.businessName && Boolean(formik.errors.businessName)
           }
           helperText={formik.touched.businessName && formik.errors.businessName}
-        />
+        /> */}
         <TextField
           fullWidth
           id="taxCode"
@@ -72,7 +72,7 @@ const BusinessDetailsForm = ({ onClose }: UpdateDetailsFormProps) => {
           error={formik.touched.taxCode && Boolean(formik.errors.taxCode)}
           helperText={formik.touched.taxCode && formik.errors.taxCode}
         />
-        <TextField
+        {/* <TextField
           fullWidth
           id="accountStatus"
           name="accountStatus"
@@ -85,7 +85,7 @@ const BusinessDetailsForm = ({ onClose }: UpdateDetailsFormProps) => {
           helperText={
             formik.touched.accountStatus && formik.errors.accountStatus
           }
-        />
+        /> */}
         <Button
           sx={{ py: ".9rem" }}
           color="primary"

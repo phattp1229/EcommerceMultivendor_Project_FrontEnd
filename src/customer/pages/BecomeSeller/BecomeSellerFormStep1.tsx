@@ -44,40 +44,46 @@ const BecomeSellerFormStep1 = ({ formik, handleOtpChange }: any) => {
                 />
 
                 <div>
-                <label htmlFor="businessLicenseUrl">
-                    <Button variant="contained" component="span">
-                    Upload Business License
-                    </Button>
-                </label>
-                <input
-                    accept=".pdf,.jpg,.jpeg,.png"
-                    id="businessLicenseUrl"
-                    name="businessLicenseUrl"
-                    type="file"
-                    onChange={async (event) => {
-                    const file = event.currentTarget.files?.[0];
-                    if (!file) return;
+               <label htmlFor="businessDetails.businessLicenseUrl">
+  <Button variant="contained" component="span">
+    Upload Business License
+  </Button>
+</label>
 
-                    try {
-                        const url = await uploadToCloudinary(file);
-                        formik.setFieldValue("businessLicenseUrl", url);
-                    } catch (error) {
-                        console.error("Upload failed", error);
-                        formik.setFieldError("businessLicenseUrl", "Upload failed");
-                    }
-                    }}
-                    style={{ display: "none" }}
-                />
-                <div style={{ marginTop: '10px' }}>
-                    {formik.values.businessLicenseUrl && (
-                        <Typography variant="body2" color="textSecondary">
-                        ✅ Uploaded:{" "}
-                        <a href={formik.values.businessLicenseUrl} target="_blank" rel="noopener noreferrer">
-                            {formik.values.businessLicenseUrl.split("/").pop()}
-                        </a>
-                        </Typography>
-                    )}
-                    </div>
+<input
+  accept=".pdf,.jpg,.jpeg,.png"
+  id="businessDetails.businessLicenseUrl"
+  name="businessDetails.businessLicenseUrl"
+  type="file"
+  onChange={async (event) => {
+    const file = event.currentTarget.files?.[0];
+    if (!file) return;
+    try {
+      const url = await uploadToCloudinary(file);            // nên dùng secure_url nếu có
+      // ✅ Ghi đúng vào nested field:
+      formik.setFieldValue("businessDetails.businessLicenseUrl", url);
+    } catch (err) {
+      console.error("Upload failed", err);
+      formik.setFieldError("businessDetails.businessLicenseUrl", "Upload failed");
+    }
+  }}
+  style={{ display: "none" }}
+/>
+
+{/* Hiển thị link đã up */}
+{formik.values.businessDetails?.businessLicenseUrl && (
+  <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
+    ✅ Uploaded:{" "}
+    <a
+      href={formik.values.businessDetails.businessLicenseUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {formik.values.businessDetails.businessLicenseUrl.split("/").pop()}
+    </a>
+  </Typography>
+)}
+
 
 
                 </div>

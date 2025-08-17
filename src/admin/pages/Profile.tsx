@@ -33,7 +33,7 @@ function toViFromISO(iso: string) {
 // ===== Mock data =====
 const mockUser = {
   name: "Phạm Tấn Phát",
-  email: "phamtanphat@example.com",
+  email: "phamtanphat469@gmail.com",
   cccd: "082203004429",
   dob: "29/12/2003", // hiển thị dạng vi-VN
   gender: "MALE" as "MALE" | "FEMALE" | "OTHER",

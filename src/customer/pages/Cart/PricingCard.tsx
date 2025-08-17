@@ -1,4 +1,4 @@
-import { Button, Divider } from "@mui/material";
+import { Button, Divider, Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -16,16 +16,17 @@ const PricingCard = ({ showBuyButton, SubmitButton }: any) => {
       <div className="space-y-3 p-5">
         <div className="flex justify-between items-center">
           <span className="text-red-700"><strong>Subtotal</strong></span>
-          <span>{cart.cart?.totalMrpPrice.toLocaleString("vi-VN")} đ</span>
+         <span className="text-black  text-lg">
+  {(sumCartItemSellingPrice(cart.cart?.cartItems || [])).toLocaleString("vi-VN")}đ
+</span>
+
+
         </div>
         <div className="flex justify-between items-center">
           <span>Discount</span>
           <span>
-            {" "}
-            {(
-              sumCartItemMrpPrice(cart.cart?.cartItems || []) -
-              sumCartItemSellingPrice(cart.cart?.cartItems || [])
-            ).toLocaleString("vi-VN")} đ
+           
+            {cart.cart?.couponPrice?.toLocaleString("vi-VN")} đ
           </span>
         </div>
         <div className="flex justify-between items-center">
@@ -43,7 +44,7 @@ const PricingCard = ({ showBuyButton, SubmitButton }: any) => {
 
       <div className="font-medium px-5 py-2 flex justify-between items-center">
         <span>Total</span>
-        <span>{cart.cart?.totalSellingPrice.toLocaleString("vi-VN")}đ</span>
+        <span className="text-red-600 font-bold text-lg">{cart.cart?.totalSellingPrice.toLocaleString("vi-VN")}đ</span>
       </div>
     </div>
   );

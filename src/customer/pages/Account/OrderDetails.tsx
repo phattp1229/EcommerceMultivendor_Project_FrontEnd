@@ -14,7 +14,6 @@ const OrderDetails = () => {
   const { orderItemId, orderId } = useParams()
   const navigate = useNavigate();
 
-
   // 1) Polling cho ORDER (có fetch ngay lần đầu)
 useEffect(() => {
   const jwt = localStorage.getItem("jwt") || "";
@@ -28,6 +27,7 @@ useEffect(() => {
 
   // rồi mới setInterval
   const timer = setInterval(() => {
+     console.log("Polling lại sau 10000 ms");
     dispatch(fetchOrderById({ orderId: idNum, jwt }));
   }, 10000);
 
@@ -59,7 +59,17 @@ useEffect(() => {
 const pid = orders.orderItem?.product?.id;
 const uid = customer.customer?.id;
 
+//status
+const status = orders.currentOrder?.orderStatus;
+const isCanceled  = status === OrderStatus.CANCELLED;
 const isDelivered = orders.currentOrder?.orderStatus === OrderStatus.DELIVERED;
+const cancelBtnLabel =
+  isCanceled ? "Order Canceled" :
+  isDelivered ? "Return Order" :
+  "Cancel Order";
+const cancelBtnColor: "error" | "warning" = isDelivered ? "warning" : "error";
+const cancelBtnVariant: "outlined" | "contained" = isDelivered ? "outlined" : "contained";
+
 
 const alreadyReviewed =
   !!(pid && uid && review.reviews?.some(r => r.product?.id === pid && r.customer?.id === uid));
@@ -94,7 +104,8 @@ const canWriteReview = !!pid && isDelivered && !alreadyReviewed;
         {/* <OrderStepper orderStatus={orders.currentOrder?.orderStatus} /> */}
         <OrderStepper orderStatus={orders.currentOrder?.orderStatus} // BE: PLACE/PLACED/CONFIRMED/SHIPPED/DELIVERED/CANCELLED
           orderDate={orders.currentOrder?.orderDate}
-          deliverDate={orders.currentOrder?.deliverDate}/>
+          packedDate={orders.currentOrder?.packedDate ?? undefined}    // ⬅️ convert null -> undefined
+        deliverDate={orders.currentOrder?.deliverDate ?? undefined}/>
       </section>
       <div className='border p-5'>
         <h1 className='font-bold pb-3'>Delivery Address</h1>
@@ -144,11 +155,15 @@ const canWriteReview = !!pid && isDelivered && !alreadyReviewed;
 
         <div className='p-10'>
           <Button
-          disabled={orders.currentOrder?.orderStatus==="CANCELLED"}
-            onClick={handleCancelOrder}
-            color='error' sx={{ py: "0.7rem" }} className='' variant='outlined' fullWidth>
-            {orders.currentOrder?.orderStatus==="CANCELLED"?"order canceled":"Cancel Order"}
-          </Button>
+  disabled={isCanceled}
+  onClick={handleCancelOrder}
+  color={cancelBtnColor}
+  variant={cancelBtnVariant}
+  sx={{ py: "0.7rem" }}
+  fullWidth
+>
+  {cancelBtnLabel}
+</Button>
         </div>
       </div>
     </Box>

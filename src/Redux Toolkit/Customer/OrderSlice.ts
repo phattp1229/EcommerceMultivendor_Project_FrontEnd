@@ -75,11 +75,11 @@ export const createOrder = createAsyncThunk<
           }
         );
         console.log("Order created successfully", response.data);
-
+        // 🚀 Nếu là Online (Stripe/PayPal) → redirect sang payment link
         if (response.data.payment_link_url) {
           window.location.href = response.data.payment_link_url;
         }
-
+        // 🚀 Nếu là COD → không có payment_link_url → FE sẽ tự xử lý
         return response.data;
       } catch (error: any) {
         console.error("Error creating order:", error.response);
@@ -138,6 +138,25 @@ export const paymentSuccessStripe = createAsyncThunk<ApiResponse,
   }
 }
 );
+//complete COD payment
+export const confirmCodPayment = createAsyncThunk<Order, { orderId: number; jwt: string }>(
+  "orders/confirmCodPayment",
+  async ({ orderId, jwt }, { rejectWithValue }) => {
+    try {
+      const response = await api.patch<Order>(
+        `/seller/orders/${orderId}/cod/confirm`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${jwt}` },
+        }
+      );
+      console.log("COD payment confirmed", response.data);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.error || "Failed to confirm COD payment");
+    }
+  }
+);
 
 
 export const cancelOrder = createAsyncThunk<Order, any>(
@@ -187,29 +206,6 @@ export const completePaypalPayment = createAsyncThunk<ApiResponse, PaypalComplet
   }
 );
 
-interface StripeCompleteRequest {
-  paymentOrderId: number;
-  jwt: string;
-}
-
-export const completeStripePayment = createAsyncThunk<ApiResponse, StripeCompleteRequest>(
-  "orders/completeStripePayment",
-  async ({ paymentOrderId, jwt }, { rejectWithValue }) => {
-    try {
-      // Gọi đến endpoint chính xác cho việc hoàn tất đơn hàng Stripe
-      const response = await api.put(`${API_URL}/payment-order/${paymentOrderId}/complete`, {}, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
-      console.log("Stripe payment completed successfully", response.data);
-      return response.data;
-    } catch (error: any) {
-      console.error("Error completing Stripe payment:", error.response);
-      return rejectWithValue(error.response?.data?.error || 'Failed to complete Stripe payment');
-    }
-  }
-);
 
 
 const orderSlice = createSlice({
@@ -306,6 +302,25 @@ const orderSlice = createSlice({
         console.log('Payment successful:', action.payload);
       })
       .addCase(paymentSuccessStripe.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      // ✅ Confirm COD Payment
+      .addCase(confirmCodPayment.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(confirmCodPayment.fulfilled, (state, action) => {
+        state.loading = false;
+        // update currentOrder
+        state.currentOrder = action.payload;
+        // đồng thời update luôn trong list orders nếu có
+        state.orders = state.orders.map((order) =>
+          order.id === action.payload.id ? action.payload : order
+        );
+        console.log("COD payment confirmed:", action.payload);
+      })
+      .addCase(confirmCodPayment.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
