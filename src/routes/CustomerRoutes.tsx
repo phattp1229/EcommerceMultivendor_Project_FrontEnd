@@ -4,7 +4,7 @@ import Home from '../customer/pages/Home/Home'
 
 import ProductDetails from '../customer/pages/Product/ProductDetails/ProductDetails'
 import Cart from '../customer/pages/Cart/Cart'
-import Address from '../customer/pages/Checkout/AddressPage'
+import Address from '../customer/pages/Checkout/CheckoutPage'
 import Profile from '../customer/pages/Account/Profile'
 import KocDashboard from '../customer/pages/Koc/KocDashboard/KocDashboard'
 import AffiliateCampaignPage from '../customer/pages/Koc/AffiliateCampaignPage';

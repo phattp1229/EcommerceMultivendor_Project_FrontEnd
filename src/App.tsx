@@ -7,7 +7,7 @@ import Product from './customer/pages/Product/Products';
 import ProductDetails from './customer/pages/Product/ProductDetails/ProductDetails';
 import Reviews from './customer/pages/Review/Reviews';
 import Cart from './customer/pages/Cart/Cart';
-import AddressPage from './customer/pages/Checkout/AddressPage';
+import AddressPage from './customer/pages/Checkout/CheckoutPage';
 import Profile from './customer/pages/Account/Profile';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import BecomeSeller from './customer/pages/BecomeSeller/BecomeSeller';
