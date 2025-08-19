@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { api } from "../../Config/Api";
 import type { Cart, CartItem } from "../../types/cartTypes";
-import { sumCartItemSellingPrice, sumCartItemsMrpPrice } from "../../customer/util/sumCartItemsMrpPrice";
+import { sumCartItemSellingPrice, sumCartItemMrpPrice } from "../../customer/util/cartCalculator";
 import { applyCoupon } from "./CouponSlice";
 
 
@@ -44,6 +44,8 @@ interface AddItemRequest {
     productId: number | undefined;
     size: string;
     quantity: number;
+    kocCode?: string;
+    campaignCode?: string;
 }
 
 
@@ -157,7 +159,7 @@ const CartSlice = createSlice({
                     state.cart.cartItems = state.cart.cartItems.filter(
                         (item: CartItem) => item.id !== action.meta.arg.cartItemId);
 
-                    const mrpPrice = sumCartItemsMrpPrice(state.cart?.cartItems || [])
+                    const mrpPrice = sumCartItemMrpPrice(state.cart?.cartItems || [])
                     const sellingPrice = sumCartItemSellingPrice(state.cart?.cartItems || [])
                     state.cart.totalSellingPrice = sellingPrice;
                     state.cart.totalMrpPrice = mrpPrice;
@@ -186,7 +188,7 @@ const CartSlice = createSlice({
                         };
                     }
 
-                    const mrpPrice = sumCartItemsMrpPrice(state.cart?.cartItems || []);
+                    const mrpPrice = sumCartItemMrpPrice(state.cart?.cartItems || []);
                     const sellingPrice = sumCartItemSellingPrice(state.cart?.cartItems || []);
                     state.cart.totalSellingPrice = sellingPrice;
                     state.cart.totalMrpPrice = mrpPrice;

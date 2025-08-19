@@ -14,7 +14,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import SmilarProduct from '../SimilarProduct/SimilarProduct';
 import ZoomableImage from './ZoomableImage';
 import { useAppDispatch, useAppSelector } from '../../../../Redux Toolkit/Store';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { fetchProductById, getAllProducts } from '../../../../Redux Toolkit/Customer/ProductSlice';
 import { addItemToCart } from '../../../../Redux Toolkit/Customer/CartSlice';
 import ProductReviewCard from '../../Review/ProductReviewCard';
@@ -44,10 +44,21 @@ const ProductDetails = () => {
     const { products, review } = useAppSelector(store => store)
     const navigate = useNavigate()
     const { productId,categoryId } = useParams()
+    const [searchParams] = useSearchParams();
     const [selectedImage, setSelectedImage] = useState(0);
     const [quantity, setQuantity] = useState(1)
     const { enqueueSnackbar } = useSnackbar();
     const [addingWl, setAddingWl] = useState(false);
+
+    // Affiliate tracking - capture URL parameters
+    const kocCode = searchParams.get('koc');
+    const campaignCode = searchParams.get('campaign');
+
+    // Debug logs
+    console.log('🔍 URL Search Params:', Object.fromEntries(searchParams));
+    console.log('🎯 Captured kocCode:', kocCode);
+    console.log('📋 Captured campaignCode:', campaignCode);
+    console.log('🌐 Current URL:', window.location.href);
 
     useEffect(() => {
 
@@ -60,9 +71,19 @@ const ProductDetails = () => {
     }, [productId])
 
     const handleAddCart = () => {
+        const request = {
+            productId: Number(productId),
+            size: "FREE",
+            quantity,
+            ...(kocCode && { kocCode }),
+            ...(campaignCode && { campaignCode })
+        };
+
+        console.log('🛒 Add to cart request:', request);
+
         dispatch(addItemToCart({
             jwt: localStorage.getItem('jwt'),
-            request: { productId: Number(productId), size: "FREE", quantity }
+            request
 
         }))
     }

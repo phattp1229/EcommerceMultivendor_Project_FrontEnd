@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../../Redux Toolkit/Store';
-import { fetchSellerCampaigns, updateSellerCampaign } from '../../../Redux Toolkit/Seller/sellerCampaignSlice';
+import { deleteSellerCampaign, fetchSellerCampaigns, updateSellerCampaign } from '../../../Redux Toolkit/Seller/sellerCampaignSlice';
 import { fetchSellerProducts } from '../../../Redux Toolkit/Seller/sellerProductSlice';
 import type { AffiliateCampaign } from '../../../types/affiliateCampaignTypes';
 import { Grid, TextField, Button, Typography, Paper, FormControlLabel, Switch, Box, Chip, Snackbar, Alert } from '@mui/material';

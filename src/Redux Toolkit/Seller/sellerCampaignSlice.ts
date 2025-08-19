@@ -102,6 +102,11 @@ const slice = createSlice({
 
         b.addCase(deleteSellerCampaign.fulfilled, (s, a: PayloadAction<number>) => {
             s.list = s.list.filter(c => c.id !== a.payload);
+            s.error = null;
+        });
+
+        b.addCase(deleteSellerCampaign.rejected, (s, a) => {
+            s.error = String(a.payload || a.error?.message || "Delete failed");
         });
     }
 });

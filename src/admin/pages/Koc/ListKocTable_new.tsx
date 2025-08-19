@@ -103,21 +103,15 @@ const ChangeStatusCell = ({ row }: { row: any }) => {
       >
         Change
       </Button>
-      <Menu
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          sx: {
-            borderRadius: 2,
-            minWidth: 180,
-            boxShadow: '0 4px 16px 0 rgba(2,132,199,0.10)',
-          }
-        }}
-      >
-        <MenuItem onClick={() => changeTo("ACTIVE")} sx={{ color: "#047857", fontWeight: 600, '&:hover': { background: "#d1fae5" } }}>ACTIVE</MenuItem>
-        <MenuItem onClick={() => changeTo("PENDING_VERIFICATION")} sx={{ color: "#b45309", fontWeight: 600, '&:hover': { background: "#fef9c3" } }}>PENDING_VERIFICATION</MenuItem>
-        <MenuItem onClick={() => changeTo("SUSPENDED")} sx={{ color: "#b91c1c", fontWeight: 600, '&:hover': { background: "#fee2e2" } }}>SUSPENDED</MenuItem>
+
+      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+        {(["PENDING_VERIFICATION", "ACTIVE", "SUSPENDED"] as AccountStatus[])
+          .filter(s => s !== row.accountStatus)
+          .map(status => (
+            <MenuItem key={status} onClick={() => changeTo(status)}>
+              {status.replace("_", " ")}
+            </MenuItem>
+          ))}
       </Menu>
     </div>
   );
@@ -140,11 +134,6 @@ export default function KocListTable() {
     const jwt = localStorage.getItem("jwt") || "";
     dispatch(adminFetchKoc({ jwt, page: 0, size: 10, status: statusParam }));
   }, [dispatch, statusParam]);
-
-  const handlePage = (m: { page: number; pageSize: number }) => {
-    const jwt = localStorage.getItem("jwt") || "";
-    dispatch(adminFetchKoc({ jwt, page: m.page, size: m.pageSize, status: statusParam }));
-  };
 
   const handleChangeStatus = (e: SelectChangeEvent) => {
     const v = e.target.value as "All" | AccountStatus;
@@ -219,57 +208,48 @@ export default function KocListTable() {
             <InputLabel>Status</InputLabel>
             <Select label="Status" value={statusFilter} onChange={handleChangeStatus}>
               <MenuItem value="All">All</MenuItem>
-              <MenuItem value="ACTIVE">ACTIVE</MenuItem>
-              <MenuItem value="PENDING_VERIFICATION">PENDING_VERIFICATION</MenuItem>
-              <MenuItem value="SUSPENDED">SUSPENDED</MenuItem>
+              <MenuItem value="PENDING_VERIFICATION">Pending</MenuItem>
+              <MenuItem value="ACTIVE">Active</MenuItem>
+              <MenuItem value="SUSPENDED">Suspended</MenuItem>
             </Select>
           </FormControl>
         </Stack>
-        <div style={{ width: "100%" }}>
-          <DataGrid
-            autoHeight
-            rows={rows ?? []}
-            getRowId={(r) => r.id}
-            columns={columns}
-            loading={loading}
-            density="compact"
-            disableRowSelectionOnClick
-            hideFooterSelectedRowCount
-            pageSizeOptions={[10, 25, 50, 100]}
-            paginationModel={{ page, pageSize: size }}
-            onPaginationModelChange={handlePage}
-            rowCount={total}
-            paginationMode="server"
-            slots={{ toolbar: GridToolbar }}
-            slotProps={{ toolbar: { showQuickFilter: true, quickFilterProps: { debounceMs: 300 } } }}
-            getRowClassName={(p) => (p.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd")}
-            sx={{
-              border: 0,
-              "& .MuiDataGrid-columnHeaders": {
-                backgroundColor: "#fef3c7", // vàng nhạt
-                color: "#78350f",           // chữ nâu
-                borderRadius: "12px 12px 0 0",
-                fontWeight: 700,
-                fontSize: 16,
-                letterSpacing: 0.5,
-                borderBottom: '1px solid #fde68a',
-              },
-              "& .MuiDataGrid-cell": { outline: "none", fontSize: 15 },
-              "& .even": { backgroundColor: "#f9fafb" },
-              "& .odd": { backgroundColor: "#fff" },
-              "& .MuiDataGrid-row:hover": { backgroundColor: "#f1f5f9" },
-              "& .MuiDataGrid-footerContainer": { backgroundColor: "#fef3c7", color: "#b45309", borderTop: '1px solid #fde68a' },
-              "& .col-id": {
-                backgroundColor: "#fef3c7", // vàng nhạt
-                color: "#78350f",           // chữ nâu
-                fontWeight: 700
-              },
-              boxShadow: "0 6px 20px rgba(0,0,0,0.06)",
-              borderRadius: "16px",
-              overflow: "hidden",
-            }}
-          />
-        </div>
+
+        {/* DataGrid */}
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          loading={loading}
+          paginationMode="server"
+          rowCount={total}
+          paginationModel={{ page, pageSize: size }}
+          onPaginationModelChange={(model) => {
+            const jwt = localStorage.getItem("jwt") || "";
+            dispatch(adminFetchKoc({ jwt, page: model.page, size: model.pageSize, status: statusParam }));
+          }}
+          pageSizeOptions={[5, 10, 25]}
+          slots={{ toolbar: GridToolbar }}
+          slotProps={{
+            toolbar: {
+              showQuickFilter: true,
+              quickFilterProps: { debounceMs: 500 },
+            },
+          }}
+          sx={{
+            border: 'none',
+            '& .MuiDataGrid-columnHeaders': {
+              backgroundColor: '#f8fafc',
+              borderBottom: '2px solid #e2e8f0',
+            },
+            '& .col-id': {
+              fontWeight: 700,
+              color: '#475569',
+            },
+            '& .MuiDataGrid-row:hover': {
+              backgroundColor: '#f1f5f9',
+            },
+          }}
+        />
       </CardContent>
     </Card>
   );

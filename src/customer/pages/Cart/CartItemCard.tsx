@@ -60,26 +60,26 @@ const CartItemCard : React.FC<CartItemProps> = ({ item }) => {
             </div>
             <Divider />
             <div className='px-5 py-2 flex justify-between items-center'>
-  <div className='flex items-center gap-2 w-[140px] justify-between'>
-    <Button size='small' disabled={item.quantity == 1} onClick={() => handleUpdateQuantity(-1)} >
-      <RemoveIcon />
-    </Button>
-    <span className='px-3 font-semibold'>{item.quantity}</span>
-    <Button size='small' onClick={() => handleUpdateQuantity(1)} >
-      <AddIcon />
-    </Button>
-  </div>
+          <div className='flex items-center gap-2 w-[140px] justify-between'>
+            <Button size='small' disabled={item.quantity == 1} onClick={() => handleUpdateQuantity(-1)} >
+              <RemoveIcon />
+            </Button>
+            <span className='px-3 font-semibold'>{item.quantity}</span>
+            <Button size='small' onClick={() => handleUpdateQuantity(1)} >
+              <AddIcon />
+            </Button>
+          </div>
 
-  {/* Giá hiển thị giống Shopee */}
-  <div className="flex flex-col items-end">
-    <p className="text-sm text-gray-400 line-through">
-      {item.mrpPrice.toLocaleString("vi-VN")}đ
-    </p>
-    <p className="text-lg font-bold text-red-600">
-      {item.sellingPrice.toLocaleString("vi-VN")}đ
-    </p>
-  </div>
-</div>
+          {/* Giá hiển thị giống Shopee */}
+          <div className="flex flex-col items-end">
+            <p className="text-sm text-gray-400 line-through">
+              {item.mrpPrice.toLocaleString("vi-VN")}đ
+            </p>
+            <p className="text-lg font-bold text-red-600">
+              {item.sellingPrice.toLocaleString("vi-VN")}đ
+            </p>
+          </div>
+        </div>
 
             <div className='absolute top-1 right-1'>
                 <IconButton onClick={handleRemoveCartItem} color='primary' >

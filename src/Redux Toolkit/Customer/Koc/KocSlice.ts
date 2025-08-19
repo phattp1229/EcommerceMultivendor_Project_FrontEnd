@@ -25,6 +25,11 @@ export interface KocItem extends Koc {
         mobile?: string;
         account?: { email?: string };
     };
+    // Social media links
+    facebookLink?: string;
+    instagramLink?: string;
+    tiktokLink?: string;
+    youtubeLink?: string;
 }
 
 interface PageResp<T> {
@@ -72,7 +77,6 @@ const initialState: KocState = {
 
 /** ================= KOC Affiliate Registration Thunks ================== **/
 import type { AffiliateRegistrationResponse } from '../../../types/affiliateCampaignTypes';
-import axios from 'axios';
 
 // Lấy danh sách đăng ký của KOC
 export const fetchKocRegistrations = createAsyncThunk<
@@ -82,7 +86,7 @@ export const fetchKocRegistrations = createAsyncThunk<
 >("koc/fetchRegistrations", async (_, { getState, rejectWithValue }) => {
     try {
         const jwt = getState().auth.jwt;
-        const res = await axios.get("/api/affiliate-registration/my-registrations", {
+        const res = await api.get("/api/koc/my-registrations", {
             headers: { Authorization: `Bearer ${jwt}` },
         });
         return res.data;
@@ -99,12 +103,15 @@ export const registerKocCampaign = createAsyncThunk<
 >("koc/registerCampaign", async (campaignId, { getState, rejectWithValue }) => {
     try {
         const jwt = getState().auth.jwt;
-        const res = await axios.post(`/api/affiliate-registration/register-campaign/${campaignId}`, {}, {
+        console.log("Registering campaign:", campaignId, "with JWT:", jwt ? "present" : "missing");
+        const res = await api.post(`/api/koc/register-campaign/${campaignId}`, {}, {
             headers: { Authorization: `Bearer ${jwt}` },
         });
         return res.data;
     } catch (e: any) {
-        return rejectWithValue(e?.response?.data || e?.message || "Failed to register campaign");
+        console.error("Registration error:", e?.response?.data || e?.message);
+        const errorMsg = e?.response?.data?.message || e?.response?.data || e?.message || "Failed to register campaign";
+        return rejectWithValue(errorMsg);
     }
 });
 
@@ -141,6 +148,7 @@ export const adminFetchKoc = createAsyncThunk<
             params,
             headers: { Authorization: `Bearer ${jwt}` },
         });
+        console.log("KOC API Response:", res.data);
         return res.data as PageResp<KocItem>;
     } catch (e: any) {
         return rejectWithValue(e?.response?.data || "Failed to load KOC");

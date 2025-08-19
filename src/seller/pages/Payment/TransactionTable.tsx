@@ -43,7 +43,7 @@ export default function TransactionTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {transaction.transactions.map((item: Transaction, idx: number) => (
+            {transaction.transactions?.map((item: Transaction, idx: number) => (
               <TableRow
                 key={item.id}
                 sx={{

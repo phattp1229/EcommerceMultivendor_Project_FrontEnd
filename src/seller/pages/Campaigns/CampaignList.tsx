@@ -1,37 +1,110 @@
 // src/seller/pages/Campaigns/CampaignList.tsx
 import React, { useEffect } from "react";
 import { Card, CardContent, CardHeader, Stack, Typography, Chip, Button, CircularProgress, Box, IconButton, Tooltip } from "@mui/material";
+import { useSnackbar } from "notistack";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from "@mui/icons-material/Add";
+import PeopleIcon from "@mui/icons-material/People";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../Redux Toolkit/Store";
 import { fetchSellerCampaigns, deleteSellerCampaign } from "../../../Redux Toolkit/Seller/sellerCampaignSlice";
 import type { AffiliateCampaign } from "../../../types/affiliateCampaignTypes";
-
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
 const CampaignList: React.FC = () => {
   const nav = useNavigate();
   const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+
   const { list, loading, error } = useAppSelector(s => s.sellerCampaign);
     const statusColor = status === 'ACTIVE' ? '#43a047' : status === 'EXPIRED' ? '#ff9800' : '#bdbdbd';
     const statusTextColor = '#fff';
   useEffect(() => { dispatch(fetchSellerCampaigns()); }, []);
 
-  const handleDelete = async (id: number) => {
-    if (window.confirm('Are you sure you want to delete this campaign?')) {
-      await dispatch(deleteSellerCampaign({ id }));
-      dispatch(fetchSellerCampaigns());
+  // const handleDelete = async (id: number) => {
+  //   if (window.confirm('Are you sure you want to delete this campaign?')) {
+  //     await dispatch(deleteSellerCampaign({ id }));
+  //     dispatch(fetchSellerCampaigns());
+  //   }
+  // };
+  const [openConfirm, setOpenConfirm] = React.useState(false);
+  const [deleteId, setDeleteId] = React.useState<number | null>(null);
+
+  // State for viewing products
+  const [openProductsDialog, setOpenProductsDialog] = React.useState(false);
+  const [selectedCampaign, setSelectedCampaign] = React.useState<AffiliateCampaign | null>(null);
+  const [campaignProducts, setCampaignProducts] = React.useState<any[]>([]);
+  const [loadingProducts, setLoadingProducts] = React.useState(false);
+
+  const confirmDelete = (id: number) => {
+    setDeleteId(id);
+    setOpenConfirm(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (deleteId !== null) {
+      try {
+        const result = await dispatch(deleteSellerCampaign({ id: deleteId }));
+
+        if (deleteSellerCampaign.fulfilled.match(result)) {
+          enqueueSnackbar("Campaign deleted successfully!", { variant: "success" });
+          dispatch(fetchSellerCampaigns());
+        } else {
+          // Extract error message from backend
+          const errorMsg = result.payload as string;
+          enqueueSnackbar(errorMsg || "Failed to delete campaign", { variant: "error" });
+        }
+      } catch (error) {
+        enqueueSnackbar("An unexpected error occurred", { variant: "error" });
+      }
+    }
+    setOpenConfirm(false);
+    setDeleteId(null);
+  };
+
+  // Function to fetch products for a campaign
+  const fetchCampaignProducts = async (campaignId: number) => {
+    setLoadingProducts(true);
+    try {
+      const jwt = localStorage.getItem("jwt");
+      const response = await fetch(`http://localhost:5454/sellers/campaigns/${campaignId}/products`, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      });
+      if (response.ok) {
+        const products = await response.json();
+        setCampaignProducts(products);
+      } else {
+        console.error("Failed to fetch campaign products");
+        setCampaignProducts([]);
+      }
+    } catch (error) {
+      console.error("Error fetching campaign products:", error);
+      setCampaignProducts([]);
+    } finally {
+      setLoadingProducts(false);
     }
   };
 
+  // Function to handle view products
+  const handleViewProducts = (campaign: AffiliateCampaign) => {
+    setSelectedCampaign(campaign);
+    setOpenProductsDialog(true);
+    fetchCampaignProducts(campaign.id);
+  };
   return (
     <Card>
       <CardHeader
         title="My Campaigns"
         action={
-          <Button variant="contained" startIcon={<AddIcon />} onClick={() => nav("/seller/campaigns/new")}>
-            New Campaign
-          </Button>
+          <Stack direction="row" spacing={1}>
+            <Button variant="outlined" startIcon={<PeopleIcon />} onClick={() => nav("/seller/campaigns/koc-registrations")}>
+              KOC Registrations
+            </Button>
+            <Button variant="contained" startIcon={<AddIcon />} onClick={() => nav("/seller/campaigns/new")}>
+              New Campaign
+            </Button>
+          </Stack>
         }
       />
       <CardContent>
@@ -102,16 +175,25 @@ const CampaignList: React.FC = () => {
                       </Typography>
                     </Box>
                     <Stack direction="row" spacing={1}>
+                      <Tooltip title="View Products">
+                        <IconButton sx={{ bgcolor: '#f3e5f5', '&:hover': { bgcolor: '#ce93d8' } }} onClick={() => handleViewProducts(c)}>
+                          <VisibilityIcon sx={{ color: '#7b1fa2' }} />
+                        </IconButton>
+                      </Tooltip>
                       <Tooltip title="Edit">
                         <IconButton sx={{ bgcolor: '#e3f2fd', '&:hover': { bgcolor: '#90caf9' } }} onClick={() => nav(`/seller/campaigns/update/${c.id}`)}>
                           <EditIcon sx={{ color: '#1976d2' }} />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Delete">
-                        <IconButton sx={{ bgcolor: '#ffebee', '&:hover': { bgcolor: '#ffcdd2' } }} onClick={() => handleDelete(c.id)}>
-                          <DeleteIcon sx={{ color: '#d32f2f' }} />
-                        </IconButton>
-                      </Tooltip>
+                   <Tooltip title="Delete">
+                  <IconButton
+                    sx={{ bgcolor: '#ffebee', '&:hover': { bgcolor: '#ffcdd2' } }}
+                    onClick={() => confirmDelete(c.id)}
+                  >
+                    <DeleteIcon sx={{ color: '#d32f2f' }} />
+                  </IconButton>
+                </Tooltip>
+
                     </Stack>
                   </Stack>
                 </CardContent>
@@ -119,8 +201,95 @@ const CampaignList: React.FC = () => {
             );
           })}
         </Stack>
+        <Dialog open={openConfirm} onClose={() => setOpenConfirm(false)}>
+  <DialogTitle>Confirm Delete</DialogTitle>
+  <DialogContent>
+    <DialogContentText>
+      Are you sure you want to delete this campaign? This action cannot be undone.
+    </DialogContentText>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setOpenConfirm(false)}>Cancel</Button>
+    <Button onClick={handleConfirmDelete} color="error" variant="contained">
+      Delete
+    </Button>
+  </DialogActions>
+</Dialog>
+
+        {/* Products Dialog */}
+        <Dialog
+          open={openProductsDialog}
+          onClose={() => setOpenProductsDialog(false)}
+          maxWidth="md"
+          fullWidth
+        >
+          <DialogTitle>
+            Products in Campaign: {selectedCampaign?.name}
+          </DialogTitle>
+          <DialogContent>
+            {loadingProducts ? (
+              <Box display="flex" justifyContent="center" p={3}>
+                <CircularProgress />
+              </Box>
+            ) : campaignProducts.length === 0 ? (
+              <Typography color="text.secondary" textAlign="center" py={3}>
+                No products found in this campaign
+              </Typography>
+            ) : (
+              <Stack spacing={2} mt={1}>
+                {campaignProducts.map((product: any) => (
+                  <Card key={product.id} variant="outlined">
+                    <CardContent>
+                      <Stack direction="row" spacing={2} alignItems="center">
+                        {product.images && product.images.length > 0 && (
+                          <Box
+                            component="img"
+                            src={product.images[0]}
+                            alt={product.title}
+                            sx={{
+                              width: 60,
+                              height: 60,
+                              objectFit: 'cover',
+                              borderRadius: 1,
+                            }}
+                          />
+                        )}
+                        <Box flex={1}>
+                          <Typography fontWeight={600} fontSize={16}>
+                            {product.title}
+                          </Typography>
+                          <Typography color="text.secondary" fontSize={14}>
+                            Brand: {product.brand} • Category: {product.category?.name}
+                          </Typography>
+                          <Typography color="primary" fontWeight={600}>
+                            {product.sellingPrice.toLocaleString("vi-VN")}đ
+                            {product.discountedPrice && (
+                              <Typography component="span" sx={{ textDecoration: 'line-through', ml: 1, color: 'text.secondary' }}>
+                                {product.discountedPrice}
+                              </Typography>
+                            )}
+                          </Typography>
+                        </Box>
+                        <Chip
+                          label={product.in_stock ? "In Stock" : "Out of Stock"}
+                          color={product.in_stock ? "success" : "error"}
+                          size="small"
+                        />
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                ))}
+              </Stack>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenProductsDialog(false)}>Close</Button>
+          </DialogActions>
+        </Dialog>
+
       </CardContent>
     </Card>
+    
   );
 };
 

@@ -1,7 +1,9 @@
-import axios from "axios";
+import { api } from "../../Config/Api";
 
 export const fetchActiveCampaigns = async () => {
-    // Đổi lại endpoint cho đúng backend của bạn
-    const res = await axios.get("/api/affiliate-campaign/active");
+    const jwt = localStorage.getItem("jwt") || "";
+    const res = await api.get("/api/koc/affiliate-campaign/active", {
+        headers: jwt ? { Authorization: `Bearer ${jwt}` } : undefined,
+    });
     return res.data;
 };

@@ -8,7 +8,7 @@ export interface CreateKocRequest {
 
 export interface Koc {
     id: number;
-    kocId: string;
+    kocCode: string;
     accountStatus?: string;
     // … nếu cần thêm
 }

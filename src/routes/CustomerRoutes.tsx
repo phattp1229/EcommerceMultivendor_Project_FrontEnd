@@ -8,6 +8,7 @@ import Address from '../customer/pages/Checkout/CheckoutPage'
 import Profile from '../customer/pages/Account/Profile'
 import KocDashboard from '../customer/pages/Koc/KocDashboard/KocDashboard'
 import AffiliateCampaignPage from '../customer/pages/Koc/AffiliateCampaignPage';
+import MyAffiliateLinks from '../customer/pages/Koc/MyAffiliateLinks';
 import BecomeSeller from '../customer/pages/BecomeSeller/BecomeSeller'
 import Footer from '../customer/components/Footer/Footer'
 import Navbar from '../customer/components/Navbar/Navbar'
@@ -51,6 +52,7 @@ const CustomerRoutes = () => {
         <Route path='/checkout/address' element={<Address />} />
   <Route path='/account/koc-dashboard/*' element={<KocDashboard />} />
   <Route path='/account/affiliate-campaign' element={<AffiliateCampaignPage />} />
+  <Route path='/koc/my-affiliate-links' element={<MyAffiliateLinks />} />
   <Route path='/account/*' element={<Profile />} />
         <Route path='/login' element={<Auth/>} />
         <Route path="/payment/paypal/callback:" element={<PaypalCallback />} /> // Dành cho PayPal

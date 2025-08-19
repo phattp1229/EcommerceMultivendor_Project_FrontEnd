@@ -107,7 +107,7 @@ const fmtVND = (v:number) => `${v.toLocaleString("vi-VN")}\u00A0đ`;
 
                   </div>
                 </StyledTableCell>
-                <StyledTableCell align="left">{item.title}</StyledTableCell>
+                <StyledTableCell align="center">{item.title}</StyledTableCell>
                 <StyledTableCell align="right">  {fmtVND(item.mrpPrice)}</StyledTableCell>
                 <StyledTableCell align="right"> {fmtVND(item.sellingPrice)}</StyledTableCell>
                 <StyledTableCell align="right">{item.color}</StyledTableCell>

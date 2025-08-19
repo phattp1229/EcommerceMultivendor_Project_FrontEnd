@@ -17,7 +17,8 @@ const PricingCard = ({ showBuyButton, SubmitButton }: any) => {
         <div className="flex justify-between items-center">
           <span className="text-red-700"><strong>Subtotal</strong></span>
          <span className="text-black  text-lg">
-  {(sumCartItemSellingPrice(cart.cart?.cartItems || [])).toLocaleString("vi-VN")}đ
+  {/* {(sumCartItemSellingPrice(cart.cart?.cartItems || [])).toLocaleString("vi-VN")}đ */}
+  {cart.cart?.totalSellingPrice.toLocaleString("vi-VN")}đ
 </span>
 
 

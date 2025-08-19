@@ -12,6 +12,7 @@ import CampaignApprovals from "../seller/pages/Campaigns/CampaignApprovals";
 import CampaignList from '../seller/pages/Campaigns/CampaignList'
 import CampaignForm from '../seller/pages/Campaigns/CampaignForm'
 import UpdateCampaignForm from '../seller/pages/Campaigns/UpdateCampaignForm'
+import KocRegistrations from '../seller/pages/Campaigns/KocRegistrations'
 
 
 
@@ -31,10 +32,11 @@ const SellerRoutes = () => {
         <Route path='/account' element={<Profile />} />
         <Route path='/payment' element={<Payment />} />
         <Route path='/transaction' element={<TransactionTable/>} />
-        <Route path="/campaigns" element={<CampaignList />} /> 
+        <Route path="/campaigns" element={<CampaignList />} />
         <Route path="/campaigns/new" element={<CampaignForm />} />
         <Route path="/campaigns/update/:campaignId" element={<UpdateCampaignForm />} />
         <Route path="/campaigns/approvals" element={<CampaignApprovals />} />
+        <Route path="/campaigns/koc-registrations" element={<KocRegistrations />} />
        </Routes>
     </div>
   )

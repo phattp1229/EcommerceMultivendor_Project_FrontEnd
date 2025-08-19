@@ -31,6 +31,9 @@ import {
   Stack,
   Divider,
   Rating,
+  CircularProgress,
+  Alert,
+  Snackbar,
 } from "@mui/material"; // ✅ MUI v7 imports
 import type { SelectChangeEvent } from "@mui/material";
 import {
@@ -46,6 +49,10 @@ import {
   InfoOutlined as InfoOutlinedIcon,
   ExpandMore as ExpandMoreIcon,
 } from "@mui/icons-material"; // ✅ MUI Icons v7
+import { api } from "../../../Config/Api";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../Redux Toolkit/Store";
+import type { KocRegistration, RegistrationApprovalResponse } from "../../../types/affiliateCampaignTypes";
 
 // Shopee-like palette
 const palette = {
@@ -62,230 +69,44 @@ const palette = {
 export type ApplicationStatus = "PENDING" | "APPROVED" | "REJECTED";
 
 type CampaignApplication = {
-  id: string;
+  id: number;
   kocId: string;
   kocName: string;
   avatarUrl?: string;
-  rating: number; // 0-5
-  tags: string[];
-  reach: number; // followers
-  cr: number; // conversion rate %
-  orders: number; // historical orders
-  campaignId: string;
+  rating: number; // 0-5 (fake data)
+  tags: string[]; // fake data
+  reach: number; // followers (fake data)
+  cr: number; // conversion rate % (fake data)
+  orders: number; // historical orders (fake data)
+  campaignId: number;
   campaignName: string;
-  productCount: number;
+  productCount: number; // fake data
   commissionRate: number; // %
   appliedAt: string; // ISO date
   status: ApplicationStatus;
-  note?: string;
+  note?: string; // fake data
 };
 
-// Sample data
-const SAMPLE: CampaignApplication[] = [
-  {
-    id: "app-001",
-    kocId: "KOC1001",
-    kocName: "Linh Ruby",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop",
-    rating: 4.7,
-    tags: ["Top KOC"],
-    reach: 128000,
-    cr: 3.2,
-    orders: 410,
-    campaignId: "CAMP-SS25",
-    campaignName: "Summer Sale 25%+",
-    productCount: 12,
-    commissionRate: 10,
-    appliedAt: new Date(Date.now() - 1000 * 60 * 60 * 6).toISOString(),
-    status: "PENDING",
-    note: "Chuyên đồ skincare, review giữ tone thương hiệu.",
-  },
-  {
-    id: "app-002",
-    kocId: "KOC1028",
-    kocName: "Phúc Trần",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop",
-    rating: 4.2,
-    tags: ["New"],
-    reach: 22000,
-    cr: 1.2,
-    orders: 37,
-    campaignId: "CAMP-SS25",
-    campaignName: "Summer Sale 25%+",
-    productCount: 12,
-    commissionRate: 8,
-    appliedAt: new Date(Date.now() - 1000 * 60 * 60 * 30).toISOString(),
-    status: "PENDING",
-  },
-  {
-    id: "app-003",
-    kocId: "KOC0876",
-    kocName: "Trang Hannah",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=400&auto=format&fit=crop",
-    rating: 4.9,
-    tags: ["Top KOC", "Beauty"],
-    reach: 302000,
-    cr: 4.1,
-    orders: 610,
-    campaignId: "CAMP-BF",
-    campaignName: "Black Friday Mega Sale",
-    productCount: 24,
-    commissionRate: 12,
-    appliedAt: new Date(Date.now() - 1000 * 60 * 60 * 72).toISOString(),
-    status: "APPROVED",
-  },
-  {
-    id: "app-004",
-    kocId: "KOC0451",
-    kocName: "Hoàng Tín",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&auto=format&fit=crop",
-    rating: 3.8,
-    tags: ["Electronics"],
-    reach: 56000,
-    cr: 0.9,
-    orders: 22,
-    campaignId: "CAMP-BF",
-    campaignName: "Black Friday Mega Sale",
-    productCount: 24,
-    commissionRate: 9,
-    appliedAt: new Date(Date.now() - 1000 * 60 * 60 * 12).toISOString(),
-    status: "PENDING",
-  },
-  {
-    id: "app-005",
-    kocId: "KOC0911",
-    kocName: "MyAmi",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=400&auto=format&fit=crop",
-    rating: 4.5,
-    tags: ["Lifestyle"],
-    reach: 89000,
-    cr: 2.1,
-    orders: 150,
-    campaignId: "CAMP-NY",
-    campaignName: "New Year Shock Deal",
-    productCount: 18,
-    commissionRate: 10,
-    appliedAt: new Date(Date.now() - 1000 * 60 * 60 * 8).toISOString(),
-    status: "REJECTED",
-  },
-  {
-    id: "app-006",
-    kocId: "KOC0110",
-    kocName: "Tú Minh",
-    rating: 4.0,
-    tags: ["New", "Gaming"],
-    reach: 19000,
-    cr: 1.0,
-    orders: 19,
-    campaignId: "CAMP-NY",
-    campaignName: "New Year Shock Deal",
-    productCount: 18,
-    commissionRate: 7,
-    appliedAt: new Date(Date.now() - 1000 * 60 * 60 * 4).toISOString(),
-    status: "PENDING",
-  },
-  {
-    id: "app-007",
-    kocId: "KOC0777",
-    kocName: "Diệp Nhi",
-    rating: 4.3,
-    tags: ["Beauty"],
-    reach: 64000,
-    cr: 2.0,
-    orders: 120,
-    campaignId: "CAMP-FLASH",
-    campaignName: "Flash Sale 8.8",
-    productCount: 10,
-    commissionRate: 9,
-    appliedAt: new Date(Date.now() - 1000 * 60 * 60 * 50).toISOString(),
-    status: "PENDING",
-  },
-  {
-    id: "app-008",
-    kocId: "KOC0333",
-    kocName: "Ken Po",
-    rating: 3.9,
-    tags: ["Gadgets"],
-    reach: 24000,
-    cr: 1.3,
-    orders: 45,
-    campaignId: "CAMP-FLASH",
-    campaignName: "Flash Sale 8.8",
-    productCount: 10,
-    commissionRate: 8,
-    appliedAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
-    status: "PENDING",
-  },
-  {
-    id: "app-009",
-    kocId: "KOC0089",
-    kocName: "Haru",
-    rating: 4.1,
-    tags: ["Pet"],
-    reach: 41000,
-    cr: 1.4,
-    orders: 70,
-    campaignId: "CAMP-SS25",
-    campaignName: "Summer Sale 25%+",
-    productCount: 12,
-    commissionRate: 8,
-    appliedAt: new Date(Date.now() - 1000 * 60 * 60 * 96).toISOString(),
-    status: "PENDING",
-  },
-  {
-    id: "app-010",
-    kocId: "KOC0555",
-    kocName: "Quỳnh Anh",
-    rating: 4.8,
-    tags: ["Top KOC", "Home"],
-    reach: 150000,
-    cr: 3.5,
-    orders: 380,
-    campaignId: "CAMP-NY",
-    campaignName: "New Year Shock Deal",
-    productCount: 18,
-    commissionRate: 11,
-    appliedAt: new Date(Date.now() - 1000 * 60 * 60 * 18).toISOString(),
-    status: "PENDING",
-  },
-  {
-    id: "app-011",
-    kocId: "KOC0213",
-    kocName: "Minh Hiếu",
-    rating: 3.6,
-    tags: ["Fashion"],
-    reach: 12000,
-    cr: 0.8,
-    orders: 12,
-    campaignId: "CAMP-SS25",
-    campaignName: "Summer Sale 25%+",
-    productCount: 12,
-    commissionRate: 6,
-    appliedAt: new Date(Date.now() - 1000 * 60 * 60 * 1).toISOString(),
-    status: "PENDING",
-  },
-  {
-    id: "app-012",
-    kocId: "KOC0666",
-    kocName: "NaNa",
-    rating: 4.0,
-    tags: ["Lifestyle"],
-    reach: 52000,
-    cr: 1.7,
-    orders: 90,
-    campaignId: "CAMP-FLASH",
-    campaignName: "Flash Sale 8.8",
-    productCount: 10,
-    commissionRate: 8,
-    appliedAt: new Date(Date.now() - 1000 * 60 * 60 * 14).toISOString(),
-    status: "PENDING",
-  },
-];
+// Helper function to generate fake KOC data for display
+const generateFakeKocData = (kocId: number) => {
+  const fakeProfiles = [
+    { rating: 4.7, tags: ["Top KOC"], reach: 128000, cr: 3.2, orders: 410, note: "Chuyên đồ skincare, review giữ tone thương hiệu." },
+    { rating: 4.2, tags: ["Beauty"], reach: 95000, cr: 2.8, orders: 320, note: "Có kinh nghiệm review mỹ phẩm cao cấp." },
+    { rating: 4.5, tags: ["Lifestyle"], reach: 89000, cr: 2.1, orders: 150, note: "Content đa dạng, tương tác tốt với audience." },
+    { rating: 4.0, tags: ["New", "Gaming"], reach: 19000, cr: 1.0, orders: 19, note: "KOC mới, tiềm năng phát triển." },
+    { rating: 4.3, tags: ["Beauty"], reach: 64000, cr: 2.0, orders: 120, note: "Chuyên về makeup và skincare routine." },
+    { rating: 3.9, tags: ["Gadgets"], reach: 24000, cr: 1.3, orders: 45, note: "Review công nghệ, thiết bị điện tử." },
+    { rating: 3.6, tags: ["Fashion"], reach: 12000, cr: 0.8, orders: 12, note: "Thời trang trẻ, phong cách năng động." },
+    { rating: 4.0, tags: ["Lifestyle"], reach: 52000, cr: 1.7, orders: 90, note: "Lifestyle blogger với nội dung chất lượng." }
+  ];
+
+  const index = kocId % fakeProfiles.length;
+  return fakeProfiles[index];
+};
+
+
+
+
 
 // Helpers
 const fmt = new Intl.NumberFormat("vi-VN");
@@ -350,7 +171,9 @@ const Pill = ({ children }: { children: React.ReactNode }) => (
 );
 
 const CampaignApprovals: React.FC = () => {
-  const [data, setData] = useState<CampaignApplication[]>(SAMPLE);
+  const [data, setData] = useState<CampaignApplication[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState<number | null>(null);
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<"ALL" | ApplicationStatus>("ALL");
   const [campaign, setCampaign] = useState<string>("ALL");
@@ -361,6 +184,65 @@ const CampaignApprovals: React.FC = () => {
 
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [menuRow, setMenuRow] = useState<CampaignApplication | null>(null);
+
+  // Snackbar for notifications
+  const [snack, setSnack] = useState<{ open: boolean; msg: string; type: "success" | "error" }>({
+    open: false,
+    msg: "",
+    type: "success",
+  });
+
+  const jwt = useSelector((state: RootState) => state.auth.jwt);
+
+  // Fetch KOC registrations from API
+  const fetchRegistrations = async () => {
+    try {
+      setLoading(true);
+      const response = await api.get("/api/sellers/campaign-registrations", {
+        headers: { Authorization: `Bearer ${jwt}` },
+      });
+
+      // Transform API response to match UI format
+      const transformedData: CampaignApplication[] = response.data.map((reg: KocRegistration) => {
+        const fakeData = generateFakeKocData(reg.koc.id);
+        return {
+          id: reg.id,
+          kocId: reg.koc.kocCode,
+          kocName: reg.koc.customer.fullName,
+          avatarUrl: undefined, // No avatar in API
+          rating: fakeData.rating,
+          tags: fakeData.tags,
+          reach: fakeData.reach,
+          cr: fakeData.cr,
+          orders: fakeData.orders,
+          campaignId: reg.campaign.id,
+          campaignName: reg.campaign.name,
+          productCount: reg.campaign.productCount, // Real product count from backend
+          commissionRate: reg.campaign.commissionPercent,
+          appliedAt: reg.registeredAt,
+          status: reg.status,
+          note: fakeData.note,
+        };
+      });
+
+      setData(transformedData);
+    } catch (error: any) {
+      console.error("Failed to fetch registrations:", error);
+      setSnack({
+        open: true,
+        msg: error?.response?.data?.message || "Failed to load registrations",
+        type: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (jwt) {
+      fetchRegistrations();
+    }
+  }, [jwt]);
 
   useEffect(() => {
     setSelected({});
@@ -399,16 +281,75 @@ const CampaignApprovals: React.FC = () => {
     .filter(([, v]) => v)
     .map(([k]) => k);
 
+  // Approve single registration
+  const approveRegistration = async (id: number) => {
+    try {
+      setActionLoading(id);
+      await api.post(`/api/sellers/affiliate-registrations/approve/${id}`, {}, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      });
+
+      // Update local state
+      setData((prev) =>
+        prev.map((d) => (d.id === id ? { ...d, status: "APPROVED" as ApplicationStatus } : d))
+      );
+
+      setSnack({
+        open: true,
+        msg: "Registration approved successfully",
+        type: "success",
+      });
+    } catch (error: any) {
+      console.error("Failed to approve registration:", error);
+      setSnack({
+        open: true,
+        msg: error?.response?.data?.message || "Failed to approve registration",
+        type: "error",
+      });
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  // Reject single registration
+  const rejectRegistration = async (id: number) => {
+    try {
+      setActionLoading(id);
+      await api.post(`/api/sellers/affiliate-registrations/reject/${id}`, {}, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      });
+
+      // Update local state
+      setData((prev) =>
+        prev.map((d) => (d.id === id ? { ...d, status: "REJECTED" as ApplicationStatus } : d))
+      );
+
+      setSnack({
+        open: true,
+        msg: "Registration rejected successfully",
+        type: "success",
+      });
+    } catch (error: any) {
+      console.error("Failed to reject registration:", error);
+      setSnack({
+        open: true,
+        msg: error?.response?.data?.message || "Failed to reject registration",
+        type: "error",
+      });
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  // Batch approve (for UI compatibility)
   function approve(ids: string[]) {
-    setData((prev) =>
-      prev.map((d) => (ids.includes(d.id) ? { ...d, status: "APPROVED" } : d))
-    );
+    ids.forEach(id => approveRegistration(Number(id)));
     setSelected({});
   }
+
+  // Batch reject (for UI compatibility)
   function reject(ids: string[]) {
-    setData((prev) =>
-      prev.map((d) => (ids.includes(d.id) ? { ...d, status: "REJECTED" } : d))
-    );
+    ids.forEach(id => rejectRegistration(Number(id)));
     setSelected({});
   }
 
@@ -436,21 +377,23 @@ const CampaignApprovals: React.FC = () => {
           <Stack direction="row" spacing={1}>
             <Button
               onClick={() =>
-                approve(filtered.filter((d) => d.status === "PENDING").map((d) => d.id))
+                approve(filtered.filter((d) => d.status === "PENDING").map((d) => d.id.toString()))
               }
               sx={{ bgcolor: "#fff", color: "#111", ":hover": { bgcolor: "#fff" } }}
               variant="contained"
               startIcon={<CheckIcon />}
+              disabled={loading || actionLoading !== null}
             >
               Duyệt tất cả đang chờ
             </Button>
             <Button
               onClick={() =>
-                reject(filtered.filter((d) => d.status === "PENDING").map((d) => d.id))
+                reject(filtered.filter((d) => d.status === "PENDING").map((d) => d.id.toString()))
               }
               variant="outlined"
               startIcon={<CloseIcon />}
               sx={{ color: "#fff", borderColor: "#fff", ":hover": { borderColor: "#fff" } }}
+              disabled={loading || actionLoading !== null}
             >
               Từ chối tất cả đang chờ
             </Button>
@@ -621,7 +564,25 @@ const CampaignApprovals: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paged.map((row, idx) => (
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={8} align="center" sx={{ py: 4 }}>
+                  <CircularProgress />
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                    Loading registrations...
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            ) : paged.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={8} align="center" sx={{ py: 4 }}>
+                  <Typography color="text.secondary">
+                    No KOC registrations found for your campaigns.
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            ) : (
+              paged.map((row, idx) => (
               <TableRow key={row.id} hover selected={Boolean(selected[row.id])}>
                 <TableCell padding="checkbox">
                   <Checkbox
@@ -702,13 +663,7 @@ const CampaignApprovals: React.FC = () => {
                   </IconButton>
                 </TableCell>
               </TableRow>
-            ))}
-            {paged.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={8} align="center" sx={{ py: 6 }}>
-                  <Typography color="text.secondary">Không có dữ liệu phù hợp bộ lọc.</Typography>
-                </TableCell>
-              </TableRow>
+              ))
             )}
           </TableBody>
         </Table>
@@ -789,21 +744,21 @@ const CampaignApprovals: React.FC = () => {
                   variant="outlined"
                   startIcon={<CloseIcon />}
                   onClick={() => {
-                    reject([detail.id]);
-                    setDetail((d) => (d ? { ...d, status: "REJECTED" } : d));
+                    rejectRegistration(detail.id);
+                    setDetail(null);
                   }}
-                  disabled={detail.status === "REJECTED"}
+                  disabled={actionLoading === detail.id || detail.status === "REJECTED"}
                 >
                   Từ chối
                 </Button>
                 <Button
                   variant="contained"
-                  startIcon={<CheckIcon />}
+                  startIcon={actionLoading === detail.id ? <CircularProgress size={16} /> : <CheckIcon />}
                   onClick={() => {
-                    approve([detail.id]);
-                    setDetail((d) => (d ? { ...d, status: "APPROVED" } : d));
+                    approveRegistration(detail.id);
+                    setDetail(null);
                   }}
-                  disabled={detail.status === "APPROVED"}
+                  disabled={actionLoading === detail.id || detail.status === "APPROVED"}
                   sx={{ bgcolor: palette.primary, ":hover": { bgcolor: palette.primaryDark } }}
                 >
                   Duyệt
@@ -839,6 +794,22 @@ const CampaignApprovals: React.FC = () => {
           Copy mã KOC
         </MenuItem>
       </Menu>
+
+      {/* Snackbar for notifications */}
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={6000}
+        onClose={() => setSnack({ ...snack, open: false })}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert
+          onClose={() => setSnack({ ...snack, open: false })}
+          severity={snack.type}
+          sx={{ width: "100%" }}
+        >
+          {snack.msg}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

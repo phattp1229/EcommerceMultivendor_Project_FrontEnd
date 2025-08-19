@@ -27,6 +27,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LinkIcon from "@mui/icons-material/Link";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { useAppSelector } from "../../../../Redux Toolkit/Store";
+import { api } from "../../../../Config/Api";
 
 import {
 ResponsiveContainer,
@@ -48,7 +49,7 @@ purple: "#7e57c2",
 light: "#fff7f5",
 } as const;
 
-const kpi = { earnings: 1240, orders: 38, clicks: 1520, growth: 12.4 };
+const kpi = { earnings: 0, orders: 0, clicks: 0, growth: 0 };
 
 const revenue: RevenuePoint[] = [
 { month: "Jan", value: 120 },
@@ -117,23 +118,135 @@ title: string; color: string; data: RevenuePoint[]; icon: React.ReactNode; value
 );
 
 const KocDashboard: React.FC = () => {
+  console.log('=== KocDashboard COMPONENT RENDERED ===');
   const navigate = useNavigate();
   const { customer } = useAppSelector((s) => s);
+  console.log('Customer state:', customer);
   const [keyword, setKeyword] = useState("");
   const [snack, setSnack] = useState<{ open: boolean; msg: string; type: "success" | "info" }>({
     open: false, msg: "", type: "success"
   });
 
+  // Affiliate links state
+  const [affiliateLinks, setAffiliateLinks] = useState<any[]>([]);
+  const [loadingLinks, setLoadingLinks] = useState(true);
+  const [productDetails, setProductDetails] = useState<{[key: string]: any}>({});
+
 const kocCode = customer.customer?.id;
 const baseUrl = typeof window !== "undefined" ? window.location.origin : "http://localhost:5173";
 
+// Fetch affiliate links from API
+const fetchAffiliateLinks = async () => {
+  console.log('=== fetchAffiliateLinks STARTED ===');
+  try {
+    setLoadingLinks(true);
+    const jwt = localStorage.getItem('jwt');
+    console.log('Fetching affiliate links with JWT:', jwt ? 'Present' : 'Missing');
+    console.log('JWT value:', jwt);
+
+    console.log('Making request to: http://localhost:5454/api/koc/my-links');
+    const response = await fetch('http://localhost:5454/api/koc/my-links', {
+      headers: { Authorization: `Bearer ${jwt}` },
+    });
+
+    console.log('Response status:', response.status);
+    console.log('Response headers:', response.headers);
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('✅ Affiliate links data:', data);
+      console.log('✅ Data type:', typeof data);
+      console.log('✅ Data length:', Array.isArray(data) ? data.length : 'Not array');
+      setAffiliateLinks(data);
+    } else {
+      const errorText = await response.text();
+      console.error('Failed to fetch affiliate links:', response.status, errorText);
+      setAffiliateLinks([]);
+    }
+  } catch (error) {
+    console.error('Error fetching affiliate links:', error);
+    setAffiliateLinks([]);
+  } finally {
+    setLoadingLinks(false);
+    console.log('=== fetchAffiliateLinks FINISHED ===');
+  }
+};
+
+// Load affiliate links on component mount
+useEffect(() => {
+  console.log('KocDashboard useEffect triggered - calling fetchAffiliateLinks');
+  fetchAffiliateLinks();
+}, []);
+
+// Fetch product details for each affiliate link
+useEffect(() => {
+  const fetchProductsDetails = async () => {
+    console.log('🔍 Starting to fetch product details for', affiliateLinks.length, 'links');
+    const newProductDetails: {[key: string]: any} = {};
+
+    for (const linkData of affiliateLinks) {
+      const productId = extractProductId(linkData.targetUrl);
+      console.log('📝 Extracted product ID:', productId, 'from URL:', linkData.targetUrl);
+
+      if (productId && !productDetails[productId]) {
+        console.log('🚀 Fetching product details for ID:', productId);
+        const productInfo = await fetchProductDetails(productId);
+        console.log('📦 Product info received:', productInfo);
+        console.log('🏪 Business name:', productInfo?.businessName);
+        console.log('🏷️ Brand:', productInfo?.brand);
+        console.log('📋 All product fields:', Object.keys(productInfo || {}));
+
+        if (productInfo) {
+          newProductDetails[productId] = productInfo;
+        }
+      }
+    }
+
+    console.log('✅ New product details to add:', newProductDetails);
+    if (Object.keys(newProductDetails).length > 0) {
+      setProductDetails(prev => ({ ...prev, ...newProductDetails }));
+    }
+  };
+
+  if (affiliateLinks.length > 0) {
+    fetchProductsDetails();
+  }
+}, [affiliateLinks]);
+
 const filtered = useMemo(() => {
-if (!keyword) return mockProducts;
-return mockProducts.filter((p) => p.name.toLowerCase().includes(keyword.toLowerCase()));
-}, [keyword]);
+if (!keyword) return affiliateLinks;
+return affiliateLinks.filter((link: any) =>
+  link.targetUrl?.toLowerCase().includes(keyword.toLowerCase()) ||
+  link.shortToken?.toLowerCase().includes(keyword.toLowerCase())
+);
+}, [keyword, affiliateLinks]);
 
 const makeAffiliateLink = (p: Product) =>
   `${baseUrl}/product-details/${p.categoryId}/${p.slug}/${p.id}?ref=${kocCode}`;
+
+// Extract product ID from target URL
+const extractProductId = (targetUrl: string): string | null => {
+  try {
+    const match = targetUrl.match(/\/product-details\/\d+\/[^/]+\/(\d+)/);
+    return match ? match[1] : null;
+  } catch {
+    return null;
+  }
+};
+
+// Fetch product details
+const fetchProductDetails = async (productId: string) => {
+  try {
+    const jwt = localStorage.getItem("jwt");
+    const response = await api.get(`/products/${productId}`, {
+      headers: jwt ? { Authorization: `Bearer ${jwt}` } : {},
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching product details:', error);
+    return null;
+  }
+};
 
 const copy = async (text: string) => {
 try {
@@ -239,39 +352,234 @@ return (
       />
 
       <Stack spacing={1.5}>
-        {paged.map((p) => {
-          const link = makeAffiliateLink(p);
+        {paged.map((linkData: any) => {
+          const productId = extractProductId(linkData.targetUrl);
+          const product = productId ? productDetails[productId] : null;
+
           return (
-            <Card key={p.id} variant="outlined" sx={{ borderRadius: 2 }}>
-              <CardContent>
-                <Stack
-                  direction={{ xs: "column", md: "row" } as any}
-                  alignItems={{ xs: "stretch", md: "center" } as any}
-                  justifyContent="space-between"
-                  spacing={1.5}
-                >
-                  <Box>
-                    <Typography fontWeight={600}>{p.name}</Typography>
-                    <Typography variant="caption" color="text.secondary">#{p.id}</Typography>
-                  </Box>
+            <Card key={linkData.id} variant="outlined" sx={{ borderRadius: 2, border: '1px solid #e0e0e0' }}>
+              <CardContent sx={{ p: 2 }}>
+                {/* Main Layout: Product Left + Links Right */}
+                <Grid container spacing={3}>
+                  {/* LEFT SIDE - Product Info */}
+                  <Grid size={{ xs: 12, md: 4 }}>
+                    <Card variant="outlined" sx={{ height: '100%', backgroundColor: '#fafafa' }}>
+                      <CardContent sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                        {product ? (
+                          <Stack direction="row" spacing={2} height="100%">
+                            {/* Left: Product Image */}
+                            <Box
+                              component="img"
+                              src={product.images?.[0] || '/placeholder-product.jpg'}
+                              alt={product.title || 'Product'}
+                              sx={{
+                                width: 120,
+                                height: 120,
+                                borderRadius: 2,
+                                objectFit: 'cover',
+                                border: '1px solid #e0e0e0',
+                                flexShrink: 0
+                              }}
+                            />
 
-                  <TextField
-                    value={link}
-                    size="small"
-                    fullWidth
-                    sx={{ "& .MuiInputBase-input": { textOverflow: "ellipsis" } }}
-                    InputProps={{
-                      readOnly: true,
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton onClick={() => copy(link)}><ContentCopyIcon /></IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
+                            {/* Right: Product Details */}
+                            <Box flex={1} display="flex" flexDirection="column" justifyContent="space-between">
+                              <Box>
+                                <Typography fontWeight={600} variant="subtitle1" color="text.primary" sx={{ mb: 0.5 }}>
+                                  {product.title || 'Product Name'}
+                                </Typography>
 
-                  <Button variant="outlined" onClick={() => copy(link)}>Copy</Button>
-                </Stack>
+                                <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                                  {product.seller?.businessDetails?.businessName || product.brand || 'Shop Name'}
+                                </Typography>
+
+                                <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: 'block' }}>
+                                  Category: {product.category?.name || 'N/A'}
+                                </Typography>
+                              </Box>
+
+                              <Box>
+                                {/* Price Section - VND Format */}
+                                <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" sx={{ mb: 1 }}>
+                                  <Typography variant="h6" color="primary" fontWeight={600}>
+                                    {(product.sellingPrice || product.price || 0).toLocaleString('vi-VN')}₫
+                                  </Typography>
+                                  {product.price && product.sellingPrice && product.price > product.sellingPrice && (
+                                    <Typography variant="body2" color="text.secondary" sx={{ textDecoration: 'line-through' }}>
+                                      {product.price.toLocaleString('vi-VN')}₫
+                                    </Typography>
+                                  )}
+                                </Stack>
+
+                                {product.discountPercent && (
+                                  <Chip
+                                    label={`-${product.discountPercent}% OFF`}
+                                    color="error"
+                                    size="small"
+                                    sx={{ fontWeight: 500 }}
+                                  />
+                                )}
+                              </Box>
+                            </Box>
+                          </Stack>
+                        ) : (
+                          <Stack spacing={2} alignItems="center" justifyContent="center" height="100%">
+                            <Box
+                              sx={{
+                                width: '100%',
+                                height: 200,
+                                borderRadius: 2,
+                                backgroundColor: '#e0e0e0',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                aspectRatio: '3/4' // Portrait ratio
+                              }}
+                            >
+                              <Typography variant="body2" color="text.secondary">
+                                Loading product...
+                              </Typography>
+                            </Box>
+                            <Typography variant="body2" color="text.secondary" textAlign="center">
+                              Product ID: {productId || 'Not found'}
+                            </Typography>
+                          </Stack>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </Grid>
+
+                  {/* RIGHT SIDE - Links Section */}
+                  <Grid size={{ xs: 12, md: 8 }}>
+                    <Stack spacing={2}>
+                      {/* Header với thông tin link */}
+                      <Stack direction="row" justifyContent="space-between" alignItems="center">
+                        <Box>
+                          <Typography fontWeight={600} color="primary" variant="h6">
+                            Link #{linkData.id} - {linkData.shortToken}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            Clicks: {linkData.totalClick || 0} • Status: Active
+                          </Typography>
+                        </Box>
+                        <Chip
+                          label="Active"
+                          color="success"
+                          size="small"
+                          sx={{ fontWeight: 500 }}
+                        />
+                      </Stack>
+
+                      {/* Short Link */}
+                      <Box>
+                        <Typography variant="body2" fontWeight={500} color="text.secondary" mb={0.5}>
+                          🔗 Short Link:
+                        </Typography>
+                        <TextField
+                          value={linkData.generatedUrl}
+                          size="small"
+                          fullWidth
+                          sx={{
+                            "& .MuiInputBase-input": {
+                              textOverflow: "ellipsis",
+                              fontSize: '0.875rem'
+                            },
+                            "& .MuiOutlinedInput-root": {
+                              backgroundColor: '#f8f9fa'
+                            }
+                          }}
+                          slotProps={{
+                            input: {
+                              readOnly: true,
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    onClick={() => copy(linkData.generatedUrl)}
+                                    size="small"
+                                    sx={{ color: brand.primary }}
+                                  >
+                                    <ContentCopyIcon fontSize="small" />
+                                  </IconButton>
+                                </InputAdornment>
+                              ),
+                            }
+                          }}
+                        />
+                      </Box>
+
+                      {/* Target Link */}
+                      <Box>
+                        <Typography variant="body2" fontWeight={500} color="text.secondary" mb={0.5}>
+                          🎯 Target Link:
+                        </Typography>
+                        <TextField
+                          value={linkData.targetUrl}
+                          size="small"
+                          fullWidth
+                          sx={{
+                            "& .MuiInputBase-input": {
+                              textOverflow: "ellipsis",
+                              fontSize: '0.875rem'
+                            },
+                            "& .MuiOutlinedInput-root": {
+                              backgroundColor: '#f8f9fa'
+                            }
+                          }}
+                          slotProps={{
+                            input: {
+                              readOnly: true,
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    onClick={() => copy(linkData.targetUrl)}
+                                    size="small"
+                                    sx={{ color: brand.primary }}
+                                  >
+                                    <ContentCopyIcon fontSize="small" />
+                                  </IconButton>
+                                </InputAdornment>
+                              ),
+                            }
+                          }}
+                        />
+                      </Box>
+
+                      {/* Action Buttons */}
+                      <Stack direction="row" spacing={1} justifyContent="flex-start">
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          onClick={() => copy(linkData.generatedUrl)}
+                          startIcon={<ContentCopyIcon />}
+                          sx={{
+                            borderColor: brand.primary,
+                            color: brand.primary,
+                            '&:hover': {
+                              backgroundColor: brand.light,
+                              borderColor: brand.primary
+                            }
+                          }}
+                        >
+                          Copy Short
+                        </Button>
+                        <Button
+                          variant="contained"
+                          size="small"
+                          onClick={() => copy(linkData.targetUrl)}
+                          startIcon={<LinkIcon />}
+                          sx={{
+                            backgroundColor: brand.primary,
+                            '&:hover': {
+                              backgroundColor: '#d73527'
+                            }
+                          }}
+                        >
+                          Copy Target
+                        </Button>
+                      </Stack>
+                    </Stack>
+                  </Grid>
+                </Grid>
               </CardContent>
             </Card>
           );
