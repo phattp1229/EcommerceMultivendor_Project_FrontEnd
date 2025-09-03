@@ -5,6 +5,7 @@ export interface AffiliateCampaign {
     description?: string | null;
     commissionPercent: number;   // Double bên backend
     createdAt: string;           // ISO từ LocalDateTime
+    startAt?: string;
     expiredAt: string;           // ISO từ LocalDateTime
     active: boolean;
 }

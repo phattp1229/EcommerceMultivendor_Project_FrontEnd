@@ -21,6 +21,9 @@ import ReviewSlice from "./Customer/ReviewSlice";
 import UserSlice from "./Admin/UserSlice";
 import KocSlice from "./Customer/Koc/KocSlice";
 import sellerCampaignSlice from "./Seller/sellerCampaignSlice";
+import kocCommissionSlice from "./Customer/Koc/KocCommissionSlice";
+
+
 const rootReducer = combineReducers({
     // customer
     auth: AuthSlice,
@@ -34,6 +37,7 @@ const rootReducer = combineReducers({
     review: ReviewSlice,
     //koc
     koc: KocSlice,
+    kocCommission: kocCommissionSlice,   // 👈 thêm dòng này
     //seller
     sellers: sellerSlice,
     sellerAuth: sellerAuthenticationSlice,

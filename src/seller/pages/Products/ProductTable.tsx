@@ -99,7 +99,13 @@ const fmtVND = (v:number) => `${v.toLocaleString("vi-VN")}\u00A0đ`;
             </TableRow>
           </TableHead>
           <TableBody>
-            {sellerProduct.products.map((item) => (
+            {/* Sắp xếp sản phẩm theo ngày tạo giảm dần (mới nhất đầu tiên) */}
+            {[...sellerProduct.products]
+              .sort((a, b) => {
+                if (!a.createdAt || !b.createdAt) return 0;
+                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+              })
+              .map((item) => (
               <StyledTableRow key={item.id}>
                 <StyledTableCell component="th" scope="row">
                   <div className='flex gap-1 flex-wrap'>
@@ -143,7 +149,7 @@ const fmtVND = (v:number) => `${v.toLocaleString("vi-VN")}\u00A0đ`;
                   </Tooltip>
                 </StyledTableCell>
               </StyledTableRow>
-            ))}
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

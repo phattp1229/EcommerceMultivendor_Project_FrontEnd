@@ -134,7 +134,7 @@ export default function SellersTable() {
               <StyledTableCell>Email</StyledTableCell>
               <StyledTableCell>Mobile</StyledTableCell>
               <StyledTableCell>TaxCode</StyledTableCell>
-              <StyledTableCell>Business License</StyledTableCell>
+              <StyledTableCell>Giấy phép kinh doanh</StyledTableCell>
               <StyledTableCell align="right">Account Status</StyledTableCell>
               <StyledTableCell align="right">Change Status</StyledTableCell>
             </TableRow>

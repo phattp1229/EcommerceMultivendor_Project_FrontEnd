@@ -75,7 +75,9 @@ export const deleteSellerCampaign = createAsyncThunk<
             });
             return id;
         } catch (e: any) {
-            return rejectWithValue(e?.response?.data || "Delete campaign failed");
+            return rejectWithValue(
+                e?.response?.data?.message || e?.response?.data || "Delete campaign failed"
+            );
         }
     }
 );
@@ -108,6 +110,7 @@ const slice = createSlice({
         b.addCase(deleteSellerCampaign.rejected, (s, a) => {
             s.error = String(a.payload || a.error?.message || "Delete failed");
         });
+        b.addCase(deleteSellerCampaign.pending, (s) => { s.error = null; });
     }
 });
 

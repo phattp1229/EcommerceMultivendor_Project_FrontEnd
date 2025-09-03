@@ -30,10 +30,10 @@ export interface Customer {
     id?: number;
     fullName: string;
     mobile?: string;
-    account: Account;
+    email?: string;
+    account?: Account;
     addresses?: Address[];
     koc?: boolean;
-    email: string;
     gender?: "MALE" | "FEMALE" | "OTHER" | null; // hoặc string nếu backend để dạng chuỗi
     dob?: string | null; // backend trả kiểu LocalDate → JS nhận là string
 }

@@ -111,7 +111,7 @@ const CustomerDetails = () => {
   };
 
   const isKoc = Boolean(customer.customer?.koc);
-  const email = customer.customer?.email || "";
+  const email = customer.customer?.account?.email || "";
   const nameForAvatar = customer.customer?.fullName || "User";
 
   return (

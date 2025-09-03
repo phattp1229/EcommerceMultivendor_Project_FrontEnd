@@ -43,7 +43,11 @@ export default function TransactionTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {transaction.transactions?.map((item: Transaction, idx: number) => (
+            {Array.isArray(transaction.transactions) && transaction.transactions.length > 0 ?
+              // Sắp xếp giao dịch theo ngày giảm dần (mới nhất đầu tiên)
+              [...transaction.transactions]
+                .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                .map((item: Transaction, idx: number) => (
               <TableRow
                 key={item.id}
                 sx={{
@@ -61,7 +65,7 @@ export default function TransactionTable() {
                 <TableCell component="th" scope="row">
                   <Box>
                     <Box fontWeight={700} fontSize={16}>{item.customer.fullName}</Box>
-                    <Box fontSize={14} color="#1976d2" fontWeight={600}>{item.customer.email}</Box>
+                    <Box fontSize={14} color="#1976d2" fontWeight={600}>{item.customer.addresses?.[0]?.city || 'N/A'}</Box>
                     <Box fontWeight={600} color="#555" fontSize={14}>{item.customer.mobile}</Box>
                   </Box>
                 </TableCell>
@@ -77,7 +81,15 @@ export default function TransactionTable() {
                   </Box>
                 </TableCell>
               </TableRow>
-            ))}
+                )) : (
+              <TableRow>
+                <TableCell colSpan={4} align="center">
+                  <Box py={4} color="#666">
+                    {transaction.loading ? 'Loading transactions...' : 'No transactions found'}
+                  </Box>
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

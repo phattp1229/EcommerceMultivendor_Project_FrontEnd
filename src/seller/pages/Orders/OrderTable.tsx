@@ -99,7 +99,7 @@ export default function OrderTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {sellerOrder.orders.map((item: Order) => (
+            {sellerOrder.orders && sellerOrder.orders.length > 0 ? sellerOrder.orders.map((item: Order) => (
               <StyledTableRow key={item.id}>
                 <StyledTableCell align="left">{item.id}</StyledTableCell>
                 <StyledTableCell component="th" scope="row">
@@ -205,7 +205,15 @@ export default function OrderTable() {
                   </Menu>
                 </StyledTableCell>
               </StyledTableRow>
-            ))}
+            )) : (
+              <StyledTableRow>
+                <StyledTableCell colSpan={6} align="center">
+                  <div style={{ padding: '20px', color: '#666' }}>
+                    {sellerOrder.loading ? 'Loading orders...' : 'No orders found'}
+                  </div>
+                </StyledTableCell>
+              </StyledTableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

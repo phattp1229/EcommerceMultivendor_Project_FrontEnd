@@ -85,7 +85,13 @@ export const createSeller = createAsyncThunk<Seller, Seller>(
                 console.error('Create seller error response data:', error.response.data);
                 console.error('Create seller error response status:', error.response.status);
                 console.error('Create seller error response headers:', error.response.headers);
-                return rejectWithValue(error.message);
+
+                // Return detailed error message from server
+                const errorMessage = error.response.data?.error ||
+                    error.response.data?.message ||
+                    error.message ||
+                    'Failed to create seller';
+                return rejectWithValue(errorMessage);
             } else {
                 console.error('Create seller error message:', error.message);
                 return rejectWithValue('Failed to create seller');

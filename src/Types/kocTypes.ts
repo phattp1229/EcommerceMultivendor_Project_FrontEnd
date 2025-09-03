@@ -10,5 +10,9 @@ export interface Koc {
     id: number;
     kocCode: string;
     accountStatus?: string;
+    facebookLink?: string;
+    instagramLink?: string;
+    tiktokLink?: string;
+    youtubeLink?: string;
     // … nếu cần thêm
 }

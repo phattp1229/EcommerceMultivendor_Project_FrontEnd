@@ -42,26 +42,21 @@ const CampaignList: React.FC = () => {
     setOpenConfirm(true);
   };
 
-  const handleConfirmDelete = async () => {
-    if (deleteId !== null) {
-      try {
-        const result = await dispatch(deleteSellerCampaign({ id: deleteId }));
-
-        if (deleteSellerCampaign.fulfilled.match(result)) {
-          enqueueSnackbar("Campaign deleted successfully!", { variant: "success" });
-          dispatch(fetchSellerCampaigns());
-        } else {
-          // Extract error message from backend
-          const errorMsg = result.payload as string;
-          enqueueSnackbar(errorMsg || "Failed to delete campaign", { variant: "error" });
-        }
-      } catch (error) {
-        enqueueSnackbar("An unexpected error occurred", { variant: "error" });
-      }
-    }
+ const handleConfirmDelete = async () => {
+  if (deleteId == null) return;
+  try {
+    await dispatch(deleteSellerCampaign({ id: deleteId })).unwrap();
+    enqueueSnackbar("Campaign deleted successfully!", { variant: "success" });
+    // Optionally refresh:
+    dispatch(fetchSellerCampaigns());
+  } catch (err: any) {
+    const msg = typeof err === "string" ? err : err?.message || "Delete campaign failed";
+    enqueueSnackbar(msg, { variant: "error" });
+  } finally {
     setOpenConfirm(false);
     setDeleteId(null);
-  };
+  }
+};
 
   // Function to fetch products for a campaign
   const fetchCampaignProducts = async (campaignId: number) => {
@@ -109,7 +104,7 @@ const CampaignList: React.FC = () => {
       />
       <CardContent>
         {loading && <CircularProgress />}
-        {error && <Typography color="error" mb={2}>{String(error)}</Typography>}
+        {/* {error && <Typography color="error" mb={2}>{String(error)}</Typography>} */}
 
         {!loading && list.length === 0 && (
           <Typography color="text.secondary">No campaigns yet.</Typography>
@@ -171,8 +166,14 @@ const CampaignList: React.FC = () => {
                         Code: <b>{c.campaignCode}</b> &nbsp;•&nbsp; <span style={{ color: '#ff5722' }}>{c.commissionPercent}%</span>
                       </Typography>
                       <Typography fontSize={14} color="#888">
-                        Created: {new Date(c.createdAt).toLocaleString()} &nbsp;•&nbsp; Ends: {new Date(c.expiredAt).toLocaleString()}
+  Start at: {c.startAt ? new Date(c.startAt).toLocaleString() : "Chưa kích hoạt"} 
+  &nbsp;•&nbsp; 
+  Ends: {new Date(c.expiredAt).toLocaleString()}
+</Typography>
+                      <Typography fontSize={14} color="#888">
+                        Created: {new Date(c.createdAt).toLocaleString()}
                       </Typography>
+                     
                     </Box>
                     <Stack direction="row" spacing={1}>
                       <Tooltip title="View Products">

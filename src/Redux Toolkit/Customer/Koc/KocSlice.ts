@@ -25,11 +25,6 @@ export interface KocItem extends Koc {
         mobile?: string;
         account?: { email?: string };
     };
-    // Social media links
-    facebookLink?: string;
-    instagramLink?: string;
-    tiktokLink?: string;
-    youtubeLink?: string;
 }
 
 interface PageResp<T> {
@@ -148,7 +143,6 @@ export const adminFetchKoc = createAsyncThunk<
             params,
             headers: { Authorization: `Bearer ${jwt}` },
         });
-        console.log("KOC API Response:", res.data);
         return res.data as PageResp<KocItem>;
     } catch (e: any) {
         return rejectWithValue(e?.response?.data || "Failed to load KOC");

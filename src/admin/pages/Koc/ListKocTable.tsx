@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import {
   Card, CardContent, Chip, Stack, Typography,
-  FormControl, InputLabel, Select, MenuItem, Button, Menu,
-  IconButton, Tooltip, Box
+  FormControl, InputLabel, Select, MenuItem, Button, Menu, IconButton, Tooltip, Box
 } from "@mui/material";
-import { Facebook, Instagram, YouTube } from "@mui/icons-material";
 import type { SelectChangeEvent } from "@mui/material/Select";
 import { DataGrid, GridToolbar, type GridColDef } from "@mui/x-data-grid";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import { SiTiktok } from "react-icons/si";
 import { useAppDispatch, useAppSelector } from "../../../Redux Toolkit/Store";
 import {
   adminFetchKoc,
@@ -25,42 +27,6 @@ const statusColor = (s: AccountStatus) =>
     : s === "SUSPENDED"
     ? { bg: "#fee2e2", color: "#b91c1c" }
     : { bg: "#fef9c3", color: "#b45309" };
-
-/** Component hiển thị social links */
-const SocialLinksCell = ({ row }: { row: any }) => {
-  const links = [
-    { url: row.facebookLink, icon: Facebook, color: "#1877f2", name: "Facebook" },
-    { url: row.instagramLink, icon: Instagram, color: "#e4405f", name: "Instagram" },
-    { url: row.youtubeLink, icon: YouTube, color: "#ff0000", name: "YouTube" },
-  ];
-
-  return (
-    <Box display="flex" gap={0.5}>
-      {links.map(({ url, icon: Icon, color, name }) =>
-        url ? (
-          <Tooltip key={name} title={`${name}: ${url}`}>
-            <IconButton
-              size="small"
-              onClick={(e) => {
-                e.stopPropagation();
-                window.open(url, '_blank');
-              }}
-              sx={{
-                color: color,
-                '&:hover': { backgroundColor: `${color}20` }
-              }}
-            >
-              <Icon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-        ) : null
-      )}
-      {!row.facebookLink && !row.instagramLink && !row.youtubeLink && (
-        <Typography variant="body2" color="text.secondary">No links</Typography>
-      )}
-    </Box>
-  );
-};
 
 /** Cell component cho cột Change Status */
 const ChangeStatusCell = ({ row }: { row: any }) => {
@@ -123,6 +89,50 @@ const ChangeStatusCell = ({ row }: { row: any }) => {
   );
 };
 
+// Component để hiển thị social media links
+const SocialMediaCell = ({ row }: { row: any }) => {
+  // Debug: log dữ liệu row để kiểm tra
+  console.log('SocialMediaCell row data:', row);
+
+  const socialLinks = [
+    { platform: 'facebook', url: row.facebookLink, icon: <FacebookIcon sx={{ color: '#1877F2' }} />, label: 'Facebook' },
+    { platform: 'instagram', url: row.instagramLink, icon: <InstagramIcon sx={{ color: '#E4405F' }} />, label: 'Instagram' },
+    { platform: 'tiktok', url: row.tiktokLink, icon: <SiTiktok style={{ color: '#000000', fontSize: '20px' }} />, label: 'TikTok' },
+    { platform: 'youtube', url: row.youtubeLink, icon: <YouTubeIcon sx={{ color: '#FF0000' }} />, label: 'YouTube' },
+  ];
+
+  const availableLinks = socialLinks.filter(link => link.url && link.url.trim() !== '');
+
+  if (availableLinks.length === 0) {
+    return (
+      <Typography variant="caption" color="text.secondary">
+        No social links
+      </Typography>
+    );
+  }
+
+  return (
+    <Box display="flex" gap={0.5} alignItems="center">
+      {availableLinks.map((link) => (
+        <Tooltip key={link.platform} title={`${link.label}: ${link.url}`}>
+          <IconButton
+            size="small"
+            onClick={() => window.open(link.url, '_blank')}
+            sx={{
+              padding: '4px',
+              '&:hover': {
+                backgroundColor: 'rgba(0,0,0,0.04)'
+              }
+            }}
+          >
+            {link.icon}
+          </IconButton>
+        </Tooltip>
+      ))}
+    </Box>
+  );
+};
+
 export default function KocListTable() {
   const dispatch = useAppDispatch();
   const rows = useAppSelector(selectKocAdminList);
@@ -130,8 +140,6 @@ export default function KocListTable() {
   const total = useAppSelector(selectKocAdminTotal);
   const page = useAppSelector(selectKocAdminPage);
   const size = useAppSelector(selectKocAdminSize);
-
-  console.log("KOC Rows:", rows);
 
   const [statusFilter, setStatusFilter] = useState<"All" | AccountStatus>("All");
   const statusParam = statusFilter === "All" ? undefined : statusFilter;
@@ -160,6 +168,17 @@ export default function KocListTable() {
     { field: "kocCode", headerName: "Koc Code", width: 140, headerAlign: "center", align: "center", headerClassName: "col-id" },
     { field: "email", headerName: "Email", flex: 1, minWidth: 260, headerClassName: "col-id" },
     {
+      field: "socialMedia",
+      headerName: "Social Media",
+      width: 180,
+      sortable: false,
+      filterable: false,
+      headerAlign: "center",
+      headerClassName: "col-id",
+      align: "center",
+      renderCell: (params) => <SocialMediaCell row={params.row} />,
+    },
+    {
       field: "accountStatus",
       headerName: "Status",
       width: 160,
@@ -184,17 +203,6 @@ export default function KocListTable() {
           />
         );
       },
-    },
-    {
-      field: "socialLinks",
-      headerName: "Social Links",
-      width: 200,
-      sortable: false,
-      filterable: false,
-      headerAlign: "center",
-      headerClassName: "col-id",
-      align: "center",
-      renderCell: (params) => <SocialLinksCell row={params.row} />,
     },
     {
       field: "actions",

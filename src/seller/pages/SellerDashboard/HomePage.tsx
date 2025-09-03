@@ -45,7 +45,7 @@ const HomePage = () => {
         <div className="col-span-4 md:col-span-2 lg:col-span-1">
           <ReportCard
             icon={<AccountBalanceIcon />}
-            value={sellers.report?.totalRefunds}
+            value={sellers.report?.totalRefunds.toLocaleString("vi-VN") +" đ" }
             title={"Total Refund"}
           />
         </div>
